@@ -6,30 +6,21 @@
   },
   "overflowClasses": [
     {
-      "classId": "MG13MP13",
-      "className": "Manajamen Pemasaran",
-      "prodi": "MANAJEMEN",
-      "room": "CM-206",
-      "day": "Friday",
-      "startTime": "10:00",
-      "participants": 45
-    },
-    {
-      "classId": "MG13MP13",
-      "className": "Manajamen Pemasaran",
+      "classId": "MG13MS13",
+      "className": "Manajemen Sumber Daya Manusia",
       "prodi": "MANAJEMEN",
       "room": "CM-LabVirtual",
-      "day": "Thursday",
-      "startTime": "10:00",
+      "day": "Monday",
+      "startTime": "15:30",
       "participants": 45
     },
     {
-      "classId": "MG13DG03",
-      "className": "Keterampilan Digital untuk Manajemen Perusahaan",
+      "classId": "MG12FB53",
+      "className": "Manajemen Bisnis Keluarga (Family Business)",
       "prodi": "MANAJEMEN",
       "room": "CM-Lab3",
-      "day": "Monday",
-      "startTime": "08:20",
+      "day": "Tuesday",
+      "startTime": "12:30",
       "participants": 34
     },
     {
@@ -37,33 +28,33 @@
       "className": "Menggambar Teknik",
       "prodi": "Manajemen Rekayasa",
       "room": "CM-207",
-      "day": "Wednesday",
-      "startTime": "18:30",
+      "day": "Monday",
+      "startTime": "17:10",
       "participants": 10
     },
     {
-      "classId": "EM13LE02",
-      "className": "Legal dan Etika Profesi",
+      "classId": "ET13SC13",
+      "className": "Manajemen Rantai Pasok",
       "prodi": "Manajemen Rekayasa",
-      "room": "CM-LabVirtual",
-      "day": "Monday",
-      "startTime": "15:30",
-      "participants": 42
-    },
-    {
-      "classId": "LE13LE02",
-      "className": "PENGANTAR TEKNIK LOGISTIK",
-      "prodi": "TEKNIK LOGISTIK",
       "room": "CM-207",
       "day": "Wednesday",
-      "startTime": "09:10",
-      "participants": 35
+      "startTime": "08:20",
+      "participants": 40
     },
     {
-      "classId": "ET13PP13",
-      "className": "PERENCANAAN PRODUKSI DAN PENGENDALIAN PERSEDIAAN",
-      "prodi": "TEKNIK LOGISTIK",
+      "classId": "IF13MN13",
+      "className": "Metode Numerik",
+      "prodi": "INFORMATIKA",
       "room": "CM-207",
+      "day": "Wednesday",
+      "startTime": "12:30",
+      "participants": 37
+    },
+    {
+      "classId": "IS13ST03",
+      "className": "Pengantar Sistem & Teknologi Informasi",
+      "prodi": "SISTEM INFORMASI",
+      "room": "CM-206",
       "day": "Tuesday",
       "startTime": "10:50",
       "participants": 45
@@ -72,19 +63,28 @@
       "classId": "IS13SO02",
       "className": "Pengantar Sistem Operasi",
       "prodi": "SISTEM INFORMASI",
-      "room": "CM-206",
-      "day": "Monday",
-      "startTime": "08:20",
+      "room": "CM-LabVirtual",
+      "day": "Friday",
+      "startTime": "15:30",
       "participants": 45
     },
     {
-      "classId": "VD13DK03",
-      "className": "Desain Kemasan",
+      "classId": "VD13SM03",
+      "className": "Seminar dan Metodologi Penelitian",
       "prodi": "DESAIN KOMUNIKASI VISUAL",
-      "room": "CM-LabVirtual",
-      "day": "Wednesday",
-      "startTime": "16:20",
-      "participants": 40
+      "room": "CM-Lab3",
+      "day": "Monday",
+      "startTime": "09:10",
+      "participants": 45
+    },
+    {
+      "classId": "VD13HC03",
+      "className": "Digital Heritage Conservation",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "room": "CM-207",
+      "day": "Tuesday",
+      "startTime": "14:10",
+      "participants": 45
     }
   ]
 }

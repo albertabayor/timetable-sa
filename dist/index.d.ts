@@ -162,6 +162,8 @@ declare class ConstraintChecker {
     private isTimeOverlap;
     /**
      * SC1: Preferred time
+     * Memeriksa apakah jadwal kelas sesuai dengan waktu preferensi dosen.
+     * Format Prefered_Time: "HH.MM - HH.MM day, HH.MM - HH.MM day, ..."
      */
     checkPreferredTime(entry: ScheduleEntry): number;
     /**

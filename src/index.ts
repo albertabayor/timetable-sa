@@ -681,8 +681,7 @@ class ConstraintChecker {
       if (lecturer && lecturer.Research_Day) {
         const researchDay = lecturer.Research_Day.trim();
 
-        if (researchDay && entry.timeSlot.day === researchDay || researchDay.includes(entry.timeSlot.day)) {
-
+        if ((researchDay && entry.timeSlot.day === researchDay) || researchDay.includes(entry.timeSlot.day)) {
           this.addViolation({
             classId: entry.classId,
             className: entry.className,
@@ -867,6 +866,9 @@ class ConstraintChecker {
     const start2 = timeToMinutes(entry2.timeSlot.startTime);
     const end2 = timeToMinutes(calc2.endTime);
 
+    // example
+    // 10:00-11:40 (class 1 with prayer)
+    // 11:30-12:20 (class 2 with prayer)
     return start1 < end2 && start2 < end1;
   }
 
@@ -876,6 +878,8 @@ class ConstraintChecker {
 
   /**
    * SC1: Preferred time
+   * Memeriksa apakah jadwal kelas sesuai dengan waktu preferensi dosen.
+   * Format Prefered_Time: "HH.MM - HH.MM day, HH.MM - HH.MM day, ..."
    */
   checkPreferredTime(entry: ScheduleEntry): number {
     let totalScore = 0;
@@ -883,24 +887,61 @@ class ConstraintChecker {
 
     for (const lecturerCode of entry.lecturers) {
       const lecturer = this.lecturers.get(lecturerCode);
-      if (!lecturer || !lecturer.Prefered_Time) continue;
+      if (!lecturer || !lecturer.Prefered_Time) {
+        continue; // Lewati jika data dosen atau preferensi tidak ada
+      }
 
-      const preferredTime = lecturer.Prefered_Time.toLowerCase();
-      const hour = parseInt(entry.timeSlot.startTime.split(":")[0]);
+      // Asumsi: entry.timeSlot.day ada, misalnya 'Monday'
+      const entryDay = entry.timeSlot.day.toLowerCase();
+      const entryTimeStr = entry.timeSlot.startTime; // '10:00'
+
+      // Konversi waktu entry menjadi total menit (misal: 10:00 -> 600)
+      const [entryHour, entryMinute] = entryTimeStr.split(":").map(Number);
+      const entryTimeInMinutes = entryHour! * 60 + entryMinute!;
+
+      // Pisah string preferensi menjadi jadwal per hari
+      // "09.30 - 17.00 monday, 09.30 - 17.00 tuesday" -> ["09.30 - 17.00 monday", "09.30 - 17.00 tuesday"]
+      const dailySchedules = lecturer.Prefered_Time.toLowerCase().split(", ");
+
+      let isPreferred = false;
+
+      for (const schedule of dailySchedules) {
+        // Pisah rentang waktu dan hari
+        // output schedule =   '09.30 - 17.00 friday'
+        const [timeRange1, _, timeRange2, day] = schedule.trim().split(" ");
+        const timeRange = `${timeRange1} ${_} ${timeRange2}`;
+
+        // Cek apakah hari entry cocok dengan hari di jadwal preferensi
+        if (day !== entryDay) {
+          continue; // Cari jadwal untuk hari yang sama
+        }
+
+        // Pisah waktu mulai dan selesai
+        // "09.30 - 17.00" -> ["09.30", "17.00"]
+        const [startTime, endTime] = timeRange.split(" - ");
+
+        // Konversi waktu preferensi ke total menit
+        const [startHour, startMinute] = startTime!.split(".").map(Number);
+        const [endHour, endMinute] = endTime!.split(".").map(Number);
+
+        const startTimeInMinutes = startHour! * 60 + startMinute!;
+        const endTimeInMinutes = endHour! * 60 + endMinute!;
+
+        // Cek apakah waktu entry berada dalam rentang waktu preferensi
+        if (entryTimeInMinutes >= startTimeInMinutes && entryTimeInMinutes < endTimeInMinutes) {
+          isPreferred = true;
+
+          break; // Cukup ketemu satu yang cocok, lanjut ke dosen berikutnya
+        }
+      }
 
       count++;
-
-      if (preferredTime === "pagi" && hour >= 7 && hour < 12) {
-        totalScore += 1;
-      } else if (preferredTime === "siang" && hour >= 12 && hour < 15) {
-        totalScore += 1;
-      } else if (preferredTime === "sore" && hour >= 15 && hour < 18) {
-        totalScore += 1;
-      } else if (preferredTime === "malam" && hour >= 18) {
+      if (isPreferred) {
         totalScore += 1;
       }
     }
 
+    // Kembalikan rasio. Jika tidak ada dosen yang memiliki preferensi, anggap skor sempurna (1).
     return count > 0 ? totalScore / count : 1;
   }
 
@@ -943,10 +984,25 @@ class ConstraintChecker {
         const prevEndMins = timeToMinutes(calc.endTime);
         const currentStartMins = timeToMinutes(entry.timeSlot.startTime);
 
+        if (prevEndMins >= currentStartMins) {          
+          // Lewati jika jadwal lama selesai setelah atau bersamaan dengan jadwal baru mulai
+          continue;
+        }
+
         const gapMinutes = currentStartMins - prevEndMins;
 
         if (gapMinutes < lecturer.Transit_Time) {
+
           const score = Math.max(0, gapMinutes / lecturer.Transit_Time);
+
+          this.addViolation({
+            classId: entry.classId,
+            className: entry.className,
+            constraintType: "SC3: Transit Time",
+            reason: `Lecturer ${lecturerCode} has insufficient transit time (${gapMinutes} mins, required: ${lecturer.Transit_Time} mins) between class ${existing.classId} and ${entry.classId}`,
+            severity: "soft",
+            details: { lecturer: lecturerCode, gapMinutes, requiredTransitTime: lecturer.Transit_Time, previousClassId: existing.classId },
+          });
           minScore = Math.min(minScore, score);
         }
       }

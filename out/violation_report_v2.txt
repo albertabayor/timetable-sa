@@ -3,95 +3,95 @@ CONSTRAINT VIOLATION REPORT V2
 ==========================================
 
 📊 SUMMARY:
-   Total Hard Violations: 370
-   Total Soft Violations: 137
+   Total Hard Violations: 215
+   Total Soft Violations: 168
 
 📊 OVERFLOW STATISTICS:
    Non-lab classes using lab rooms: 9
    Percentage: 2.60%
 
 📋 VIOLATIONS BY TYPE:
-   HC7: Max Daily Periods: 172
-   SC5: Prayer Time Overlap: 128
-   HC5: Prodi Conflict: 168
-   HC6: Research Day: 19
+   SC5: Prayer Time Overlap: 159
+   HC5: Prodi Conflict: 162
    SC7: Overflow to Lab: 9
-   HC1: Lecturer Conflict: 7
-   HC2: Room Conflict: 3
+   HC6: Research Day: 34
+   HC1: Lecturer Conflict: 10
+   HC2: Room Conflict: 6
+   HC7: Max Daily Periods: 2
    HC12: Exclusive Room: 1
 
 🚫 HARD CONSTRAINT VIOLATIONS:
-   • MM23EB03 (Economic for Business)
-     HC7: Max Daily Periods: Lecturer BAT exceeds max daily periods (2) on Thursday
-
-   • MM23SM03 (Strategic Marketing Management)
-     HC7: Max Daily Periods: Lecturer WAH exceeds max daily periods (2) on Thursday
-
-   • MM23HC03 (Strategic Human Capital and Change Management)
-     HC7: Max Daily Periods: Lecturer GTK exceeds max daily periods (2) on Friday
-
-   • MM23CF03 (Corporate Finance)
-     HC7: Max Daily Periods: Lecturer BAT exceeds max daily periods (2) on Saturday
-
-   • MM23OS03 (Operation and Supply Chain Management)
-     HC7: Max Daily Periods: Lecturer PTA exceeds max daily periods (2) on Saturday
-
-   • MM23SC03 (Startup and corporate entrepreneurship)
-     HC7: Max Daily Periods: Lecturer BAT exceeds max daily periods (2) on Saturday
-
-   • MM23AB03 (Agile and Disruptive Business Strategy)
-     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23OS03 at the same time on Saturday
-
-   • MM23QN03 (Corporate Quantitative Research)
-     HC6: Research Day: Lecturer WKS has research day on Saturday
-
-   • MM23TM03 (Transformation Management)
-     HC7: Max Daily Periods: Lecturer GTK exceeds max daily periods (2) on Tuesday
-
-   • MM23LG03 (Leadership for Global Leaders)
-     HC7: Max Daily Periods: Lecturer GTK exceeds max daily periods (2) on Wednesday
-
    • MM23SE03 (Sustainability and Enviromental Management)
-     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23CF03 at the same time on Saturday
+     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23LG03 at the same time on Wednesday
 
-   • MM23SE03 (Sustainability and Enviromental Management)
-     HC6: Research Day: Lecturer WKS has research day on Saturday
+   • MG13BK02 (Berpikir Kritis dan Kreatif)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Tuesday
 
-   • MM23SE03 (Sustainability and Enviromental Management)
-     HC7: Max Daily Periods: Lecturer WKS exceeds max daily periods (3) on Saturday
+   • MG13BK02 (Berpikir Kritis dan Kreatif)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PB03 at the same time on Wednesday
 
-   • MM23PM03 (Project Management)
-     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23EB03 at the same time on Thursday
+   • AB13A503 (Akuntansi Dasar)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Tuesday
 
-   • MM23PM03 (Project Management)
-     HC7: Max Daily Periods: Lecturer PTA exceeds max daily periods (2) on Thursday
+   • MG13MB03 (Matematika Bisnis)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PM03 at the same time on Thursday
 
-   • AB13A103 (Ekonomi untuk Bisnis)
-     HC7: Max Daily Periods: Lecturer MAL exceeds max daily periods (2) on Wednesday
+   • MG13MK13 (Manajemen Keuangan)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PM03 at the same time on Tuesday
 
-   • MG13PB03 (Pengantar Bisnis dan Korporasi)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Thursday
+   • MG13MS13 (Manajemen Sumber Daya Manusia)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Tuesday
 
-   • MG13PB03 (Pengantar Bisnis dan Korporasi)
-     HC7: Max Daily Periods: Lecturer ALF exceeds max daily periods (3) on Thursday
+   • MG13MO03 (Manajemen Operasi)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A503 at the same time on Monday
 
-   • MG13PM03 (Pengantar Manajemen)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PB03 at the same time on Monday
+   • MG13MO03 (Manajemen Operasi)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MS13 at the same time on Monday
 
-   • MG13PM03 (Pengantar Manajemen)
-     HC7: Max Daily Periods: Lecturer HDC exceeds max daily periods (2) on Monday
+   • AB13A402 (Lingkungan, Sosial, dan Tata Kelola)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Monday
 
-   ... and 350 more
+   • AB13A402 (Lingkungan, Sosial, dan Tata Kelola)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MB03 at the same time on Thursday
+
+   • GS13EL03 (Bahasa Inggris)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MB03 at the same time on Thursday
+
+   • GS13IL02 (Bahasa Indonesia)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MB03 at the same time on Thursday
+
+   • MG13PD13 (Pemasaran Digital)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Monday
+
+   • MG13PD13 (Pemasaran Digital)
+     HC6: Research Day: Lecturer MMK has research day on Wednesday, Thursday, Friday
+
+   • MG13PD13 (Pemasaran Digital)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Tuesday
+
+   • MG13PD13 (Pemasaran Digital)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MP13 at the same time on Thursday
+
+   • MG13MS23 (Manajemen Strategi)
+     HC1: Lecturer Conflict: Lecturer RPA has conflict with class MM23QL03 on Friday at 14:10
+
+   • MG13MS23 (Manajemen Strategi)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class GS13EL03 at the same time on Friday
+
+   • MG13MS23 (Manajemen Strategi)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A503 at the same time on Monday
+
+   ... and 195 more
 
 ⚠️  SOFT CONSTRAINT VIOLATIONS (Sample):
-   • MM23EB03: Class overlaps with 30 minutes of prayer time
-   • MM23SM03: Class overlaps with 30 minutes of prayer time
-   • MM23CF03: Class overlaps with 50 minutes of prayer time
+   • MM23HC03: Class overlaps with 30 minutes of prayer time
+   • MM23CF03: Class overlaps with 30 minutes of prayer time
    • MM23OS03: Class overlaps with 30 minutes of prayer time
-   • MM23SC03: Class overlaps with 30 minutes of prayer time
-   • MM23SE03: Class overlaps with 50 minutes of prayer time
-   • MM23PM03: Class overlaps with 30 minutes of prayer time
-   • AB13A103: Class overlaps with 30 minutes of prayer time
-   • MG13PB03: Class overlaps with 30 minutes of prayer time
-   • AB13A503: Class overlaps with 50 minutes of prayer time
-   ... and 127 more
+   • MM23SC03: Class overlaps with 50 minutes of prayer time
+   • MM23CS03: Class overlaps with 30 minutes of prayer time
+   • MM23TM03: Class overlaps with 30 minutes of prayer time
+   • MG13PB03: Class overlaps with 50 minutes of prayer time
+   • MG13PM03: Class overlaps with 30 minutes of prayer time
+   • MG13MB03: Class overlaps with 30 minutes of prayer time
+   • MG13MB03: Class overlaps with 30 minutes of prayer time
+   ... and 158 more

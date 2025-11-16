@@ -126,11 +126,18 @@ for (let day of DAYS) {
             endMinute = endMinute % 60;
         }
         const endTime = `${endHour.toString().padStart(2, "0")}:${endMinute.toString().padStart(2, "0")}`;
+        if (hour === 19 && minute === 20)
+            break;
         const slot = { day, startTime, endTime, period };
         TIME_SLOTS_PAGI.push(slot);
         TIME_SLOTS.push(slot);
-        // Add 10 minutes break
-        minute = endMinute + 10;
+        minute = endMinute;
+        if (minute === 50 && hour === 15) {
+            minute -= 20; // Adjust to 15:30 for SORE
+        }
+        else if (hour === 18 && minute === 50) {
+            minute -= 20; // Adjust to 18:30 for SORE
+        }
         if (minute >= 60) {
             hour += Math.floor(minute / 60);
             minute = minute % 60;
@@ -159,6 +166,8 @@ for (let day of DAYS) {
         if (endHour > 21 || (endHour === 21 && endMinute > 0)) {
             break;
         }
+        if (hour === 19 && minute === 20)
+            break;
         const endTime = `${endHour.toString().padStart(2, "0")}:${endMinute.toString().padStart(2, "0")}`;
         const slot = { day, startTime, endTime, period };
         TIME_SLOTS_SORE.push(slot);
@@ -166,8 +175,13 @@ for (let day of DAYS) {
         if (hour >= 18 || (hour === 18 && minute >= 30)) {
             TIME_SLOTS.push(slot);
         }
-        // Add 10 minutes break
-        minute = endMinute + 10;
+        minute = endMinute;
+        if (minute === 50 && hour === 15) {
+            minute -= 20; // Adjust to 15:30 for SORE
+        }
+        else if (hour === 18 && minute === 50) {
+            minute -= 20; // Adjust to 18:30 for SORE
+        }
         if (minute >= 60) {
             hour += Math.floor(minute / 60);
             minute = minute % 60;
@@ -202,7 +216,7 @@ function minutesToTime(minutes) {
  */
 function getPrayerTimeOverlap(startTime, sks, day) {
     const startMinutes = timeToMinutes(startTime);
-    const classMinutes = sks * 50 + (sks - 1) * 10; // without prayer time
+    const classMinutes = sks * 50; // without prayer time
     const endMinutes = startMinutes + classMinutes;
     let totalPrayerTime = 0;
     // Check Dzuhur (11:40-12:30) - 50 minutes
@@ -225,7 +239,7 @@ function getPrayerTimeOverlap(startTime, sks, day) {
 function calculateEndTime(startTime, sks, day) {
     const startMinutes = timeToMinutes(startTime);
     // Calculate class duration without prayer time
-    const classMinutes = sks * 50 + (sks - 1) * 10;
+    const classMinutes = sks * 50;
     // Check for prayer time overlaps
     const prayerTimeAdded = getPrayerTimeOverlap(startTime, sks, day);
     // Total duration including prayer time
@@ -543,7 +557,11 @@ class ConstraintChecker {
             const lecturer = this.lecturers.get(lecturerCode);
             if (lecturer && lecturer.Research_Day) {
                 const researchDay = lecturer.Research_Day.trim();
-                if (researchDay && entry.timeSlot.day === researchDay) {
+                // console.dir(lecturer, { depth: null });
+                if (researchDay && entry.timeSlot.day === researchDay || researchDay.includes(entry.timeSlot.day)) {
+                    console.dir(lecturer, { depth: null });
+                    console.log(`${researchDay} && ${entry.timeSlot.day} === ${researchDay}`);
+                    console.log(`result is = ${researchDay && entry.timeSlot.day === researchDay || researchDay.includes(entry.timeSlot.day)}`);
                     this.addViolation({
                         classId: entry.classId,
                         className: entry.className,
@@ -992,6 +1010,7 @@ class SimulatedAnnealing {
                     schedule.push({
                         classId: classReq.Kode_Matakuliah,
                         className: courseName,
+                        class: classReq.Kelas || "A",
                         prodi,
                         lecturers,
                         room: selectedRoom,
@@ -1227,9 +1246,11 @@ function main() {
     // Convert to readable format
     const output = solution.schedule.map((entry) => {
         const calc = calculateEndTime(entry.timeSlot.startTime, entry.sks, entry.timeSlot.day);
+        console.log(entry);
         return {
             "Class ID": entry.classId,
             "Class Name": entry.className,
+            Class: entry.class,
             Program: entry.prodi,
             Lecturers: entry.lecturers.join(", "),
             Room: entry.room,

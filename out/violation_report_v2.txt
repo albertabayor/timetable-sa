@@ -3,95 +3,95 @@ CONSTRAINT VIOLATION REPORT V2
 ==========================================
 
 📊 SUMMARY:
-   Total Hard Violations: 411
-   Total Soft Violations: 236
+   Total Hard Violations: 370
+   Total Soft Violations: 137
 
 📊 OVERFLOW STATISTICS:
    Non-lab classes using lab rooms: 9
    Percentage: 2.60%
 
 📋 VIOLATIONS BY TYPE:
-   HC7: Max Daily Periods: 166
-   SC5: Prayer Time Overlap: 224
-   HC5: Prodi Conflict: 194
-   HC1: Lecturer Conflict: 15
-   HC6: Research Day: 24
+   HC7: Max Daily Periods: 172
+   SC5: Prayer Time Overlap: 128
+   HC5: Prodi Conflict: 168
+   HC6: Research Day: 19
    SC7: Overflow to Lab: 9
-   SC6: Late Evening Start: 3
-   HC2: Room Conflict: 12
+   HC1: Lecturer Conflict: 7
+   HC2: Room Conflict: 3
+   HC12: Exclusive Room: 1
 
 🚫 HARD CONSTRAINT VIOLATIONS:
    • MM23EB03 (Economic for Business)
-     HC7: Max Daily Periods: Lecturer BAT exceeds max daily periods (2) on Saturday
+     HC7: Max Daily Periods: Lecturer BAT exceeds max daily periods (2) on Thursday
 
    • MM23SM03 (Strategic Marketing Management)
-     HC7: Max Daily Periods: Lecturer WAH exceeds max daily periods (2) on Saturday
+     HC7: Max Daily Periods: Lecturer WAH exceeds max daily periods (2) on Thursday
 
    • MM23HC03 (Strategic Human Capital and Change Management)
      HC7: Max Daily Periods: Lecturer GTK exceeds max daily periods (2) on Friday
 
    • MM23CF03 (Corporate Finance)
-     HC7: Max Daily Periods: Lecturer BAT exceeds max daily periods (2) on Wednesday
-
-   • MM23OS03 (Operation and Supply Chain Management)
-     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23SM03 at the same time on Saturday
+     HC7: Max Daily Periods: Lecturer BAT exceeds max daily periods (2) on Saturday
 
    • MM23OS03 (Operation and Supply Chain Management)
      HC7: Max Daily Periods: Lecturer PTA exceeds max daily periods (2) on Saturday
-
-   • MM23SC03 (Startup and corporate entrepreneurship)
-     HC1: Lecturer Conflict: Lecturer WAH has conflict with class MM23SM03 on Saturday at 11:30
-
-   • MM23SC03 (Startup and corporate entrepreneurship)
-     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23SM03 at the same time on Saturday
 
    • MM23SC03 (Startup and corporate entrepreneurship)
      HC7: Max Daily Periods: Lecturer BAT exceeds max daily periods (2) on Saturday
 
-   • MM23QL03 (Corporate Qualitative Research)
-     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23HC03 at the same time on Friday
+   • MM23AB03 (Agile and Disruptive Business Strategy)
+     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23OS03 at the same time on Saturday
+
+   • MM23QN03 (Corporate Quantitative Research)
+     HC6: Research Day: Lecturer WKS has research day on Saturday
 
    • MM23TM03 (Transformation Management)
-     HC7: Max Daily Periods: Lecturer GTK exceeds max daily periods (2) on Monday
+     HC7: Max Daily Periods: Lecturer GTK exceeds max daily periods (2) on Tuesday
 
    • MM23LG03 (Leadership for Global Leaders)
-     HC7: Max Daily Periods: Lecturer GTK exceeds max daily periods (2) on Monday
+     HC7: Max Daily Periods: Lecturer GTK exceeds max daily periods (2) on Wednesday
 
    • MM23SE03 (Sustainability and Enviromental Management)
-     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23CS03 at the same time on Saturday
+     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23CF03 at the same time on Saturday
 
    • MM23SE03 (Sustainability and Enviromental Management)
      HC6: Research Day: Lecturer WKS has research day on Saturday
 
-   • MM23PM03 (Project Management)
-     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23EB03 at the same time on Saturday
+   • MM23SE03 (Sustainability and Enviromental Management)
+     HC7: Max Daily Periods: Lecturer WKS exceeds max daily periods (3) on Saturday
 
    • MM23PM03 (Project Management)
-     HC7: Max Daily Periods: Lecturer PTA exceeds max daily periods (2) on Saturday
+     HC5: Prodi Conflict: Same program (Magister Manajemen) has class MM23EB03 at the same time on Thursday
+
+   • MM23PM03 (Project Management)
+     HC7: Max Daily Periods: Lecturer PTA exceeds max daily periods (2) on Thursday
 
    • AB13A103 (Ekonomi untuk Bisnis)
-     HC7: Max Daily Periods: Lecturer MAL exceeds max daily periods (2) on Monday
+     HC7: Max Daily Periods: Lecturer MAL exceeds max daily periods (2) on Wednesday
+
+   • MG13PB03 (Pengantar Bisnis dan Korporasi)
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Thursday
+
+   • MG13PB03 (Pengantar Bisnis dan Korporasi)
+     HC7: Max Daily Periods: Lecturer ALF exceeds max daily periods (3) on Thursday
 
    • MG13PM03 (Pengantar Manajemen)
-     HC7: Max Daily Periods: Lecturer HDC exceeds max daily periods (2) on Tuesday
+     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PB03 at the same time on Monday
 
    • MG13PM03 (Pengantar Manajemen)
-     HC7: Max Daily Periods: Lecturer HDC exceeds max daily periods (2) on Tuesday
+     HC7: Max Daily Periods: Lecturer HDC exceeds max daily periods (2) on Monday
 
-   • AB13A503 (Akuntansi Dasar)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PM03 at the same time on Tuesday
-
-   ... and 391 more
+   ... and 350 more
 
 ⚠️  SOFT CONSTRAINT VIOLATIONS (Sample):
    • MM23EB03: Class overlaps with 30 minutes of prayer time
-   • MM23SM03: Class overlaps with 50 minutes of prayer time
-   • MM23HC03: Class overlaps with 30 minutes of prayer time
-   • MM23CF03: Class overlaps with 30 minutes of prayer time
-   • MM23OS03: Class overlaps with 50 minutes of prayer time
-   • MM23SC03: Class overlaps with 50 minutes of prayer time
-   • MM23AB03: Class overlaps with 30 minutes of prayer time
-   • MM23QN03: Class overlaps with 30 minutes of prayer time
-   • MM23LG03: Class overlaps with 50 minutes of prayer time
+   • MM23SM03: Class overlaps with 30 minutes of prayer time
+   • MM23CF03: Class overlaps with 50 minutes of prayer time
+   • MM23OS03: Class overlaps with 30 minutes of prayer time
+   • MM23SC03: Class overlaps with 30 minutes of prayer time
+   • MM23SE03: Class overlaps with 50 minutes of prayer time
    • MM23PM03: Class overlaps with 30 minutes of prayer time
-   ... and 226 more
+   • AB13A103: Class overlaps with 30 minutes of prayer time
+   • MG13PB03: Class overlaps with 30 minutes of prayer time
+   • AB13A503: Class overlaps with 50 minutes of prayer time
+   ... and 127 more

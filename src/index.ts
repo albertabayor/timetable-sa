@@ -187,12 +187,20 @@ for (let day of DAYS) {
 
     const endTime = `${endHour.toString().padStart(2, "0")}:${endMinute.toString().padStart(2, "0")}`;
 
+    if (hour === 19 && minute === 20) break;
+
     const slot = { day, startTime, endTime, period };
     TIME_SLOTS_PAGI.push(slot);
     TIME_SLOTS.push(slot);
 
-    // Add 10 minutes break
-    minute = endMinute + 10;
+    minute = endMinute;
+
+    if (minute === 50 && hour === 15) {
+      minute -= 20; // Adjust to 15:30 for SORE
+    } else if (hour === 18 && minute === 50) {
+      minute -= 20; // Adjust to 18:30 for SORE
+    }
+
     if (minute >= 60) {
       hour += Math.floor(minute / 60);
       minute = minute % 60;
@@ -225,6 +233,7 @@ for (let day of DAYS) {
     if (endHour > 21 || (endHour === 21 && endMinute > 0)) {
       break;
     }
+    if (hour === 19 && minute === 20) break;
 
     const endTime = `${endHour.toString().padStart(2, "0")}:${endMinute.toString().padStart(2, "0")}`;
 
@@ -236,8 +245,14 @@ for (let day of DAYS) {
       TIME_SLOTS.push(slot);
     }
 
-    // Add 10 minutes break
-    minute = endMinute + 10;
+    minute = endMinute;
+
+    if (minute === 50 && hour === 15) {
+      minute -= 20; // Adjust to 15:30 for SORE
+    } else if (hour === 18 && minute === 50) {
+      minute -= 20; // Adjust to 18:30 for SORE
+    }
+
     if (minute >= 60) {
       hour += Math.floor(minute / 60);
       minute = minute % 60;
@@ -258,7 +273,7 @@ for (let day of DAYS) {
  */
 function timeToMinutes(time: string): number {
   const [hour, minute] = time.split(":").map(Number);
-  return hour * 60 + minute;
+  return hour! * 60 + minute!;
 }
 
 /**
@@ -267,6 +282,7 @@ function timeToMinutes(time: string): number {
 function minutesToTime(minutes: number): string {
   const hour = Math.floor(minutes / 60);
   const minute = minutes % 60;
+
   return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 }
 
@@ -276,7 +292,7 @@ function minutesToTime(minutes: number): string {
  */
 function getPrayerTimeOverlap(startTime: string, sks: number, day: string): number {
   const startMinutes = timeToMinutes(startTime);
-  const classMinutes = sks * 50 + (sks - 1) * 10; // without prayer time
+  const classMinutes = sks * 50; // without prayer time
   const endMinutes = startMinutes + classMinutes;
 
   let totalPrayerTime = 0;
@@ -306,7 +322,7 @@ function calculateEndTime(startTime: string, sks: number, day: string): { endTim
   const startMinutes = timeToMinutes(startTime);
 
   // Calculate class duration without prayer time
-  const classMinutes = sks * 50 + (sks - 1) * 10;
+  const classMinutes = sks * 50;
 
   // Check for prayer time overlaps
   const prayerTimeAdded = getPrayerTimeOverlap(startTime, sks, day);
@@ -664,7 +680,9 @@ class ConstraintChecker {
       const lecturer = this.lecturers.get(lecturerCode);
       if (lecturer && lecturer.Research_Day) {
         const researchDay = lecturer.Research_Day.trim();
-        if (researchDay && entry.timeSlot.day === researchDay) {
+
+        if (researchDay && entry.timeSlot.day === researchDay || researchDay.includes(entry.timeSlot.day)) {
+
           this.addViolation({
             classId: entry.classId,
             className: entry.className,
@@ -1161,6 +1179,7 @@ class SimulatedAnnealing {
           schedule.push({
             classId: classReq.Kode_Matakuliah,
             className: courseName,
+            class: classReq.Kelas || "A",
             prodi,
             lecturers,
             room: selectedRoom,
@@ -1432,9 +1451,11 @@ function main() {
   // Convert to readable format
   const output = solution.schedule.map((entry) => {
     const calc = calculateEndTime(entry.timeSlot.startTime, entry.sks, entry.timeSlot.day);
+    console.log(entry);
     return {
       "Class ID": entry.classId,
       "Class Name": entry.className,
+      Class: entry.class,
       Program: entry.prodi,
       Lecturers: entry.lecturers.join(", "),
       Room: entry.room,
@@ -1446,7 +1467,7 @@ function main() {
       SKS: entry.sks,
       "Base Duration (minutes)": entry.sks * 50,
       "Prayer Time Added (minutes)": entry.prayerTimeAdded,
-      "Total Duration (minutes)": entry.sks * 50+ entry.prayerTimeAdded,
+      "Total Duration (minutes)": entry.sks * 50 + entry.prayerTimeAdded,
       Participants: entry.participants,
       "Class Type": entry.classType,
       "Needs Lab": entry.needsLab ? "Yes" : "No",

@@ -6,85 +6,85 @@
   },
   "overflowClasses": [
     {
-      "classId": "MG13MB03",
-      "className": "Matematika Bisnis",
+      "classId": "MG13MP13",
+      "className": "Manajamen Pemasaran",
+      "prodi": "MANAJEMEN",
+      "room": "CM-206",
+      "day": "Friday",
+      "startTime": "10:00",
+      "participants": 45
+    },
+    {
+      "classId": "MG13MP13",
+      "className": "Manajamen Pemasaran",
       "prodi": "MANAJEMEN",
       "room": "CM-LabVirtual",
       "day": "Thursday",
-      "startTime": "09:30",
+      "startTime": "10:00",
       "participants": 45
     },
     {
-      "classId": "MG13MO03",
-      "className": "Manajemen Operasi",
-      "prodi": "MANAJEMEN",
-      "room": "CM-Lab3",
-      "day": "Thursday",
-      "startTime": "14:30",
-      "participants": 45
-    },
-    {
-      "classId": "MG13ME13",
-      "className": "Manajemen Pertemuan, Eksposisi, Even, dan Konvensi",
+      "classId": "MG13DG03",
+      "className": "Keterampilan Digital untuk Manajemen Perusahaan",
       "prodi": "MANAJEMEN",
       "room": "CM-Lab3",
       "day": "Monday",
-      "startTime": "16:30",
-      "participants": 40
-    },
-    {
-      "classId": "MG12MR53",
-      "className": "Manajemen Risiko Keuangan Korporat",
-      "prodi": "MANAJEMEN",
-      "room": "CM-206",
-      "day": "Thursday",
-      "startTime": "15:30",
+      "startTime": "08:20",
       "participants": 34
-    },
-    {
-      "classId": "AB13A103",
-      "className": "Ekonomi Bisnis",
-      "prodi": "Akuntansi",
-      "room": "CM-LabVirtual",
-      "day": "Wednesday",
-      "startTime": "12:30",
-      "participants": 45
     },
     {
       "classId": "EM13ED03",
       "className": "Menggambar Teknik",
       "prodi": "Manajemen Rekayasa",
-      "room": "G5-Lab1",
-      "day": "Monday",
+      "room": "CM-207",
+      "day": "Wednesday",
       "startTime": "18:30",
       "participants": 10
     },
     {
-      "classId": "ET13PA03",
-      "className": "FISIKA I",
-      "prodi": "TEKNIK LOGISTIK",
+      "classId": "EM13LE02",
+      "className": "Legal dan Etika Profesi",
+      "prodi": "Manajemen Rekayasa",
       "room": "CM-LabVirtual",
-      "day": "Thursday",
+      "day": "Monday",
       "startTime": "15:30",
+      "participants": 42
+    },
+    {
+      "classId": "LE13LE02",
+      "className": "PENGANTAR TEKNIK LOGISTIK",
+      "prodi": "TEKNIK LOGISTIK",
+      "room": "CM-207",
+      "day": "Wednesday",
+      "startTime": "09:10",
       "participants": 35
     },
     {
-      "classId": "LE13LA13",
-      "className": "ALJABAR LINIER",
+      "classId": "ET13PP13",
+      "className": "PERENCANAAN PRODUKSI DAN PENGENDALIAN PERSEDIAAN",
       "prodi": "TEKNIK LOGISTIK",
-      "room": "CM-206",
-      "day": "Wednesday",
-      "startTime": "09:30",
+      "room": "CM-207",
+      "day": "Tuesday",
+      "startTime": "10:50",
       "participants": 45
     },
     {
-      "classId": "IS13AL02",
-      "className": "Aljabar Linier",
+      "classId": "IS13SO02",
+      "className": "Pengantar Sistem Operasi",
       "prodi": "SISTEM INFORMASI",
-      "room": "CM-Lab3",
-      "day": "Wednesday",
-      "startTime": "13:30",
+      "room": "CM-206",
+      "day": "Monday",
+      "startTime": "08:20",
       "participants": 45
+    },
+    {
+      "classId": "VD13DK03",
+      "className": "Desain Kemasan",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "room": "CM-LabVirtual",
+      "day": "Wednesday",
+      "startTime": "16:20",
+      "participants": 40
     }
   ]
 }

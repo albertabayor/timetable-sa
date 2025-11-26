@@ -99,7 +99,6 @@ const NON_LAB_ROOMS = [
     "G2-R7",
     "G3-R1",
     "G3-R2",
-    "G3-R3",
     "G3-R4",
     "G4-R1",
     "G4-R2",
@@ -484,6 +483,7 @@ class ConstraintChecker {
         }
         return true;
     }
+    // CHANGED: HC6 -> SC8 (Research Day is now a SOFT constraint)
     checkResearchDay(entry) {
         for (const lecturerCode of entry.lecturers) {
             const lecturer = this.lecturers.get(lecturerCode);
@@ -493,16 +493,16 @@ class ConstraintChecker {
                     this.addViolation({
                         classId: entry.classId,
                         className: entry.className,
-                        constraintType: "HC6: Research Day",
+                        constraintType: "SC8: Research Day",
                         reason: `Lecturer ${lecturerCode} has research day on ${researchDay}`,
-                        severity: "hard",
+                        severity: "soft",
                         details: { lecturer: lecturerCode, researchDay },
                     });
-                    return false;
+                    return 0.3; // Low score for violation, but not blocking
                 }
             }
         }
-        return true;
+        return 1; // Perfect score if no research day conflict
     }
     checkMaxDailyPeriods(schedule, entry) {
         for (const lecturerCode of entry.lecturers) {
@@ -751,7 +751,20 @@ class ConstraintChecker {
         if (prayerTime === 0) {
             return 1;
         }
-        const score = Math.max(0.5, 1 - prayerTime / 100);
+        // SPECIAL PENALTY for Friday 12:00 prayer time (Jumat prayer is critical!)
+        let score = Math.max(0.5, 1 - prayerTime / 100);
+        if (entry.timeSlot.day === "Friday") {
+            const startMinutes = timeToMinutes(entry.timeSlot.startTime);
+            const endTime = calculateEndTime(entry.timeSlot.startTime, entry.sks, entry.timeSlot.day).endTime;
+            const endMinutes = timeToMinutes(endTime);
+            // Check if class overlaps with Friday 12:00-13:00 (critical Jumat prayer time)
+            const fridayPrayerStart = 12 * 60; // 12:00
+            const fridayPrayerEnd = 13 * 60; // 13:00
+            if (startMinutes < fridayPrayerEnd && endMinutes > fridayPrayerStart) {
+                // CRITICAL violation: overlapping with Friday Jumat prayer
+                score = 0.1; // Very low score (high penalty)
+            }
+        }
         this.addViolation({
             classId: entry.classId,
             className: entry.className,
@@ -817,18 +830,19 @@ class SimulatedAnnealing {
     checker;
     initialTemperature = 10000;
     minTemperature = 0.0000001;
-    coolingRate = 0.9995; // Lebih lambat
-    maxIterations = 20000;
+    coolingRate = 0.997; // FASTER - was 0.9995 (too slow)
+    maxIterations = 15000; // INCREASED from 10000 to eliminate remaining HC5 conflicts
     // NEW: Reheating parameters
-    reheatingThreshold = 2000; // Wait longer
-    reheatingFactor = 50; // Gentler
-    maxReheats = 3; // Fewer times
+    reheatingThreshold = 1200; // SHORTER - was 1500 (more frequent reheating)
+    reheatingFactor = 100; // STRONGER - was 80 (more aggressive escape from local minima)
+    maxReheats = 7; // MORE chances - was 5 (more opportunities to find better solutions)
     // NEW: Operator tracking
     operatorStats = {
         move: { attempts: 0, improvements: 0, successRate: 0 },
         swap: { attempts: 0, improvements: 0, successRate: 0 },
     };
-    hardConstraintWeight = 10000;
+    // INCREASED hard constraint weight - make violations more expensive
+    hardConstraintWeight = 100000; // Was 10000
     softConstraintWeights = {
         preferredTime: 10,
         preferredRoom: 5,
@@ -844,6 +858,56 @@ class SimulatedAnnealing {
         this.lecturers = lecturers;
         this.classes = classes;
         this.checker = new ConstraintChecker(rooms, lecturers);
+    }
+    /**
+     * Helper: Check if adding an entry would cause prodi conflict (HC5)
+     */
+    wouldCauseProdiConflict(schedule, entry) {
+        for (const existing of schedule) {
+            if (existing.prodi === entry.prodi && existing.timeSlot.day === entry.timeSlot.day) {
+                const calc1 = calculateEndTime(existing.timeSlot.startTime, existing.sks, existing.timeSlot.day);
+                const calc2 = calculateEndTime(entry.timeSlot.startTime, entry.sks, entry.timeSlot.day);
+                const start1 = timeToMinutes(existing.timeSlot.startTime);
+                const end1 = timeToMinutes(calc1.endTime);
+                const start2 = timeToMinutes(entry.timeSlot.startTime);
+                const end2 = timeToMinutes(calc2.endTime);
+                if (start1 < end2 && start2 < end1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    /**
+     * Helper: Check if adding an entry would cause lecturer conflict (HC1)
+     */
+    wouldCauseLecturerConflict(schedule, entry) {
+        for (const existing of schedule) {
+            if (existing.timeSlot.day === entry.timeSlot.day) {
+                const calc1 = calculateEndTime(existing.timeSlot.startTime, existing.sks, existing.timeSlot.day);
+                const calc2 = calculateEndTime(entry.timeSlot.startTime, entry.sks, entry.timeSlot.day);
+                const start1 = timeToMinutes(existing.timeSlot.startTime);
+                const end1 = timeToMinutes(calc1.endTime);
+                const start2 = timeToMinutes(entry.timeSlot.startTime);
+                const end2 = timeToMinutes(calc2.endTime);
+                if (start1 < end2 && start2 < end1) {
+                    for (const lecturer of entry.lecturers) {
+                        if (existing.lecturers.includes(lecturer)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    /**
+     * Helper: Check if entry has any hard constraint violation
+     * NOTE: Research Day is now SC8 (soft constraint), removed from here
+     */
+    hasAnyHardViolation(schedule, entry) {
+        return (this.wouldCauseProdiConflict(schedule, entry) ||
+            this.wouldCauseLecturerConflict(schedule, entry));
     }
     /**
      * Generate initial solution
@@ -902,7 +966,8 @@ class SimulatedAnnealing {
                     const selectedRoom = roomCodes[0];
                     const prayerTimeCalc = calculateEndTime(timeSlot.startTime, classReq.SKS || 3, timeSlot.day);
                     const isOverflow = !needsLab && LAB_ROOMS.includes(selectedRoom);
-                    schedule.push({
+                    // Create temporary entry for validation
+                    const tempEntry = {
                         classId: classReq.Kode_Matakuliah,
                         className: courseName,
                         class: classReq.Kelas || "A",
@@ -916,7 +981,18 @@ class SimulatedAnnealing {
                         classType,
                         prayerTimeAdded: prayerTimeCalc.prayerTimeAdded,
                         isOverflowToLab: isOverflow,
-                    });
+                    };
+                    // CHECK CRITICAL HARD CONSTRAINTS before adding
+                    // Skip if would cause HC1 (Lecturer Conflict) or HC5 (Prodi Conflict)
+                    // NOTE: Research Day is now SC8 (soft), so we don't block on it
+                    if (this.wouldCauseProdiConflict(schedule, tempEntry)) {
+                        continue; // Try next timeslot
+                    }
+                    if (this.wouldCauseLecturerConflict(schedule, tempEntry)) {
+                        continue; // Try next timeslot
+                    }
+                    // All critical hard constraints passed - add to schedule
+                    schedule.push(tempEntry);
                     placed = true;
                     break;
                 }
@@ -952,8 +1028,7 @@ class SimulatedAnnealing {
                 hardViolations++;
             if (!this.checker.checkNoClassConflictSameProdi(scheduleBeforeEntry, entry))
                 hardViolations++;
-            if (!this.checker.checkResearchDay(entry))
-                hardViolations++;
+            // REMOVED: checkResearchDay - now a soft constraint (SC8)
             if (!this.checker.checkMaxDailyPeriods(scheduleBeforeEntry, entry))
                 hardViolations++;
             if (!this.checker.checkClassTypeTime(entry))
@@ -975,19 +1050,46 @@ class SimulatedAnnealing {
             softPenalty += (1 - this.checker.checkPrayerTimeOverlap(entry)) * this.softConstraintWeights.prayerTimeOverlap;
             softPenalty += (1 - this.checker.checkEveningClassPriority(entry)) * this.softConstraintWeights.eveningClassPriority;
             softPenalty += (1 - this.checker.checkOverflowPenalty(entry)) * this.softConstraintWeights.overflowPenalty;
+            softPenalty += (1 - this.checker.checkResearchDay(entry)) * 50; // NEW: SC8 Research Day with weight 50
         }
         return hardViolations * this.hardConstraintWeight + softPenalty;
     }
     /**
-     * NEW: Generate neighbor with MOVE operator
+     * Helper: Get indices of classes with hard constraint violations
+     */
+    getViolatingClassIndices(schedule) {
+        const violatingIndices = [];
+        for (let i = 0; i < schedule.length; i++) {
+            const entry = schedule[i];
+            const scheduleBeforeEntry = schedule.slice(0, i);
+            const scheduleAfterEntry = schedule.slice(i + 1);
+            const scheduleWithoutEntry = [...scheduleBeforeEntry, ...scheduleAfterEntry];
+            if (this.hasAnyHardViolation(scheduleWithoutEntry, entry)) {
+                violatingIndices.push(i);
+            }
+        }
+        return violatingIndices;
+    }
+    /**
+     * NEW: Generate neighbor with MOVE operator (IMPROVED - targets violations)
      */
     generateNeighborMove(solution) {
         const newSchedule = JSON.parse(JSON.stringify(solution.schedule));
-        const randomIndex = Math.floor(Math.random() * newSchedule.length);
+        // PRIORITIZE fixing hard violations: 80% target violating classes, 20% random
+        const violatingIndices = this.getViolatingClassIndices(newSchedule);
+        let randomIndex;
+        if (violatingIndices.length > 0 && Math.random() < 0.8) {
+            // Pick a violating class
+            randomIndex = violatingIndices[Math.floor(Math.random() * violatingIndices.length)];
+        }
+        else {
+            // Pick random class
+            randomIndex = Math.floor(Math.random() * newSchedule.length);
+        }
         const entry = newSchedule[randomIndex];
         const modType = Math.random();
         if (modType < 0.5) {
-            // Change time slot
+            // Change time slot - TRY TO AVOID HARD VIOLATIONS
             let availableTimeSlots = [];
             if (entry.classType === "sore") {
                 availableTimeSlots = TIME_SLOTS_SORE.slice().sort((a, b) => {
@@ -1013,7 +1115,27 @@ class SimulatedAnnealing {
                 return !isStartingDuringPrayerTime(slot.startTime);
             });
             if (availableTimeSlots.length > 0) {
-                const newSlot = availableTimeSlots[Math.floor(Math.random() * availableTimeSlots.length)];
+                // Remove current entry temporarily
+                const scheduleWithoutEntry = newSchedule.filter((_, idx) => idx !== randomIndex);
+                // Try to find timeslots that don't violate hard constraints
+                const validTimeSlots = [];
+                for (const slot of availableTimeSlots) {
+                    const tempEntry = { ...entry, timeSlot: slot };
+                    const calc = calculateEndTime(slot.startTime, entry.sks, slot.day);
+                    tempEntry.prayerTimeAdded = calc.prayerTimeAdded;
+                    // Check if this timeslot would cause hard violations
+                    if (!this.hasAnyHardViolation(scheduleWithoutEntry, tempEntry)) {
+                        validTimeSlots.push(slot);
+                    }
+                }
+                // Prefer valid timeslots (90%), but allow some randomness (10%)
+                let newSlot;
+                if (validTimeSlots.length > 0 && Math.random() < 0.9) {
+                    newSlot = validTimeSlots[Math.floor(Math.random() * validTimeSlots.length)];
+                }
+                else {
+                    newSlot = availableTimeSlots[Math.floor(Math.random() * availableTimeSlots.length)];
+                }
                 entry.timeSlot = newSlot;
                 const calc = calculateEndTime(newSlot.startTime, entry.sks, newSlot.day);
                 entry.prayerTimeAdded = calc.prayerTimeAdded;
@@ -1151,11 +1273,64 @@ class SimulatedAnnealing {
         return Math.exp((currentFitness - newFitness) / temperature);
     }
     /**
+     * NEW: Acceptance probability for Phase 1 (Hard Constraints Only)
+     * Much stricter - only accept if hard violations decrease or stay same
+     */
+    acceptanceProbabilityPhase1(currentHardViolations, newHardViolations, currentFitness, newFitness, temperature) {
+        // Always accept if hard violations decrease
+        if (newHardViolations < currentHardViolations) {
+            return 1.0;
+        }
+        // If hard violations stay same, use standard acceptance for fitness
+        if (newHardViolations === currentHardViolations) {
+            if (newFitness < currentFitness) {
+                return 1.0;
+            }
+            return Math.exp((currentFitness - newFitness) / temperature);
+        }
+        // REJECT if hard violations increase (very strict)
+        return 0.0;
+    }
+    /**
+     * Helper: Count hard violations in a solution
+     */
+    countHardViolations(schedule) {
+        this.checker.resetViolations();
+        let hardViolations = 0;
+        for (let i = 0; i < schedule.length; i++) {
+            const entry = schedule[i];
+            const scheduleBeforeEntry = schedule.slice(0, i);
+            if (!this.checker.checkNoLecturerConflict(scheduleBeforeEntry, entry))
+                hardViolations++;
+            if (!this.checker.checkNoRoomConflict(scheduleBeforeEntry, entry))
+                hardViolations++;
+            if (!this.checker.checkRoomCapacity(entry))
+                hardViolations++;
+            if (!this.checker.checkNoClassConflictSameProdi(scheduleBeforeEntry, entry))
+                hardViolations++;
+            // REMOVED: checkResearchDay - now a soft constraint (SC8)
+            if (!this.checker.checkMaxDailyPeriods(scheduleBeforeEntry, entry))
+                hardViolations++;
+            if (!this.checker.checkClassTypeTime(entry))
+                hardViolations++;
+            if (!this.checker.checkSaturdayRestriction(entry))
+                hardViolations++;
+            if (!this.checker.checkFridayTimeRestriction(entry))
+                hardViolations++;
+            if (!this.checker.checkNotStartingDuringPrayerTime(entry))
+                hardViolations++;
+            if (!this.checker.checkExclusiveRoomConstraint(entry))
+                hardViolations++;
+        }
+        return hardViolations;
+    }
+    /**
      * Main SA algorithm with SWAP operator and REHEATING
      */
     solve() {
-        console.log("🚀 Starting Enhanced Simulated Annealing V3...");
-        console.log("   NEW: Swap operator + Reheating mechanism\n");
+        console.log("🚀 Starting Enhanced Simulated Annealing V3 - TWO PHASE...");
+        console.log("   PHASE 1: Eliminate hard constraints");
+        console.log("   PHASE 2: Optimize soft constraints\n");
         let currentSolution = this.generateInitialSolution();
         let bestSolution = JSON.parse(JSON.stringify(currentSolution));
         let temperature = this.initialTemperature;
@@ -1163,9 +1338,78 @@ class SimulatedAnnealing {
         // NEW: Reheating tracking
         let iterationsWithoutImprovement = 0;
         let reheatingCount = 0;
-        let lastBestFitness = bestSolution.fitness;
+        // Count initial hard violations
+        let currentHardViolations = this.countHardViolations(currentSolution.schedule);
+        let bestHardViolations = currentHardViolations;
         console.log(`Initial fitness: ${currentSolution.fitness.toFixed(2)}`);
+        console.log(`Initial hard violations: ${currentHardViolations}`);
         console.log(`Initial schedule size: ${currentSolution.schedule.length} classes\n`);
+        // ========================================
+        // PHASE 1: ELIMINATE HARD CONSTRAINTS
+        // ========================================
+        console.log("🎯 PHASE 1: Focusing on hard constraints...\n");
+        const phase1MaxIterations = Math.floor(this.maxIterations * 0.6); // 60% of iterations
+        let phase1Iteration = 0;
+        while (temperature > this.initialTemperature / 10 && phase1Iteration < phase1MaxIterations && bestHardViolations > 0) {
+            const { solution: newSolution, operator } = this.generateNeighbor(currentSolution);
+            // Track operator usage
+            if (operator === "move") {
+                this.operatorStats.move.attempts++;
+            }
+            else {
+                this.operatorStats.swap.attempts++;
+            }
+            // Count hard violations in new solution
+            const newHardViolations = this.countHardViolations(newSolution.schedule);
+            // PHASE 1: Strict acceptance - prioritize reducing hard violations
+            const acceptProb = this.acceptanceProbabilityPhase1(currentHardViolations, newHardViolations, currentSolution.fitness, newSolution.fitness, temperature);
+            if (Math.random() < acceptProb) {
+                // Track improvements
+                if (newSolution.fitness < currentSolution.fitness) {
+                    if (operator === "move") {
+                        this.operatorStats.move.improvements++;
+                    }
+                    else {
+                        this.operatorStats.swap.improvements++;
+                    }
+                }
+                currentSolution = newSolution;
+                currentHardViolations = newHardViolations;
+                if (newHardViolations < bestHardViolations || (newHardViolations === bestHardViolations && newSolution.fitness < bestSolution.fitness)) {
+                    bestSolution = JSON.parse(JSON.stringify(currentSolution));
+                    bestHardViolations = newHardViolations;
+                    iterationsWithoutImprovement = 0;
+                    console.log(`✨ [PHASE 1] Hard violations: ${bestHardViolations}, ` + `Iteration: ${phase1Iteration}, ` + `Temp: ${temperature.toFixed(2)}, ` + `Fitness: ${bestSolution.fitness.toFixed(2)}, ` + `Operator: ${operator.toUpperCase()}`);
+                }
+                else {
+                    iterationsWithoutImprovement++;
+                }
+            }
+            else {
+                iterationsWithoutImprovement++;
+            }
+            // Reheating for Phase 1
+            if (iterationsWithoutImprovement >= this.reheatingThreshold && reheatingCount < this.maxReheats && temperature < this.initialTemperature / 100) {
+                temperature *= this.reheatingFactor;
+                reheatingCount++;
+                iterationsWithoutImprovement = 0;
+                console.log(`🔥 [PHASE 1] REHEATING #${reheatingCount}! ` + `Temp: ${temperature.toFixed(2)}, ` + `Hard violations: ${bestHardViolations}`);
+            }
+            temperature *= this.coolingRate;
+            phase1Iteration++;
+            iteration++;
+            if (phase1Iteration % 1000 === 0) {
+                console.log(`⏳ [PHASE 1] Iteration ${phase1Iteration}, ` + `Temp: ${temperature.toFixed(2)}, ` + `Hard violations: ${currentHardViolations}, ` + `Best hard violations: ${bestHardViolations}`);
+            }
+        }
+        console.log(`\n✅ PHASE 1 Complete! Hard violations: ${bestHardViolations}\n`);
+        // ========================================
+        // PHASE 2: OPTIMIZE SOFT CONSTRAINTS
+        // ========================================
+        console.log("🎯 PHASE 2: Optimizing soft constraints...\n");
+        // Reset for phase 2
+        currentSolution = JSON.parse(JSON.stringify(bestSolution));
+        iterationsWithoutImprovement = 0;
         while (temperature > this.minTemperature && iteration < this.maxIterations) {
             const { solution: newSolution, operator } = this.generateNeighbor(currentSolution);
             // Track operator usage
@@ -1175,6 +1419,7 @@ class SimulatedAnnealing {
             else {
                 this.operatorStats.swap.attempts++;
             }
+            // PHASE 2: Standard acceptance - optimize overall fitness
             const acceptProb = this.acceptanceProbability(currentSolution.fitness, newSolution.fitness, temperature);
             if (Math.random() < acceptProb) {
                 // Track improvements
@@ -1189,8 +1434,8 @@ class SimulatedAnnealing {
                 currentSolution = newSolution;
                 if (currentSolution.fitness < bestSolution.fitness) {
                     bestSolution = JSON.parse(JSON.stringify(currentSolution));
-                    iterationsWithoutImprovement = 0; // Reset counter
-                    console.log(`✨ New best! Iteration ${iteration}, ` + `Temp: ${temperature.toFixed(2)}, ` + `Fitness: ${bestSolution.fitness.toFixed(2)}, ` + `Operator: ${operator.toUpperCase()}`);
+                    iterationsWithoutImprovement = 0;
+                    console.log(`✨ [PHASE 2] New best! Iteration ${iteration}, ` + `Temp: ${temperature.toFixed(2)}, ` + `Fitness: ${bestSolution.fitness.toFixed(2)}, ` + `Operator: ${operator.toUpperCase()}`);
                 }
                 else {
                     iterationsWithoutImprovement++;
@@ -1199,17 +1444,17 @@ class SimulatedAnnealing {
             else {
                 iterationsWithoutImprovement++;
             }
-            // NEW: REHEATING MECHANISM
+            // Reheating for Phase 2
             if (iterationsWithoutImprovement >= this.reheatingThreshold && reheatingCount < this.maxReheats && temperature < this.initialTemperature / 100) {
                 temperature *= this.reheatingFactor;
                 reheatingCount++;
                 iterationsWithoutImprovement = 0;
-                console.log(`🔥 REHEATING #${reheatingCount}! ` + `New temperature: ${temperature.toFixed(2)}, ` + `Best fitness: ${bestSolution.fitness.toFixed(2)}`);
+                console.log(`🔥 [PHASE 2] REHEATING #${reheatingCount}! ` + `Temp: ${temperature.toFixed(2)}, ` + `Fitness: ${bestSolution.fitness.toFixed(2)}`);
             }
             temperature *= this.coolingRate;
             iteration++;
             if (iteration % 1000 === 0) {
-                console.log(`⏳ Iteration ${iteration}, ` + `Temp: ${temperature.toFixed(2)}, ` + `Current: ${currentSolution.fitness.toFixed(2)}, ` + `Best: ${bestSolution.fitness.toFixed(2)}, ` + `No improve: ${iterationsWithoutImprovement}`);
+                console.log(`⏳ [PHASE 2] Iteration ${iteration}, ` + `Temp: ${temperature.toFixed(2)}, ` + `Current: ${currentSolution.fitness.toFixed(2)}, ` + `Best: ${bestSolution.fitness.toFixed(2)}`);
             }
         }
         console.log(`\n🎉 Optimization complete!`);

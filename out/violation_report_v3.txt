@@ -4,92 +4,26 @@ With Swap Operator & Reheating
 ==========================================
 
 📊 SUMMARY:
-   Total Hard Violations: 141
-   Total Soft Violations: 140
+   Total Hard Violations: 0
+   Total Soft Violations: 111
 
 📊 OVERFLOW STATISTICS:
-   Non-lab classes using lab rooms: 9
-   Percentage: 2.60%
+   Non-lab classes using lab rooms: 0
+   Percentage: 0.00%
 
 📋 VIOLATIONS BY TYPE:
-   SC5: Prayer Time Overlap: 131
-   HC5: Prodi Conflict: 134
-   SC7: Overflow to Lab: 9
-   HC6: Research Day: 5
-   HC9: Saturday Restriction: 2
-
-🚫 HARD CONSTRAINT VIOLATIONS:
-   • MG13PM03 (Pengantar Manajemen)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Friday
-
-   • MG13BK02 (Berpikir Kritis dan Kreatif)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PB03 at the same time on Thursday
-
-   • AB13A503 (Akuntansi Dasar)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PB03 at the same time on Thursday
-
-   • AB13A503 (Akuntansi Dasar)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Friday
-
-   • MG13MB03 (Matematika Bisnis)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PB03 at the same time on Thursday
-
-   • MG13MP13 (Manajamen Pemasaran)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Wednesday
-
-   • MG13MS13 (Manajemen Sumber Daya Manusia)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MK13 at the same time on Tuesday
-
-   • MG13MS13 (Manajemen Sumber Daya Manusia)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Wednesday
-
-   • GS13EL03 (Bahasa Inggris)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Wednesday
-
-   • GS13EL03 (Bahasa Inggris)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MK13 at the same time on Thursday
-
-   • GS13IL02 (Bahasa Indonesia)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PB03 at the same time on Thursday
-
-   • MG13PD13 (Pemasaran Digital)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PB03 at the same time on Tuesday
-
-   • MG13PD13 (Pemasaran Digital)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MO03 at the same time on Monday
-
-   • MG13PD13 (Pemasaran Digital)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MK13 at the same time on Thursday
-
-   • MG13MS23 (Manajemen Strategi)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PM03 at the same time on Monday
-
-   • MG13MS23 (Manajemen Strategi)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MO03 at the same time on Friday
-
-   • MG13AD13 (Analitik Data)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13BK02 at the same time on Thursday
-
-   • MG13KP13 (Kepemimpinan)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class AB13A103 at the same time on Friday
-
-   • MG13KP13 (Kepemimpinan)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13PB03 at the same time on Thursday
-
-   • MG13KP13 (Kepemimpinan)
-     HC5: Prodi Conflict: Same program (MANAJEMEN) has class MG13MO03 at the same time on Monday
-
-   ... and 121 more
+   SC5: Prayer Time Overlap: 82
+   SC8: Research Day: 29
 
 ⚠️  SOFT CONSTRAINT VIOLATIONS (Sample):
-   • MM23SM03: Class overlaps with 50 minutes of prayer time
-   • MM23CF03: Class overlaps with 50 minutes of prayer time
-   • MM23QL03: Class overlaps with 30 minutes of prayer time
-   • MM23QN03: Class overlaps with 50 minutes of prayer time
+   • MM23SC03: Class overlaps with 50 minutes of prayer time
+   • MM23CS03: Class overlaps with 50 minutes of prayer time
+   • MM23AB03: Class overlaps with 30 minutes of prayer time
    • MM23SE03: Class overlaps with 30 minutes of prayer time
-   • MG13PB03: Class overlaps with 50 minutes of prayer time
-   • MG13BK02: Class overlaps with 30 minutes of prayer time
-   • AB13A503: Non-lab class using lab room CM-207 due to non-lab rooms being full
+   • MG13PB03: Class overlaps with 30 minutes of prayer time
+   • MG13PB03: Class overlaps with 30 minutes of prayer time
+   • MG13PM03: Class overlaps with 50 minutes of prayer time
+   • AB13A503: Class overlaps with 50 minutes of prayer time
+   • AB13A503: Lecturer ADL has research day on Wednesday
    • MG13MB03: Class overlaps with 30 minutes of prayer time
-   • MG13MP13: Class overlaps with 50 minutes of prayer time
-   ... and 130 more
+   ... and 101 more

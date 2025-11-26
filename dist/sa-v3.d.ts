@@ -119,7 +119,7 @@ declare class ConstraintChecker {
     checkRoomCapacity(entry: ScheduleEntry): boolean;
     checkLabRequirement(entry: ScheduleEntry): number;
     checkNoClassConflictSameProdi(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean;
-    checkResearchDay(entry: ScheduleEntry): boolean;
+    checkResearchDay(entry: ScheduleEntry): number;
     checkMaxDailyPeriods(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean;
     checkClassTypeTime(entry: ScheduleEntry): boolean;
     checkSaturdayRestriction(entry: ScheduleEntry): boolean;
@@ -152,6 +152,19 @@ declare class SimulatedAnnealing {
     private softConstraintWeights;
     constructor(rooms: Room[], lecturers: Lecturer[], classes: ClassRequirement[]);
     /**
+     * Helper: Check if adding an entry would cause prodi conflict (HC5)
+     */
+    private wouldCauseProdiConflict;
+    /**
+     * Helper: Check if adding an entry would cause lecturer conflict (HC1)
+     */
+    private wouldCauseLecturerConflict;
+    /**
+     * Helper: Check if entry has any hard constraint violation
+     * NOTE: Research Day is now SC8 (soft constraint), removed from here
+     */
+    private hasAnyHardViolation;
+    /**
      * Generate initial solution
      */
     private generateInitialSolution;
@@ -160,7 +173,11 @@ declare class SimulatedAnnealing {
      */
     private calculateFitness;
     /**
-     * NEW: Generate neighbor with MOVE operator
+     * Helper: Get indices of classes with hard constraint violations
+     */
+    private getViolatingClassIndices;
+    /**
+     * NEW: Generate neighbor with MOVE operator (IMPROVED - targets violations)
      */
     private generateNeighborMove;
     /**
@@ -177,6 +194,15 @@ declare class SimulatedAnnealing {
      * Acceptance probability
      */
     private acceptanceProbability;
+    /**
+     * NEW: Acceptance probability for Phase 1 (Hard Constraints Only)
+     * Much stricter - only accept if hard violations decrease or stay same
+     */
+    private acceptanceProbabilityPhase1;
+    /**
+     * Helper: Count hard violations in a solution
+     */
+    private countHardViolations;
     /**
      * Main SA algorithm with SWAP operator and REHEATING
      */

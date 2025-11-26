@@ -1,16 +1,21 @@
 /**
  * ==========================================
- * SIMULATED ANNEALING FOR UTCP - ENHANCED VERSION V2
+ * SIMULATED ANNEALING FOR UTCP - ENHANCED VERSION V3
  * University Timetabling with Course Scheduling Problem
  * ==========================================
  *
- * NEW FEATURES V2:
+ * NEW FEATURES V3:
+ * - SWAP OPERATOR: Menukar jadwal dua kelas untuk mengatasi deadlock
+ * - REHEATING MECHANISM: Keluar dari local minimum dengan meningkatkan temperature
+ * - ADAPTIVE OPERATOR SELECTION: Memilih operator terbaik berdasarkan performa
+ *
+ * PREVIOUS FEATURES V2:
  * - Overflow handling: Non-lab classes can use lab rooms when non-lab rooms are full
  * - Evening class optimization: Prioritize earlier start times (avoid 19:30)
  * - Exclusive room constraint: G5-LabAudioVisual only for "Fotografi Dasar" (DKV)
  * - Smart room allocation with priority system
  *
- * PREVIOUS FEATURES:
+ * PREVIOUS FEATURES V1:
  * - Friday time restrictions (no start at 11:00, 12:00, 13:00)
  * - Prayer time handling (automatic duration extension)
  * - Evening class priority (18:30 first, then 15:30 if full)
@@ -109,90 +114,25 @@ declare class ConstraintChecker {
     resetViolations(): void;
     getViolations(): ConstraintViolation[];
     private addViolation;
-    /**
-     * HC1: No lecturer conflict
-     */
     checkNoLecturerConflict(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean;
-    /**
-     * HC2: No room conflict
-     */
     checkNoRoomConflict(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean;
-    /**
-     * HC3: Room capacity
-     */
     checkRoomCapacity(entry: ScheduleEntry): boolean;
-    /**
-     * HC4: Lab requirement (SOFT - can fallback with penalty)
-     */
     checkLabRequirement(entry: ScheduleEntry): number;
-    /**
-     * HC5: No class conflict same prodi
-     */
     checkNoClassConflictSameProdi(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean;
-    /**
-     * HC6: Research day
-     */
-    checkResearchDay(entry: ScheduleEntry): boolean;
-    /**
-     * HC7: Max daily periods
-     */
+    checkResearchDay(entry: ScheduleEntry): number;
     checkMaxDailyPeriods(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean;
-    /**
-     * HC8: Class type time (MODIFIED - stricter evening class timing)
-     */
     checkClassTypeTime(entry: ScheduleEntry): boolean;
-    /**
-     * HC9: Saturday restriction
-     */
     checkSaturdayRestriction(entry: ScheduleEntry): boolean;
-    /**
-     * HC10: Friday time restriction
-     */
     checkFridayTimeRestriction(entry: ScheduleEntry): boolean;
-    /**
-     * HC11: Not starting during prayer time
-     */
     checkNotStartingDuringPrayerTime(entry: ScheduleEntry): boolean;
-    /**
-     * HC12: Exclusive room constraint - NEW
-     */
     checkExclusiveRoomConstraint(entry: ScheduleEntry): boolean;
-    /**
-     * Helper: Check time overlap considering actual durations with prayer time
-     */
     private isTimeOverlap;
-    /**
-     * SC1: Preferred time
-     * Memeriksa apakah jadwal kelas sesuai dengan waktu preferensi dosen.
-     * Format Prefered_Time: "HH.MM - HH.MM day, HH.MM - HH.MM day, ..."
-     */
     checkPreferredTime(entry: ScheduleEntry): number;
-    /**
-     * SC2: Preferred room
-     */
     checkPreferredRoom(entry: ScheduleEntry): number;
-    /**
-     * SC3: Transit time
-     */
     checkTransitTime(schedule: ScheduleEntry[], entry: ScheduleEntry): number;
-    /**
-     * SC4: Compactness
-     * the idea of this constraint is to minimize the idle time between classes on the same day.
-     * If classes are scheduled back-to-back or with minimal gaps, it scores higher.
-     * If there are long gaps between classes, it scores lower.
-     */
     checkCompactness(schedule: ScheduleEntry[], entry: ScheduleEntry): number;
-    /**
-     * SC5: Avoid prayer time overlap
-     */
     checkPrayerTimeOverlap(entry: ScheduleEntry): number;
-    /**
-     * SC6: Evening class priority
-     */
     checkEveningClassPriority(entry: ScheduleEntry): number;
-    /**
-     * SC7: Overflow penalty
-     */
     checkOverflowPenalty(entry: ScheduleEntry): number;
 }
 declare class SimulatedAnnealing {
@@ -204,19 +144,50 @@ declare class SimulatedAnnealing {
     private minTemperature;
     private coolingRate;
     private maxIterations;
+    reheatingThreshold: number;
+    reheatingFactor: number;
+    maxReheats: number;
+    private operatorStats;
     private hardConstraintWeight;
     private softConstraintWeights;
     constructor(rooms: Room[], lecturers: Lecturer[], classes: ClassRequirement[]);
     /**
-     * Generate initial solution with smart room allocation
+     * Helper: Check if adding an entry would cause prodi conflict (HC5)
+     */
+    private wouldCauseProdiConflict;
+    /**
+     * Helper: Check if adding an entry would cause lecturer conflict (HC1)
+     */
+    private wouldCauseLecturerConflict;
+    /**
+     * Helper: Check if entry has any hard constraint violation
+     * NOTE: Research Day is now SC8 (soft constraint), removed from here
+     */
+    private hasAnyHardViolation;
+    /**
+     * Generate initial solution
      */
     private generateInitialSolution;
     /**
-     * Calculate fitness with violation tracking
+     * Calculate fitness
      */
     private calculateFitness;
     /**
-     * Generate neighbor solution
+     * Helper: Get indices of classes with hard constraint violations
+     */
+    private getViolatingClassIndices;
+    /**
+     * NEW: Generate neighbor with MOVE operator (IMPROVED - targets violations)
+     */
+    private generateNeighborMove;
+    /**
+     * NEW: Generate neighbor with SWAP operator
+     * Menukar timeslot dan/atau room dari dua kelas
+     */
+    private generateNeighborSwap;
+    /**
+     * NEW: Adaptive neighbor generation
+     * Memilih operator berdasarkan success rate
      */
     private generateNeighbor;
     /**
@@ -224,7 +195,16 @@ declare class SimulatedAnnealing {
      */
     private acceptanceProbability;
     /**
-     * Main SA algorithm
+     * NEW: Acceptance probability for Phase 1 (Hard Constraints Only)
+     * Much stricter - only accept if hard violations decrease or stay same
+     */
+    private acceptanceProbabilityPhase1;
+    /**
+     * Helper: Count hard violations in a solution
+     */
+    private countHardViolations;
+    /**
+     * Main SA algorithm with SWAP operator and REHEATING
      */
     solve(): Solution;
 }

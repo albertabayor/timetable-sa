@@ -7,7 +7,7 @@ A powerful, modular solver for **University Course Timetabling Problem (UCTP)** 
 - **Advanced Simulated Annealing** with two-phase optimization (hard constraints → soft constraints)
 - **Swap and Move operators** with adaptive selection based on performance
 - **Reheating mechanism** to escape local minima
-- **Comprehensive constraint checking** (12 hard constraints + 8 soft constraints)
+- **Comprehensive constraint checking** (10 hard constraints + 8 soft constraints)
 - **Multiple input formats** (Excel, JSON, JavaScript objects)
 - **Fully typed** with TypeScript for excellent IDE support
 - **Modular architecture** - use individual components as needed
@@ -367,8 +367,8 @@ If you use this package in your research, please cite:
 ```
 @software{timetable-sa,
   title = {timetable-sa: A TypeScript Library for University Course Timetabling},
-  author = {Your Name},
-  year = {2024},
+  author = {Albert A Bayor},
+  year = {2025},
   url = {https://github.com/albertabayor/simulated-annealing-university-timetabling-course-problem}
 }
 ```
@@ -382,3 +382,7 @@ If you use this package in your research, please cite:
 ## Support
 
 For issues and questions, please open an issue on [GitHub](https://github.com/albertabayor/simulated-annealing-university-timetabling-course-problem/issues).
+
+## Maintainers
+- Albert A Bayor (<albertabayor30@gmail.com>)
+- Firmansah Ade (<nafilie9@gmail.com>)

@@ -154,6 +154,12 @@ export interface AlgorithmConfig {
 
   // Mode 2: Full custom (100% override, ignore defaults)
   customTimeSlots?: CustomTimeSlots;
+
+  // Constraint configuration
+  constraints?: ConstraintsConfig;
+
+  // Logging configuration
+  logging?: LoggingConfig;
 }
 
 export interface SoftConstraintWeights {
@@ -165,6 +171,89 @@ export interface SoftConstraintWeights {
   eveningClassPriority?: number;
   labRequirement?: number;
   overflowPenalty?: number;
+}
+
+/**
+ * Custom constraint function types
+ */
+export type CustomHardConstraintFunction = (
+  schedule: ScheduleEntry[],
+  entry: ScheduleEntry,
+  rooms: Map<string, Room>,
+  lecturers: Map<string, Lecturer>
+) => boolean;
+
+export type CustomSoftConstraintFunction = (
+  schedule: ScheduleEntry[],
+  entry: ScheduleEntry,
+  rooms: Map<string, Room>,
+  lecturers: Map<string, Lecturer>
+) => number;
+
+/**
+ * Configuration for which hard constraints to enable
+ */
+export interface HardConstraintsConfig {
+  lecturerConflict?: boolean; // HC1
+  roomConflict?: boolean; // HC2
+  roomCapacity?: boolean; // HC3
+  prodiConflict?: boolean; // HC5
+  maxDailyPeriods?: boolean; // HC7
+  classTypeTime?: boolean; // HC8
+  saturdayRestriction?: boolean; // HC9
+  fridayTimeRestriction?: boolean; // HC10
+  prayerTimeStart?: boolean; // HC11
+  exclusiveRoom?: boolean; // HC12
+}
+
+/**
+ * Configuration for which soft constraints to enable
+ */
+export interface SoftConstraintsConfig {
+  preferredTime?: boolean; // SC1
+  preferredRoom?: boolean; // SC2
+  transitTime?: boolean; // SC3
+  compactness?: boolean; // SC4
+  prayerTimeOverlap?: boolean; // SC5
+  eveningClassPriority?: boolean; // SC6
+  overflowPenalty?: boolean; // SC7
+  researchDay?: boolean; // SC8
+}
+
+/**
+ * Custom constraint definition
+ */
+export interface CustomConstraint {
+  name: string;
+  description: string;
+  type: "hard" | "soft";
+  weight?: number; // Only for soft constraints
+  checkFunction: CustomHardConstraintFunction | CustomSoftConstraintFunction;
+}
+
+/**
+ * Constraint configuration
+ */
+export interface ConstraintsConfig {
+  hardConstraints?: HardConstraintsConfig;
+  softConstraints?: SoftConstraintsConfig;
+  customConstraints?: CustomConstraint[];
+}
+
+/**
+ * Logging configuration
+ */
+export type LogLevel = "debug" | "info" | "warn" | "error" | "none";
+
+export type LogOutput = "console" | "file" | "both";
+
+export interface LoggingConfig {
+  enabled?: boolean;
+  level?: LogLevel;
+  output?: LogOutput;
+  filePath?: string;
+  includeTimestamp?: boolean;
+  includeLevel?: boolean;
 }
 
 /**

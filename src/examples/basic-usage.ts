@@ -20,8 +20,44 @@ async function main() {
   console.log(`✅ Loaded ${lecturers.length} lecturers`);
   console.log(`✅ Loaded ${classes.length} classes\n`);
 
+  // i want to create custom config constraint, that is there is no class on friday between 10:50 to 13:00
+
+
   // Create solver with default configuration
-  const solver = new SimulatedAnnealing(rooms, lecturers, classes);
+  const solver = new SimulatedAnnealing(rooms, lecturers, classes, {
+    constraints: {
+      customConstraints: [
+        {
+          name: "No Classes on Friday 10:50-13:00",
+          description: "Ensures that no classes are scheduled on Fridays between 10:50 and 13:00.",
+          type: "hard",
+          checkFunction: (scheduleEntry, entry) => {            
+            const day = entry.timeSlot.day;
+            const startTime = entry.timeSlot.startTime;
+            const endTime = entry.timeSlot.endTime;
+
+            if (day === "Friday") {
+              const startHour = parseInt(startTime.split(":")[0], 10);
+              const startMinute = parseInt(startTime.split(":")[1], 10);
+              const endHour = parseInt(endTime.split(":")[0], 10);
+              const endMinute = parseInt(endTime.split(":")[1], 10);
+
+              const classStart = startHour * 60 + startMinute;
+              const classEnd = endHour * 60 + endMinute;
+              const forbiddenStart = 10 * 60 + 50; // 10:50 in minutes
+              const forbiddenEnd = 13 * 60; // 13:00 in minutes
+
+              // Check if class overlaps with forbidden time
+              if (classStart < forbiddenEnd && classEnd > forbiddenStart) {
+                return false; // Violation
+              }
+            }
+            return true; // No violation
+          }
+        }, 
+      ]
+    }
+  });
 
   // Or with custom configuration:
   // const solver = new SimulatedAnnealing(rooms, lecturers, classes, {

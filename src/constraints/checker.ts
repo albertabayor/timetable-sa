@@ -8,6 +8,11 @@ import type {
   Lecturer,
   ScheduleEntry,
   ConstraintViolation,
+  HardConstraintsConfig,
+  SoftConstraintsConfig,
+  CustomConstraint,
+  CustomHardConstraintFunction,
+  CustomSoftConstraintFunction,
 } from "../types/index.js";
 import { LAB_ROOMS, EXCLUSIVE_ROOMS } from "../constants/index.js";
 import {
@@ -24,10 +29,46 @@ export class ConstraintChecker {
   private rooms: Map<string, Room>;
   private lecturers: Map<string, Lecturer>;
   private violations: ConstraintViolation[] = [];
+  private hardConstraintsConfig: Required<HardConstraintsConfig>;
+  private softConstraintsConfig: Required<SoftConstraintsConfig>;
+  private customConstraints: CustomConstraint[];
 
-  constructor(rooms: Room[], lecturers: Lecturer[]) {
+  constructor(
+    rooms: Room[],
+    lecturers: Lecturer[],
+    hardConstraintsConfig?: HardConstraintsConfig,
+    softConstraintsConfig?: SoftConstraintsConfig,
+    customConstraints?: CustomConstraint[]
+  ) {
     this.rooms = new Map(rooms.map((r) => [r.Code, r]));
     this.lecturers = new Map(lecturers.map((l) => [l.Code, l]));
+
+    // Default: all built-in constraints are enabled
+    this.hardConstraintsConfig = {
+      lecturerConflict: hardConstraintsConfig?.lecturerConflict ?? true,
+      roomConflict: hardConstraintsConfig?.roomConflict ?? true,
+      roomCapacity: hardConstraintsConfig?.roomCapacity ?? true,
+      prodiConflict: hardConstraintsConfig?.prodiConflict ?? true,
+      maxDailyPeriods: hardConstraintsConfig?.maxDailyPeriods ?? true,
+      classTypeTime: hardConstraintsConfig?.classTypeTime ?? true,
+      saturdayRestriction: hardConstraintsConfig?.saturdayRestriction ?? true,
+      fridayTimeRestriction: hardConstraintsConfig?.fridayTimeRestriction ?? true,
+      prayerTimeStart: hardConstraintsConfig?.prayerTimeStart ?? true,
+      exclusiveRoom: hardConstraintsConfig?.exclusiveRoom ?? true,
+    };
+
+    this.softConstraintsConfig = {
+      preferredTime: softConstraintsConfig?.preferredTime ?? true,
+      preferredRoom: softConstraintsConfig?.preferredRoom ?? true,
+      transitTime: softConstraintsConfig?.transitTime ?? true,
+      compactness: softConstraintsConfig?.compactness ?? true,
+      prayerTimeOverlap: softConstraintsConfig?.prayerTimeOverlap ?? true,
+      eveningClassPriority: softConstraintsConfig?.eveningClassPriority ?? true,
+      overflowPenalty: softConstraintsConfig?.overflowPenalty ?? true,
+      researchDay: softConstraintsConfig?.researchDay ?? true,
+    };
+
+    this.customConstraints = customConstraints || [];
   }
 
   resetViolations(): void {
@@ -48,6 +89,10 @@ export class ConstraintChecker {
    * HC1: No lecturer can teach two classes at the same time
    */
   checkNoLecturerConflict(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.lecturerConflict) {
+      return true; // Constraint is disabled
+    }
+
     for (const existing of schedule) {
       if (this.isTimeOverlap(existing, entry)) {
         for (const lecturer of entry.lecturers) {
@@ -72,6 +117,10 @@ export class ConstraintChecker {
    * HC2: No two classes can use the same room at the same time
    */
   checkNoRoomConflict(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.roomConflict) {
+      return true; // Constraint is disabled
+    }
+
     for (const existing of schedule) {
       if (existing.room === entry.room && this.isTimeOverlap(existing, entry)) {
         this.addViolation({
@@ -92,6 +141,10 @@ export class ConstraintChecker {
    * HC3: Room capacity must accommodate all participants
    */
   checkRoomCapacity(entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.roomCapacity) {
+      return true; // Constraint is disabled
+    }
+
     const room = this.rooms.get(entry.room);
     if (!room) {
       this.addViolation({
@@ -121,8 +174,11 @@ export class ConstraintChecker {
 
   /**
    * SC4 (Soft): Lab classes should be in lab rooms
+   * NOTE: This maps to "overflowPenalty" in the config (penalty for non-lab using lab)
    */
   checkLabRequirement(entry: ScheduleEntry): number {
+    // This constraint is actually "overflowPenalty" - always evaluate it
+    // The weight will control its impact
     if (!entry.needsLab) {
       if (LAB_ROOMS.includes(entry.room)) {
         return 0.7;
@@ -144,6 +200,10 @@ export class ConstraintChecker {
    * HC5: No two classes from the same program can be scheduled at the same time
    */
   checkNoClassConflictSameProdi(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.prodiConflict) {
+      return true; // Constraint is disabled
+    }
+
     for (const existing of schedule) {
       // Check if same prodi, overlapping time, and overlapping classes
       if (existing.prodi === entry.prodi && this.isTimeOverlap(existing, entry) && hasClassOverlap(existing.class, entry.class)) {
@@ -165,6 +225,10 @@ export class ConstraintChecker {
    * SC8 (Soft): Avoid scheduling on lecturer's research day
    */
   checkResearchDay(entry: ScheduleEntry): number {
+    if (!this.softConstraintsConfig.researchDay) {
+      return 1; // Constraint is disabled
+    }
+
     for (const lecturerCode of entry.lecturers) {
       const lecturer = this.lecturers.get(lecturerCode);
       if (lecturer && lecturer.Research_Day) {
@@ -190,6 +254,10 @@ export class ConstraintChecker {
    * HC7: Lecturer cannot exceed maximum daily teaching periods
    */
   checkMaxDailyPeriods(schedule: ScheduleEntry[], entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.maxDailyPeriods) {
+      return true; // Constraint is disabled
+    }
+
     for (const lecturerCode of entry.lecturers) {
       const lecturer = this.lecturers.get(lecturerCode);
       if (!lecturer || !lecturer.Max_Daily_Periods) continue;
@@ -222,6 +290,10 @@ export class ConstraintChecker {
    * HC8: Class type must match time slot (morning/evening)
    */
   checkClassTypeTime(entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.classTypeTime) {
+      return true; // Constraint is disabled
+    }
+
     const hour = parseInt(entry.timeSlot.startTime.split(":")[0]!);
     const minute = parseInt(entry.timeSlot.startTime.split(":")[1]!);
     const startMinutes = hour * 60 + minute;
@@ -257,6 +329,10 @@ export class ConstraintChecker {
    * HC9: Only Magister Manajemen can have classes on Saturday
    */
   checkSaturdayRestriction(entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.saturdayRestriction) {
+      return true; // Constraint is disabled
+    }
+
     if (entry.timeSlot.day !== "Saturday") {
       return true;
     }
@@ -279,6 +355,10 @@ export class ConstraintChecker {
    * HC10: Friday time restrictions (cannot start at 11:00, 12:00, 13:00)
    */
   checkFridayTimeRestriction(entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.fridayTimeRestriction) {
+      return true; // Constraint is disabled
+    }
+
     if (entry.timeSlot.day !== "Friday") {
       return true;
     }
@@ -302,6 +382,10 @@ export class ConstraintChecker {
    * HC11: Classes cannot start during prayer time
    */
   checkNotStartingDuringPrayerTime(entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.prayerTimeStart) {
+      return true; // Constraint is disabled
+    }
+
     if (isStartingDuringPrayerTime(entry.timeSlot.startTime)) {
       this.addViolation({
         classId: entry.classId,
@@ -320,6 +404,10 @@ export class ConstraintChecker {
    * HC12: Exclusive room constraint (certain rooms for specific courses)
    */
   checkExclusiveRoomConstraint(entry: ScheduleEntry): boolean {
+    if (!this.hardConstraintsConfig.exclusiveRoom) {
+      return true; // Constraint is disabled
+    }
+
     const exclusiveConfig = EXCLUSIVE_ROOMS[entry.room];
     if (!exclusiveConfig) return true;
 
@@ -358,6 +446,10 @@ export class ConstraintChecker {
    * SC1: Prefer lecturer's preferred time slots
    */
   checkPreferredTime(entry: ScheduleEntry): number {
+    if (!this.softConstraintsConfig.preferredTime) {
+      return 1; // Constraint is disabled
+    }
+
     let totalScore = 0;
     let count = 0;
 
@@ -412,6 +504,10 @@ export class ConstraintChecker {
    * SC2: Prefer lecturer's preferred room
    */
   checkPreferredRoom(entry: ScheduleEntry): number {
+    if (!this.softConstraintsConfig.preferredRoom) {
+      return 1; // Constraint is disabled
+    }
+
     let totalScore = 0;
     let count = 0;
 
@@ -433,6 +529,10 @@ export class ConstraintChecker {
    * SC3: Ensure sufficient transit time between classes for lecturers
    */
   checkTransitTime(schedule: ScheduleEntry[], entry: ScheduleEntry): number {
+    if (!this.softConstraintsConfig.transitTime) {
+      return 1; // Constraint is disabled
+    }
+
     let minScore = 1;
 
     for (const lecturerCode of entry.lecturers) {
@@ -481,6 +581,10 @@ export class ConstraintChecker {
    * SC4: Prefer compact schedules with minimal gaps
    */
   checkCompactness(schedule: ScheduleEntry[], entry: ScheduleEntry): number {
+    if (!this.softConstraintsConfig.compactness) {
+      return 1; // Constraint is disabled
+    }
+
     const sameDayClasses = schedule.filter((s) => s.timeSlot.day === entry.timeSlot.day);
 
     if (sameDayClasses.length === 0) return 1;
@@ -516,6 +620,10 @@ export class ConstraintChecker {
    * SC5: Minimize prayer time overlaps
    */
   checkPrayerTimeOverlap(entry: ScheduleEntry): number {
+    if (!this.softConstraintsConfig.prayerTimeOverlap) {
+      return 1; // Constraint is disabled
+    }
+
     const prayerTime = getPrayerTimeOverlap(entry.timeSlot.startTime, entry.sks, entry.timeSlot.day);
 
     if (prayerTime === 0) {
@@ -553,6 +661,10 @@ export class ConstraintChecker {
    * SC6: Evening classes should start at preferred times
    */
   checkEveningClassPriority(entry: ScheduleEntry): number {
+    if (!this.softConstraintsConfig.eveningClassPriority) {
+      return 1; // Constraint is disabled
+    }
+
     if (entry.classType !== "sore") return 1;
 
     const startMinutes = timeToMinutes(entry.timeSlot.startTime);
@@ -584,6 +696,10 @@ export class ConstraintChecker {
    * SC7: Penalty for non-lab classes using lab rooms
    */
   checkOverflowPenalty(entry: ScheduleEntry): number {
+    if (!this.softConstraintsConfig.overflowPenalty) {
+      return 1; // Constraint is disabled
+    }
+
     if (entry.isOverflowToLab) {
       this.addViolation({
         classId: entry.classId,
@@ -596,5 +712,53 @@ export class ConstraintChecker {
       return 0.7;
     }
     return 1;
+  }
+
+  /**
+   * Check custom constraints
+   */
+  checkCustomConstraints(schedule: ScheduleEntry[], entry: ScheduleEntry): {
+    hardViolations: number;
+    softPenalty: number;
+  } {
+    let hardViolations = 0;
+    let softPenalty = 0;
+
+    for (const customConstraint of this.customConstraints) {
+      const checkFn = customConstraint.checkFunction;
+      const result = checkFn(schedule, entry, this.rooms, this.lecturers);
+
+      if (customConstraint.type === "hard") {
+        // Hard constraints return boolean
+        if (!result) {
+          hardViolations++;
+          this.addViolation({
+            classId: entry.classId,
+            className: entry.className,
+            constraintType: `Custom Hard: ${customConstraint.name}`,
+            reason: customConstraint.description,
+            severity: "hard",
+          });
+        }
+      } else {
+        // Soft constraints return number (0-1)
+        const score = result as number;
+        const weight = customConstraint.weight || 10;
+        softPenalty += (1 - score) * weight;
+
+        if (score < 1) {
+          this.addViolation({
+            classId: entry.classId,
+            className: entry.className,
+            constraintType: `Custom Soft: ${customConstraint.name}`,
+            reason: customConstraint.description,
+            severity: "soft",
+            details: { score },
+          });
+        }
+      }
+    }
+
+    return { hardViolations, softPenalty };
   }
 }

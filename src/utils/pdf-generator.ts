@@ -81,7 +81,7 @@ function groupByClass(schedule: ScheduleEntry[]): Map<string, TimetableData> {
 
   for (const entry of schedule) {
     // Parse the class field into individual class names
-    const classNames = parseClassNames(entry.class);
+    const classNames = Array.isArray(entry.class) ? entry.class : parseClassNames(entry.class);
 
     // Add this entry to ALL individual component classes
     for (const className of classNames) {

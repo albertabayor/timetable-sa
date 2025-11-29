@@ -5,24 +5,47 @@ A powerful, modular solver for **University Course Timetabling Problem (UCTP)** 
 [![npm version](https://img.shields.io/npm/v/timetable-sa.svg)](https://www.npmjs.com/package/timetable-sa)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🎉 What's New in v1.1.0
+## 🎉 What's New in v1.2.0
 
-**Flexible Time Slot Configuration** - Customize class schedules to match your institution's needs!
+**NEW: Flexible Constraints & Logging** - Take full control of your scheduling requirements!
 
 ```typescript
-// Simple: Change morning start time to 8 AM
+// Add custom constraints and enable logging
 const solver = new SimulatedAnnealing(rooms, lecturers, classes, {
-  timeSlotConfig: {
-    pagi: { startTime: "08:00" }
+  constraints: {
+    // Disable specific built-in constraints
+    hardConstraints: { saturdayRestriction: false },
+
+    // Add your own custom constraints
+    customConstraints: [{
+      name: "No Math After 2 PM",
+      type: "hard",
+      checkFunction: (schedule, entry) => {
+        if (!entry.className.includes('Math')) return true;
+        const hour = parseInt(entry.timeSlot.startTime.split(':')[0]);
+        return hour < 14;
+      }
+    }]
+  },
+  logging: {
+    enabled: true,
+    level: 'info',
+    output: 'both',
+    filePath: './schedule.log'
   }
 });
 ```
 
-Two modes available:
-- **Merge Mode** - Override specific settings, keep the rest as defaults
-- **Full Custom Mode** - Provide completely custom time slots
+Features:
+- ✨ **Enable/disable any built-in constraint** (10 hard + 8 soft constraints)
+- 🎯 **Add custom constraints** with simple functions
+- 📝 **Comprehensive logging** to console and/or file
+- 🔍 **Debug mode** for detailed algorithm insights
 
-📚 [See full documentation](docs/TIMESLOT_CONFIG.md) | 📦 [npm package](https://www.npmjs.com/package/timetable-sa)
+**Also includes v1.1.0:**
+- 🕐 **Flexible Time Slot Configuration** - Customize class schedules with merge or full custom modes
+
+📚 [Constraint & Logging Docs](docs/FLEXIBLE-CONSTRAINTS-AND-LOGGING.md) | [Time Slot Docs](docs/TIMESLOT_CONFIG.md) | 📦 [npm package](https://www.npmjs.com/package/timetable-sa)
 
 ---
 
@@ -36,7 +59,9 @@ Two modes available:
 - **Fully typed** with TypeScript for excellent IDE support
 - **Modular architecture** - use individual components as needed
 - **Configurable** - customize algorithm parameters and constraint weights
-- **⭐ NEW in v1.1.0: Flexible Time Slot Configuration** - customize class schedules with partial or full override modes
+- **⭐ NEW in v1.2.0: Flexible Constraints** - enable/disable any constraint or add custom ones
+- **⭐ NEW in v1.2.0: Comprehensive Logging** - debug and monitor optimization with detailed logs
+- **⭐ v1.1.0: Flexible Time Slot Configuration** - customize class schedules with partial or full override modes
 
 ## Installation
 

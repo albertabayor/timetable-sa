@@ -39,12 +39,14 @@ import {
   hasClassOverlap,
 } from "../utils/index.js";
 import { mergeConfig } from "./config.js";
+import { Logger } from "../utils/logger.js";
 
 export class SimulatedAnnealing {
   private rooms: Room[];
   private lecturers: Lecturer[];
   private classes: ClassRequirement[];
   private checker: ConstraintChecker;
+  private logger: Logger;
 
   // Algorithm parameters (with defaults)
   private initialTemperature: number;
@@ -72,10 +74,23 @@ export class SimulatedAnnealing {
     this.rooms = rooms;
     this.lecturers = lecturers;
     this.classes = classes;
-    this.checker = new ConstraintChecker(rooms, lecturers);
 
     // Merge user config with defaults
     const mergedConfig = mergeConfig(config);
+
+    // Initialize logger
+    this.logger = new Logger(mergedConfig.logging);
+    this.logger.info("Initializing Simulated Annealing algorithm");
+
+    // Initialize constraint checker with configuration
+    this.checker = new ConstraintChecker(
+      rooms,
+      lecturers,
+      mergedConfig.constraints.hardConstraints,
+      mergedConfig.constraints.softConstraints,
+      mergedConfig.constraints.customConstraints
+    );
+
     this.initialTemperature = mergedConfig.initialTemperature;
     this.minTemperature = mergedConfig.minTemperature;
     this.coolingRate = mergedConfig.coolingRate;
@@ -401,9 +416,22 @@ export class SimulatedAnnealing {
       softPenalty += (1 - this.checker.checkEveningClassPriority(entry)) * this.softConstraintWeights.eveningClassPriority!;
       softPenalty += (1 - this.checker.checkOverflowPenalty(entry)) * this.softConstraintWeights.overflowPenalty!;
       softPenalty += (1 - this.checker.checkResearchDay(entry)) * 50; // SC8 Research Day
+
+      // CUSTOM CONSTRAINTS
+      const customResult = this.checker.checkCustomConstraints(scheduleBeforeEntry, entry);
+      hardViolations += customResult.hardViolations;
+      softPenalty += customResult.softPenalty;
     }
 
-    return hardViolations * this.hardConstraintWeight + softPenalty;
+    const fitness = hardViolations * this.hardConstraintWeight + softPenalty;
+
+    this.logger.debug("Fitness calculated", {
+      hardViolations,
+      softPenalty,
+      fitness,
+    });
+
+    return fitness;
   }
 
   /**
@@ -778,9 +806,17 @@ export class SimulatedAnnealing {
     console.log("   PHASE 1: Eliminate hard constraints");
     console.log("   PHASE 2: Optimize soft constraints\n");
 
+    this.logger.info("Starting Simulated Annealing optimization");
+    this.logger.info("Algorithm configuration", {
+      initialTemperature: this.initialTemperature,
+      minTemperature: this.minTemperature,
+      coolingRate: this.coolingRate,
+      maxIterations: this.maxIterations,
+    });
+
     let currentSolution = this.generateInitialSolution();
     let bestSolution = JSON.parse(JSON.stringify(currentSolution));
-      
+
 
     let temperature = this.initialTemperature;
     let iteration = 0;
@@ -795,8 +831,15 @@ export class SimulatedAnnealing {
     console.log(`Initial hard violations: ${currentHardViolations}`);
     console.log(`Initial schedule size: ${currentSolution.schedule.length} classes\n`);
 
+    this.logger.info("Initial solution generated", {
+      fitness: currentSolution.fitness,
+      hardViolations: currentHardViolations,
+      scheduleSize: currentSolution.schedule.length,
+    });
+
     // PHASE 1: ELIMINATE HARD CONSTRAINTS
     console.log("🎯 PHASE 1: Focusing on hard constraints...\n");
+    this.logger.logPhaseChange(1, "Eliminate hard constraints");
     const phase1MaxIterations = Math.floor(this.maxIterations * 0.6);
     let phase1Iteration = 0;
 
@@ -884,8 +927,15 @@ export class SimulatedAnnealing {
 
     console.log(`\n✅ PHASE 1 Complete! Hard violations: ${bestHardViolations}\n`);
 
+    this.logger.info("Phase 1 completed", {
+      hardViolations: bestHardViolations,
+      iterations: phase1Iteration,
+      bestFitness: bestSolution.fitness,
+    });
+
     // PHASE 2: OPTIMIZE SOFT CONSTRAINTS
     console.log("🎯 PHASE 2: Optimizing soft constraints...\n");
+    this.logger.logPhaseChange(2, "Optimize soft constraints");
 
     currentSolution = JSON.parse(JSON.stringify(bestSolution));
     iterationsWithoutImprovement = 0;
@@ -963,6 +1013,13 @@ export class SimulatedAnnealing {
     console.log(`Total iterations: ${iteration}`);
     console.log(`Total reheating: ${reheatingCount}\n`);
 
+    this.logger.info("Optimization completed", {
+      finalFitness: bestSolution.fitness,
+      totalIterations: iteration,
+      totalReheats: reheatingCount,
+      temperature: temperature,
+    });
+
     console.log("📊 Operator Statistics:");
     console.log(
       `   MOVE: ${this.operatorStats.move.attempts} attempts, ` +
@@ -974,6 +1031,20 @@ export class SimulatedAnnealing {
       `${this.operatorStats.swap.improvements} improvements, ` +
       `Success rate: ${(this.operatorStats.swap.successRate * 100).toFixed(2)}%\n`
     );
+
+    this.logger.logOperatorStats({
+      operator: "MOVE",
+      attempts: this.operatorStats.move.attempts,
+      improvements: this.operatorStats.move.improvements,
+      successRate: this.operatorStats.move.successRate,
+    });
+
+    this.logger.logOperatorStats({
+      operator: "SWAP",
+      attempts: this.operatorStats.swap.attempts,
+      improvements: this.operatorStats.swap.improvements,
+      successRate: this.operatorStats.swap.successRate,
+    });
 
     // Generate final violation report
     this.calculateFitness(bestSolution.schedule);
@@ -996,6 +1067,15 @@ export class SimulatedAnnealing {
         violationsByType,
       },
     };
+
+    this.logger.info("Final violation report", {
+      hardViolations: hardViolations.length,
+      softViolations: softViolations.length,
+      violationsByType,
+    });
+
+    // Close logger file stream
+    this.logger.close();
 
     return bestSolution;
   }

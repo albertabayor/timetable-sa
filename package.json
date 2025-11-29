@@ -1,7 +1,7 @@
 {
   "name": "timetable-sa",
-  "version": "1.2.0",
-  "description": "A powerful, modular solver for University Course Timetabling Problem (UCTP) using Simulated Annealing algorithm with TypeScript",
+  "version": "2.0.0",
+  "description": "Generic, unopinionated Simulated Annealing library for constraint satisfaction problems. Solve timetabling, scheduling, resource allocation, and any optimization problem with custom constraints.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -32,16 +32,18 @@
     "dev": "tsx src/index-old.ts src/data_uisi.xlsx"
   },
   "keywords": [
-    "timetable",
-    "scheduling",
-    "university",
-    "timetabling",
     "simulated-annealing",
     "optimization",
     "constraint-satisfaction",
-    "course-scheduling",
-    "uctp",
-    "typescript"
+    "csp",
+    "scheduling",
+    "timetabling",
+    "generic",
+    "unopinionated",
+    "typescript",
+    "resource-allocation",
+    "optimization-algorithm",
+    "metaheuristic"
   ],
   "author": "Albert A Bayor",
   "license": "MIT",

@@ -1,7 +1,7 @@
 {
   "name": "timetable-sa",
-  "version": "1.1.0",
-  "description": "A powerful, modular solver for University Course Timetabling Problem (UCTP) using Simulated Annealing algorithm with TypeScript",
+  "version": "2.0.0",
+  "description": "Generic, unopinionated Simulated Annealing library for constraint satisfaction problems. Solve timetabling, scheduling, resource allocation, and any optimization problem with custom constraints.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -24,26 +24,24 @@
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "test:verbose": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
-    "prepublishOnly": "npm run clean && npm run build && npm test",
-    "example:basic": "tsx src/examples/basic-usage.ts",
-    "example:custom": "tsx src/examples/custom-config.ts",
-    "example:json": "tsx src/examples/json-usage.ts",
-    "example:pdf": "tsx src/examples/generate-pdfs.ts",
-    "dev": "tsx src/index-old.ts src/data_uisi.xlsx"
+    "prepublishOnly": "npm run clean && npm run build",
+    "example:timetabling": "tsx examples/timetabling/example-basic.ts"
   },
   "keywords": [
-    "timetable",
-    "scheduling",
-    "university",
-    "timetabling",
     "simulated-annealing",
     "optimization",
     "constraint-satisfaction",
-    "course-scheduling",
-    "uctp",
-    "typescript"
+    "csp",
+    "scheduling",
+    "timetabling",
+    "generic",
+    "unopinionated",
+    "typescript",
+    "resource-allocation",
+    "optimization-algorithm",
+    "metaheuristic"
   ],
-  "author": "Albert A Bayor",
+  "author": "Emmanuel Alejandro Albert A Bayor",
   "license": "MIT",
   "repository": {
     "type": "git",

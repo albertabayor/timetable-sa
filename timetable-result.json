@@ -1,0 +1,7880 @@
+{
+  "fitness": 26.774526066867967,
+  "hardViolations": 0,
+  "softViolations": 8,
+  "iterations": 100000,
+  "schedule": [
+    {
+      "classId": "MM23EB03",
+      "className": "Economic for Business",
+      "class": "MM-1A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "BAT",
+        "WAH"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 2,
+        "day": "Thursday",
+        "startTime": "16:20",
+        "endTime": "19:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23SM03",
+      "className": "Strategic Marketing Management",
+      "class": "MM-1A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "ALF",
+        "WAH"
+      ],
+      "room": "G2-R3",
+      "timeSlot": {
+        "period": 8,
+        "day": "Thursday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23HC03",
+      "className": "Strategic Human Capital and Change Management",
+      "class": "MM-1A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "GTK"
+      ],
+      "room": "G3-R4",
+      "timeSlot": {
+        "period": 3,
+        "day": "Friday",
+        "startTime": "17:10",
+        "endTime": "20:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23CF03",
+      "className": "Corporate Finance",
+      "class": "MM-1A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "BAT"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23OS03",
+      "className": "Operation and Supply Chain Management",
+      "class": "MM-1A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "LKT",
+        "PTA"
+      ],
+      "room": "G2-R3",
+      "timeSlot": {
+        "period": 6,
+        "day": "Saturday",
+        "startTime": "11:40",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23SC03",
+      "className": "Startup and corporate entrepreneurship",
+      "class": "MM-2A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "BAT",
+        "WAH"
+      ],
+      "room": "B3-R2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23CS03",
+      "className": "Corporate Strategic Management",
+      "class": "MM-2A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "RPA"
+      ],
+      "room": "G3-R4",
+      "timeSlot": {
+        "period": 9,
+        "day": "Monday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23QL03",
+      "className": "Corporate Qualitative Research",
+      "class": "MM-2A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "RPA",
+        "ELD"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 1,
+        "day": "Saturday",
+        "startTime": "15:30",
+        "endTime": "18:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "sore",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23AB03",
+      "className": "Agile and Disruptive Business Strategy",
+      "class": "MM-2A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "GFP"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 2,
+        "day": "Wednesday",
+        "startTime": "16:20",
+        "endTime": "19:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "MM23QN03",
+      "className": "Corporate Quantitative Research",
+      "class": "MM-2A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "ALF",
+        "WKS"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 5,
+        "day": "Monday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23TM03",
+      "className": "Transformation Management",
+      "class": "MM-3A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "GTK"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 2,
+        "day": "Tuesday",
+        "startTime": "16:20",
+        "endTime": "19:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23LG03",
+      "className": "Leadership for Global Leaders",
+      "class": "MM-3A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "GTK"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 8,
+        "day": "Wednesday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23SE03",
+      "className": "Sustainability and Enviromental Management",
+      "class": "MM-3A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "WKS",
+        "ELD"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 2,
+        "day": "Saturday",
+        "startTime": "08:20",
+        "endTime": "10:50"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MM23PM03",
+      "className": "Project Management",
+      "class": "MM-3A",
+      "prodi": "Magister Manajemen",
+      "lecturers": [
+        "PTA",
+        "WND"
+      ],
+      "room": "G2-R6",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A103",
+      "className": "Ekonomi untuk Bisnis",
+      "class": "MG-1A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MAL"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A103",
+      "className": "Ekonomi untuk Bisnis",
+      "class": "MG-1B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "AWD"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PB03",
+      "className": "Pengantar Bisnis dan Korporasi",
+      "class": "MG-1A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ALF"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PB03",
+      "className": "Pengantar Bisnis dan Korporasi",
+      "class": "MG-1B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ALF"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PM03",
+      "className": "Pengantar Manajemen",
+      "class": "MG-1A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "HDC"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 2,
+        "day": "Thursday",
+        "startTime": "08:20",
+        "endTime": "10:50"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PM03",
+      "className": "Pengantar Manajemen",
+      "class": "MG-1B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "HDC"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 8,
+        "day": "Thursday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13BK02",
+      "className": "Berpikir Kritis dan Kreatif",
+      "class": "MG-1A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "HDC"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13BK02",
+      "className": "Berpikir Kritis dan Kreatif",
+      "class": "MG-1B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "HDC"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A503",
+      "className": "Akuntansi Dasar",
+      "class": "MG-1A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "AWP"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 3,
+        "day": "Tuesday",
+        "startTime": "09:10",
+        "endTime": "11:40"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A503",
+      "className": "Akuntansi Dasar",
+      "class": "MG-1B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ADL"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MB03",
+      "className": "Matematika Bisnis",
+      "class": "MG-1A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "LRS"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MB03",
+      "className": "Matematika Bisnis",
+      "class": "MG-1B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ZSR"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 6,
+        "day": "Tuesday",
+        "startTime": "11:40",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MP13",
+      "className": "Manajamen Pemasaran",
+      "class": "MG-3A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "RRI"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 5,
+        "day": "Wednesday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MP13",
+      "className": "Manajamen Pemasaran",
+      "class": "MG-3B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ANW"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MK13",
+      "className": "Manajemen Keuangan",
+      "class": "MG-3A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "AWP"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MK13",
+      "className": "Manajemen Keuangan",
+      "class": "MG-3B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "AWP"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MS13",
+      "className": "Manajemen Sumber Daya Manusia",
+      "class": "MG-3A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MDI"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 8,
+        "day": "Monday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MS13",
+      "className": "Manajemen Sumber Daya Manusia",
+      "class": "MG-3B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MDI"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13CZ02",
+      "className": "Kewarganegaraan",
+      "class": "MG-3A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "KWN"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13CZ02",
+      "className": "Kewarganegaraan",
+      "class": "MG-3B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "IRM"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MO03",
+      "className": "Manajemen Operasi",
+      "class": "MG-3A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ANW"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 3,
+        "day": "Tuesday",
+        "startTime": "09:10",
+        "endTime": "11:40"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MO03",
+      "className": "Manajemen Operasi",
+      "class": "MG-3B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "HDC"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 6,
+        "day": "Tuesday",
+        "startTime": "11:40",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A402",
+      "className": "Lingkungan, Sosial, dan Tata Kelola",
+      "class": "MG-3A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ARH"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 6,
+        "day": "Tuesday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A402",
+      "className": "Lingkungan, Sosial, dan Tata Kelola",
+      "class": "MG-3B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "WAH"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13EL03",
+      "className": "Bahasa Inggris",
+      "class": "MG-3A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "IKN"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13EL03",
+      "className": "Bahasa Inggris",
+      "class": "MG-3B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "IKN"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13IL02",
+      "className": "Bahasa Indonesia",
+      "class": "MG-3A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ARI"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13IL02",
+      "className": "Bahasa Indonesia",
+      "class": "MG-3B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ARI"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PD13",
+      "className": "Pemasaran Digital",
+      "class": "MG-5A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "RRI"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PD13",
+      "className": "Pemasaran Digital",
+      "class": "MG-5B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ALF"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PD13",
+      "className": "Pemasaran Digital",
+      "class": "MG-5S",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MMK"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 3,
+        "day": "Friday",
+        "startTime": "17:10",
+        "endTime": "20:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 20,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PD13",
+      "className": "Pemasaran Digital",
+      "class": "MG-5C",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ANW",
+        "RRI"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 9,
+        "day": "Friday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PD13",
+      "className": "Pemasaran Digital",
+      "class": "MG-5D",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ALF"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MS23",
+      "className": "Manajemen Strategi",
+      "class": "MG-5A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "RPA"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MS23",
+      "className": "Manajemen Strategi",
+      "class": "MG-5B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MMK"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13MS23",
+      "className": "Manajemen Strategi",
+      "class": "MG-5S",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MMK"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 3,
+        "day": "Wednesday",
+        "startTime": "17:10",
+        "endTime": "20:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13AD13",
+      "className": "Analitik Data",
+      "class": "MG-5A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "LRS"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13KP13",
+      "className": "Kepemimpinan",
+      "class": "MG-5A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MDI"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13KP13",
+      "className": "Kepemimpinan",
+      "class": "MG-5B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "RPA"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13KP13",
+      "className": "Kepemimpinan",
+      "class": "MG-5S",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "BAT"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "15:30",
+        "endTime": "18:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "sore",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13SI03",
+      "className": "Sistem Informasi Manajemen",
+      "class": "MG-5A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "RPA"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13SI03",
+      "className": "Sistem Informasi Manajemen",
+      "class": "MG-5B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "RPA"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13SI03",
+      "className": "Sistem Informasi Manajemen",
+      "class": "MG-5S",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "RPA"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "18:00",
+        "endTime": "21:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13ME13",
+      "className": "Manajemen Pertemuan, Eksposisi, Even, dan Konvensi",
+      "class": "MG-5A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MMK"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13ME13",
+      "className": "Manajemen Pertemuan, Eksposisi, Even, dan Konvensi",
+      "class": "MG-5B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MMK"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13ME13",
+      "className": "Manajemen Pertemuan, Eksposisi, Even, dan Konvensi",
+      "class": "MG-5S",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "RRI"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 3,
+        "day": "Thursday",
+        "startTime": "17:10",
+        "endTime": "20:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13SO13",
+      "className": "Strategi Operasi dan Rantai Pasok",
+      "class": "MG-5A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "WND"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13SO13",
+      "className": "Strategi Operasi dan Rantai Pasok",
+      "class": "MG-5B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "GTK"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13SO13",
+      "className": "Strategi Operasi dan Rantai Pasok",
+      "class": "MG-5S",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "GTK"
+      ],
+      "room": "G3-R4",
+      "timeSlot": {
+        "period": 3,
+        "day": "Monday",
+        "startTime": "17:10",
+        "endTime": "20:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13SB22",
+      "className": "Seminar Bisnis",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ANW"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13SB22",
+      "className": "Seminar Bisnis",
+      "class": "MG-7B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ANW"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13SB22",
+      "className": "Seminar Bisnis",
+      "class": "MG-7C",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ANW"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 6,
+        "day": "Tuesday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13DG03",
+      "className": "Keterampilan Digital untuk Manajemen Perusahaan",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "LRS"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 6,
+        "day": "Monday",
+        "startTime": "11:40",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13DG03",
+      "className": "Keterampilan Digital untuk Manajemen Perusahaan",
+      "class": "MG-7B",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "LRS"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 3,
+        "day": "Tuesday",
+        "startTime": "09:10",
+        "endTime": "11:40"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG12KI53",
+      "className": "Manajemen Keuangan Internasional",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "AWP"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG12MR53",
+      "className": "Manajemen Risiko Keuangan Korporat",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "AWP"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 6,
+        "day": "Tuesday",
+        "startTime": "11:40",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG12MP53",
+      "className": "Manajemen Penjualan",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ANW"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG12RP53",
+      "className": "Riset Pemasaran",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "RRI"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 4,
+        "day": "Thursday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG13PR53",
+      "className": "Manajemen Proyek",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "GTK"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "MG12MK53",
+      "className": "Manajemen Kompensasi",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MDI"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "MG13PP53",
+      "className": "Pelatihan dan Pengembangan Sumber Daya Manusia",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "MDI"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "MG12FB53",
+      "className": "Manajemen Bisnis Keluarga (Family Business)",
+      "class": "MG-7A",
+      "prodi": "MANAJEMEN",
+      "lecturers": [
+        "ALF"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 9,
+        "day": "Friday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 34,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC130603",
+      "className": "Akuntansi Biaya",
+      "class": "AK-1A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "FRD"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A103",
+      "className": "Ekonomi Bisnis",
+      "class": "AK-1A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "AWD"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 8,
+        "day": "Monday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A503",
+      "className": "Akuntansi Dasar",
+      "class": "AK-1A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "FRD"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 6,
+        "day": "Wednesday",
+        "startTime": "11:40",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13EL03",
+      "className": "Bahasa Inggris",
+      "class": "AK-1A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "IKN"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A303",
+      "className": "Statistik Bisnis",
+      "class": "AK-1A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "LRS"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC130703",
+      "className": "Pengantar Bisnis",
+      "class": "AK-1A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "AWD"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC131413",
+      "className": "Akuntansi Manajemen",
+      "class": "AK-3A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "ADL"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC131313",
+      "className": "Akuntansi Keuangan Menengah 1",
+      "class": "AK-3A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "ADL"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC132013",
+      "className": "Akuntansi Keuangan Menengah 2",
+      "class": "AK-3A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "AFT"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 2,
+        "day": "Thursday",
+        "startTime": "08:20",
+        "endTime": "10:50"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A713",
+      "className": "Manajemen Operasional",
+      "class": "AK-3A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "MAK"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 8,
+        "day": "Wednesday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A803",
+      "className": "Manajemen Keuangan",
+      "class": "AK-3A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "FRD"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13B413",
+      "className": "Manajemen Risiko",
+      "class": "AK-3A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "AWD"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC132113",
+      "className": "Perpajakan",
+      "class": "AK-3A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "ADL"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC131603",
+      "className": "Tata Kelola dan Etika Profesi",
+      "class": "AK-3A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "ELD"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 9,
+        "day": "Monday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC132833",
+      "className": "Akuntansi Keuangan Lanjutan 1",
+      "class": "AK-5A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "AFT"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13B413",
+      "className": "Manajemen Risiko",
+      "class": "AK-5A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "FRD"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC133013",
+      "className": "Teori Akuntansi",
+      "class": "AK-5A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "AFT"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC133113",
+      "className": "Analitika Data",
+      "class": "AK-5A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "MAK"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC133223",
+      "className": "Simulasi Kelayakan Bisnis",
+      "class": "AK-5A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "MAK"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC133423",
+      "className": "Manajemen Investasi dan Portofolio",
+      "class": "AK-5A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "FRD"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC133533",
+      "className": "Akuntansi Keuangan Lanjutan 2",
+      "class": "AK-5A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "ADL"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC133633",
+      "className": "Metodologi Penelitian",
+      "class": "AK-5A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "ELD"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC134013",
+      "className": "Perencanaan Keuangan",
+      "class": "AK-7A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "AWD"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC134413",
+      "className": "Praktik Akuntansi dan Bisnis",
+      "class": "AK-7A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "MAK"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC133113",
+      "className": "Analitika Data",
+      "class": "AK-7A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "MAK"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 36,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AC132413",
+      "className": "Akuntansi Keberlanjutan",
+      "class": "AK-7A",
+      "prodi": "Akuntansi",
+      "lecturers": [
+        "ELD"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13MI03",
+      "className": "Pengantar Manajemen dan Bisnis Islam",
+      "class": "ES-1A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "MAL"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13EI03",
+      "className": "Pengantar Ekonomi Islam",
+      "class": "ES-1A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "MAL"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A103",
+      "className": "Ekonomi Bisnis",
+      "class": "ES-1A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "EMH"
+      ],
+      "room": "G3-R2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A503",
+      "className": "Akuntansi Dasar",
+      "class": "ES-1A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "ADM"
+      ],
+      "room": "G2-R5",
+      "timeSlot": {
+        "period": 2,
+        "day": "Thursday",
+        "startTime": "08:20",
+        "endTime": "10:50"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13ME02",
+      "className": "Sejarah Pemikiran Ekonomi Islam",
+      "class": "ES-1A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "MHA"
+      ],
+      "room": "G3-R4",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13IB03",
+      "className": "Pengantar Bank dan Industri Keuangan Non-Bank Syariah",
+      "class": "ES-3A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "ADM"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A803",
+      "className": "Manajemen Keuangan",
+      "class": "ES-3A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "EMH"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13MF33",
+      "className": "Manajemen Filantropi Islam",
+      "class": "ES-3A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "MHA"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13IA33",
+      "className": "Akuntansi Syariah",
+      "class": "ES-3A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "ADM"
+      ],
+      "room": "G2-R5",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "SE13DB03",
+      "className": "Digitalisasi Proses Bisnis & Manajemen",
+      "class": "ES-3A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "WAH"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13AH43",
+      "className": "Aspek Hukum dan Etika Bisnis Islam",
+      "class": "ES-3A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "MHA"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A402",
+      "className": "Industri Berkelanjutan",
+      "class": "ES-3A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "WAH"
+      ],
+      "room": "G2-R2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13IC02",
+      "className": "Islamic Corporate Governance & CSR",
+      "class": "ES-5A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "EMH"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "15:00"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13IW03",
+      "className": "Manajemen Kekayaan dan Aset Syariah",
+      "class": "ES-5A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "BAT"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 2,
+        "day": "Thursday",
+        "startTime": "08:20",
+        "endTime": "10:50"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13HB02",
+      "className": "Halal Industri dan Bisnis Kreatif",
+      "class": "ES-5A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "WAH"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13TA02",
+      "className": "Tasawuf dan Kearifan Lokal",
+      "class": "ES-5A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "MHA"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13VP43",
+      "className": "Manajemen Investasi & Portofolio Islam",
+      "class": "ES-5A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "BAT"
+      ],
+      "room": "G5-Lab1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13A713",
+      "className": "Manajemen Operasional",
+      "class": "ES-5A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "ADM"
+      ],
+      "room": "G2-R5",
+      "timeSlot": {
+        "period": 9,
+        "day": "Monday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AB13B203",
+      "className": "Manajemen Strategi",
+      "class": "ES-5A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "JSM"
+      ],
+      "room": "G3-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13BF43",
+      "className": "Studi Kelayanan Bisnis Islam",
+      "class": "ES-5A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "ADM"
+      ],
+      "room": "G3-R4",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 25,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "SE13CB53",
+      "className": "Perilaku Konsumen",
+      "class": "ES-7A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "MAL"
+      ],
+      "room": "G2-R6",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13IM53",
+      "className": "Komunikasi Pemasaran Terpadu",
+      "class": "ES-7A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "WAH"
+      ],
+      "room": "G2-R7",
+      "timeSlot": {
+        "period": 5,
+        "day": "Monday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13ID53",
+      "className": "Pemasaran Digital Islami",
+      "class": "ES-7A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "EMH"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "SE13RP12",
+      "className": "Kualifikasi Proposal Penelitian",
+      "class": "ES-7A",
+      "prodi": "Ekonomi Syariah",
+      "lecturers": [
+        "EMH"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 6,
+        "day": "Wednesday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13CA03",
+      "className": "Kalkulus I",
+      "class": "MR-1A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AAV"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PA03",
+      "className": "Fisika Dasar I",
+      "class": "MR-1A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NCS"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Thursday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13CM03",
+      "className": "Kimia Dasar I",
+      "class": "MR-1A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NCS"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13ED03",
+      "className": "Menggambar Teknik",
+      "class": "MR-1A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NWF"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13CP03",
+      "className": "Pemrograman Komputer",
+      "class": "MR-1A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AHY"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13EL03",
+      "className": "Bahasa Inggris",
+      "class": "MR-1A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "MAF"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13CA03",
+      "className": "Kalkulus I",
+      "class": "MR-1S",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AAV"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "15:30",
+        "endTime": "18:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 10,
+      "classType": "sore",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PA03",
+      "className": "Fisika Dasar I",
+      "class": "MR-1S",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NCS"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "18:00",
+        "endTime": "21:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 10,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13CM03",
+      "className": "Kimia Dasar I",
+      "class": "MR-1S",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NCS"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "15:30",
+        "endTime": "18:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 10,
+      "classType": "sore",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13ED03",
+      "className": "Menggambar Teknik",
+      "class": "MR-1S",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NWF"
+      ],
+      "room": "G3-R1",
+      "timeSlot": {
+        "period": 3,
+        "day": "Tuesday",
+        "startTime": "17:10",
+        "endTime": "20:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 10,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13CP03",
+      "className": "Pemrograman Komputer",
+      "class": "MR-1S",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AHY"
+      ],
+      "room": "G2-R5",
+      "timeSlot": {
+        "period": 3,
+        "day": "Thursday",
+        "startTime": "17:10",
+        "endTime": "20:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 10,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13EL03",
+      "className": "Bahasa Inggris",
+      "class": "MR-1S, ES-1A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "MAF"
+      ],
+      "room": "G2-R7",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "18:00",
+        "endTime": "21:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "sore",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13LA02",
+      "className": "Aljabar Linear",
+      "class": "MR-3A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AAV"
+      ],
+      "room": "B2-R1",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "16:20"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13CM13",
+      "className": "Kimia Dasar II",
+      "class": "MR-3A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NCS"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13ST03",
+      "className": "Statistika",
+      "class": "MR-3A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "EMH"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13LE02",
+      "className": "Legal dan Etika Profesi",
+      "class": "MR-3A,MR-5A,MR-7A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NWF"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 6,
+        "day": "Monday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13LE02",
+      "className": "Legal dan Etika Profesi",
+      "class": "MR-3B,MR-5B,MR-7B",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NWF"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 7,
+        "day": "Thursday",
+        "startTime": "12:30",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PT02",
+      "className": "Teori Probabilitas",
+      "class": "MR-3A,MR-5A,MR-7A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AHD"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PT02",
+      "className": "Teori Probabilitas",
+      "class": "MR-3B,MR-5B,MR-7B",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "FAP"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 3,
+        "day": "Monday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 42,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13RG02",
+      "className": "Agama",
+      "class": "MR-3A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "MNF"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 5,
+        "day": "Tuesday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13LA02",
+      "className": "Aljabar Linear",
+      "class": "MR-3-SIG",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AAV"
+      ],
+      "room": "B2-R1",
+      "timeSlot": {
+        "period": 6,
+        "day": "Monday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13ER03",
+      "className": "Ergonomi & Rekayasa Faktor Manusia",
+      "class": "MR-3-SIG,MR-5S",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AEP"
+      ],
+      "room": "B3-R2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13MR13",
+      "className": "Riset Pasar dan Pemasaran",
+      "class": "MR-3-SIG,MR-5S",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AEP"
+      ],
+      "room": "G3-R2",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13QM03",
+      "className": "Metode Kuantitatif",
+      "class": "MR-3-SIG",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AEP"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13LE02",
+      "className": "Legal dan Etika Profesi",
+      "class": "MR-3-SIG,MR-5S,7-SIG",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NWF"
+      ],
+      "room": "G3-R4",
+      "timeSlot": {
+        "period": 8,
+        "day": "Wednesday",
+        "startTime": "13:20",
+        "endTime": "15:00"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 20,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PT02",
+      "className": "Teori Probabilitas",
+      "class": "MR-3-SIG,MR-5S,7-SIG",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "CWR"
+      ],
+      "room": "G2-R5",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 20,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13SC13",
+      "className": "Manajemen Rantai Pasok",
+      "class": "MR-3-SIG,MR-5S,7-SIG",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AAV"
+      ],
+      "room": "G3-R4",
+      "timeSlot": {
+        "period": 6,
+        "day": "Tuesday",
+        "startTime": "11:40",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 20,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13QE13",
+      "className": "Rekayasa Kualitas",
+      "class": "MR-3-SIG,MR-5S",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AAV"
+      ],
+      "room": "G2-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13ER03",
+      "className": "Ergonomi & Rekayasa Faktor Manusia",
+      "class": "MR-5A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AEP"
+      ],
+      "room": "G3-R1",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13MR13",
+      "className": "Riset Pasar dan Pemasaran",
+      "class": "MR-5A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AEP"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13SC13",
+      "className": "Manajemen Rantai Pasok",
+      "class": "MR-5A,MR-7A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "PTA"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13QE13",
+      "className": "Rekayasa Kualitas",
+      "class": "MR-5A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AAV"
+      ],
+      "room": "G3-R2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13TM03",
+      "className": "Teori dan Metodologi Perancangan",
+      "class": "MR-5A, MR-5S",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "NWF"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13BO03",
+      "className": "Perancangan Proses Bisnis dan Organisasi",
+      "class": "MR-7A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "AEP"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13CD24",
+      "className": "Capstone design",
+      "class": "MR-7A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "HDP"
+      ],
+      "room": "G2-R5",
+      "timeSlot": {
+        "period": 9,
+        "day": "Friday",
+        "startTime": "14:10",
+        "endTime": "18:00"
+      },
+      "sks": 4,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13WM53\r\n",
+      "className": "Pengolahan dan Pengelolaan Material Limbah",
+      "class": "MR-7A",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "HDP"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13EN03",
+      "className": "Capstone design",
+      "class": "MR-7-SIG",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "HDP"
+      ],
+      "room": "B3-R2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:50"
+      },
+      "sks": 4,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13CD24",
+      "className": "Kewirausahaan",
+      "class": "MR-7A, MR-7-SIG",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "HDP"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "EM13WM53\r\n",
+      "className": "Pengolahan dan Pengelolaan Material Limbah",
+      "class": "MR-7-SIG",
+      "prodi": "Manajemen Rekayasa",
+      "lecturers": [
+        "HDP"
+      ],
+      "room": "B2-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13CA03",
+      "className": "KALKULUS I",
+      "class": "TL-1A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "CWR"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13CA03",
+      "className": "KALKULUS I",
+      "class": "TL-1B",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "YNK"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 2,
+        "day": "Friday",
+        "startTime": "08:20",
+        "endTime": "10:50"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "ET13PA03",
+      "className": "FISIKA I",
+      "class": "TL-1A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "NCS"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PA03",
+      "className": "FISIKA I",
+      "class": "TL-1B",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "CWR"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PT02",
+      "className": "TEORI PROBABILITAS",
+      "class": "TL-1A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "AHD"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 2,
+        "day": "Monday",
+        "startTime": "08:20",
+        "endTime": "10:00"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PT02",
+      "className": "TEORI PROBABILITAS",
+      "class": "TL-1B",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "CWR"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13LE02",
+      "className": "PENGANTAR TEKNIK LOGISTIK",
+      "class": "TL-1A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "PMN"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 4,
+        "day": "Thursday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13LE02",
+      "className": "PENGANTAR TEKNIK LOGISTIK",
+      "class": "TL-1B",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "PMN"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 3,
+        "day": "Tuesday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13PD02",
+      "className": "PEMROGRAMAN & PENGOLAHAN DATA",
+      "class": "TL-1A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "MMP"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": true,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13PD02",
+      "className": "PEMROGRAMAN & PENGOLAHAN DATA",
+      "class": "TL-1B",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "MMP"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "15:00"
+      },
+      "sks": 2,
+      "needsLab": true,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13TD02",
+      "className": "MENGGAMBAR TEKNIK",
+      "class": "TL-1A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "NWF"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13TD02",
+      "className": "MENGGAMBAR TEKNIK",
+      "class": "TL-1B",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "NWF"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 5,
+        "day": "Tuesday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13IL02",
+      "className": "BAHASA INDONESIA",
+      "class": "TL-1A, TL-1B",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "ARI"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "16:20"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 60,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13CH03",
+      "className": "KIMIA",
+      "class": "TL-1A,TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "UAG"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 52,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13CH03",
+      "className": "KIMIA",
+      "class": "TL-1B,TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "UAG"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 52,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13SE02",
+      "className": "SISTEM LINGKUNGAN BERKELANJUTAN",
+      "class": "TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "WKS"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13LA13",
+      "className": "ALJABAR LINIER",
+      "class": "TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "PMN"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13RO12",
+      "className": "RISET OPERASI II",
+      "class": "TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "PMN"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 6,
+        "day": "Wednesday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13MP12",
+      "className": "MATERIAL DAN PENGEMASAN",
+      "class": "TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "PMN"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13EE13",
+      "className": "EKONOMI TEKNIK",
+      "class": "TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "LKT"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PP13",
+      "className": "PERENCANAAN PRODUKSI DAN PENGENDALIAN PERSEDIAAN",
+      "class": "TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "WND"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13SB13",
+      "className": "STATISTIKA II",
+      "class": "TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "LKT",
+        "WND"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 4,
+        "day": "Thursday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13SL21",
+      "className": "PRAKTIKUM STATISTIK",
+      "class": "TL-3A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "LKT",
+        "WND"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 8,
+        "day": "Thursday",
+        "startTime": "13:20",
+        "endTime": "14:10"
+      },
+      "sks": 1,
+      "needsLab": true,
+      "participants": 39,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13PM12",
+      "className": "MANAJEMEN PROYEK",
+      "class": "TL-5A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "WND"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 3,
+        "day": "Friday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 43,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13SB13",
+      "className": "BISNIS JASA LOGISTIK",
+      "class": "TL-5A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "LKT"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 3,
+        "day": "Tuesday",
+        "startTime": "09:10",
+        "endTime": "11:40"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 43,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13LT13",
+      "className": "PERANCANGAN SISTEM TRANSPORTASI DARAT",
+      "class": "TL-5A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "LKT"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 43,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13MT13",
+      "className": "PERANCANGAN SISTEM TRANSPORTASI LAUT",
+      "class": "TL-5A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "MMP"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 43,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13SC13",
+      "className": "MANAJEMEN RANTAI PASOK",
+      "class": "TL-5A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "WND"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 43,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13DA13",
+      "className": "ANALITIKA DATA",
+      "class": "TL-5A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "PMN"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 9,
+        "day": "Friday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 23,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13DA13",
+      "className": "ANALITIKA DATA",
+      "class": "TL-5B",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "PMN"
+      ],
+      "room": "B3-R2",
+      "timeSlot": {
+        "period": 9,
+        "day": "Monday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 23,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13EI13",
+      "className": "EKSPOR IMPOR",
+      "class": "TL-7A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "WND"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13TL12",
+      "className": "PRAKTIKUM TRANSPORTASI",
+      "class": "TL-7A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "MMP"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 2,
+        "day": "Thursday",
+        "startTime": "08:20",
+        "endTime": "10:00"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE13LS13",
+      "className": "PERANCANGAN SISTEM LOGISTIK TERINTEGRASI",
+      "class": "TL-7A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "LKT"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "LE12AJ53",
+      "className": "Manajemen Resiko dan Kinerja",
+      "class": "TL-5A",
+      "prodi": "TEKNIK LOGISTIK",
+      "lecturers": [
+        "LKT"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 8,
+        "day": "Monday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE13CA03",
+      "className": "Kalkulus 1",
+      "class": "TK - 1A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "SII",
+        "YNK"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 50,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE12PH02",
+      "className": "Fisika Dasar 1",
+      "class": "TK - 1A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "FAP"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 50,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13RG02",
+      "className": "Agama Islam\r\n Agama Katolik\r\n Agama Protestan\r\n Agama Hindu\r\n Agama Budha\r\n Agama Kong Hu Cu",
+      "class": "TK - 1A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "MHA"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 50,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE12CP03",
+      "className": "Proses Industri Kimia",
+      "class": "TK - 1A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "SII",
+        "CWR"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 5,
+        "day": "Wednesday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 50,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE13BC02",
+      "className": "Kimia Dasar 1",
+      "class": "TK - 1A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "UAG"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "16:20"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 50,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE12FL01",
+      "className": "Praktikum Fundamental (KD+FD) *",
+      "class": "TK - 1A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "FAP"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Friday",
+        "startTime": "10:00",
+        "endTime": "10:50"
+      },
+      "sks": 1,
+      "needsLab": false,
+      "participants": 50,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE12BP02",
+      "className": "Komunikasi dan Presentasi Bisnis",
+      "class": "TK - 1A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "RNU"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 3,
+        "day": "Wednesday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 50,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE13SD02",
+      "className": "Pengolahan Data dan Statisika",
+      "class": "TK - 1A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "SII",
+        "CWR"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 3,
+        "day": "Thursday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 50,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11AM23",
+      "className": "Matematika Teknik Kimia 1",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "YNK",
+        "FAP"
+      ],
+      "room": "G5-Lab2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE12PC22",
+      "className": "Kimia Fisika",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "FAP"
+      ],
+      "room": "G2-R2",
+      "timeSlot": {
+        "period": 6,
+        "day": "Monday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE12TL21",
+      "className": "Praktikum Kimia Fisika*",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "FAP"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 3,
+        "day": "Wednesday",
+        "startTime": "09:10",
+        "endTime": "10:00"
+      },
+      "sks": 1,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE13OL11",
+      "className": "Praktikum Kimia Organik",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "SII"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "14:10"
+      },
+      "sks": 1,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13SE02",
+      "className": "Sistem Lingkungan Berkelanjutan",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "UAG"
+      ],
+      "room": "G2-R2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11TH23",
+      "className": "Termodinamika Teknik Kimia 1",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "YNK"
+      ],
+      "room": "B2-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11PB12",
+      "className": "Azas Teknik Kimia 2",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "YNK"
+      ],
+      "room": "B2-R1",
+      "timeSlot": {
+        "period": 6,
+        "day": "Tuesday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE12OB12",
+      "className": "Kimia Organik 2",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "UAG"
+      ],
+      "room": "G3-R4",
+      "timeSlot": {
+        "period": 3,
+        "day": "Friday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE13OA12",
+      "className": "Kimia Organik 1",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "UAG"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE13MC02",
+      "className": "Ilmu Bahan dan Korosi",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "ARH"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13CT02",
+      "className": "Teknologi Industri Semen",
+      "class": "TK - 3A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "UAG",
+        "FAP"
+      ],
+      "room": "G2-R5",
+      "timeSlot": {
+        "period": 6,
+        "day": "Wednesday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13IL02",
+      "className": "Bahasa Indonesia",
+      "class": "TK - 5A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "ARI"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 6,
+        "day": "Tuesday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 46,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11OQ13",
+      "className": "Operasi Teknik Kimia 2",
+      "class": "TK - 5A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "SII",
+        "CWR"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 9,
+        "day": "Friday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 46,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11SA03",
+      "className": "Pilihan Keahlian 1\r\n Teknologi Separasi",
+      "class": "TK - 5A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "FAP",
+        "ARH"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 46,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11OP12",
+      "className": "Sintesa Proses",
+      "class": "TK - 5A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "SII",
+        "YNK"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 46,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11RA23",
+      "className": "Teknik Reaksi Kimia 1",
+      "class": "TK - 5A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "SII",
+        "CWR"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 46,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11EA12",
+      "className": "Lab Operasi Teknik Kimia 1",
+      "class": "TK - 5A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "SII"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 9,
+        "day": "Monday",
+        "startTime": "14:10",
+        "endTime": "16:20"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 46,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE12WM22",
+      "className": "Pengelolaan Limbah Industri",
+      "class": "TK - 7A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "SII",
+        "LB"
+      ],
+      "room": "G3-R2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11DC23",
+      "className": "Dinamika & Pengendalian Proses",
+      "class": "TK - 7A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "CWR"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11SB03",
+      "className": "Pilihan Keahlian 2\r\n Pengenalan Non-Destructive Evaluation",
+      "class": "TK - 7A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "ARH"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 8,
+        "day": "Thursday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11SB03",
+      "className": "Pilihan Keahlian 2\r\n Material Canggih dan Teknik Karakterisasi",
+      "class": "TK - 7A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "UAG"
+      ],
+      "room": "G2-R2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE11EE02",
+      "className": "Ekonomi Teknik",
+      "class": "TK - 7A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "ARH"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE13IE23",
+      "className": "Desain Alat Industri Kimia",
+      "class": "TK - 5A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "ARH"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 44,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "CE13ED02",
+      "className": "Gambar Teknik",
+      "class": "TK - 5A",
+      "prodi": "Teknik Kimia",
+      "lecturers": [
+        "ARH"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 7,
+        "day": "Wednesday",
+        "startTime": "12:30",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 44,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13PA03",
+      "className": "Fisika Dasar",
+      "class": "TIP-1A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FAP"
+      ],
+      "room": "G2-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13CA03",
+      "className": "Kalkulus I",
+      "class": "TIP-1A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "YNK"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 9,
+        "day": "Monday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13BC02",
+      "className": "Kimia Dasar",
+      "class": "TIP-1A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "YSM",
+        "WKS"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13AI03",
+      "className": "Pengantar Agroindustri",
+      "class": "TIP-1A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "YSM",
+        "WKS"
+      ],
+      "room": "G5-Lab1",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13ED02",
+      "className": "Gambar Teknik",
+      "class": "TIP-1A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FKH"
+      ],
+      "room": "B3-R2",
+      "timeSlot": {
+        "period": 6,
+        "day": "Monday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13PL02",
+      "className": "Logika Pemrograman",
+      "class": "TIP-1A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "ZSR"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13AB02",
+      "className": "Estimasi Biaya",
+      "class": "TIP-1A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FKH"
+      ],
+      "room": "G2-R5",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "16:20"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13OR13",
+      "className": "Riset Operasional",
+      "class": "TIP-3A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FKH",
+        "ZSR"
+      ],
+      "room": "CM-203",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13SB13",
+      "className": "Statistika II",
+      "class": "TIP-3A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FKH",
+        "ZSR"
+      ],
+      "room": "G3-R1",
+      "timeSlot": {
+        "period": 2,
+        "day": "Friday",
+        "startTime": "08:20",
+        "endTime": "10:50"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13AM13",
+      "className": "Pengetahuan Bahan Agroindustri",
+      "class": "TIP-3A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "YSM",
+        "WKS"
+      ],
+      "room": "B3-R2",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "AE13UO13",
+      "className": "Satuan Operasi Agroindustri",
+      "class": "TIP-3A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "WKS"
+      ],
+      "room": "G3-R2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13UP13",
+      "className": "Satuan Proses Agroindustri",
+      "class": "TIP-3A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "YSM"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13PA12",
+      "className": "Praktikum Analisis Bahan dan Produk Agroindustri",
+      "class": "TIP-3A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "YSM",
+        "WKS"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "16:20"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13EE13",
+      "className": "Ekonomi Teknik",
+      "class": "TIP-3A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FKH",
+        "ZSR"
+      ],
+      "room": "B3-R2",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13PP12",
+      "className": "Teknologi Pengemasan dan Pengawetan",
+      "class": "TIP-5A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "YSM",
+        "WKS"
+      ],
+      "room": "G2-R2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "AE13AC12",
+      "className": "Agroindustrial Community Development",
+      "class": "TIP-5A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FKH",
+        "YSM"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 2,
+        "day": "Wednesday",
+        "startTime": "08:20",
+        "endTime": "10:00"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13DM13",
+      "className": "Analisis Keputusan dan Multikriteria",
+      "class": "TIP-5A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "ZSR",
+        "FKH"
+      ],
+      "room": "G3-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13DF12",
+      "className": "Perancangan Tata Letak Fasilitas",
+      "class": "TIP-5A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "ZSR"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "11:40"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "ET13SM13",
+      "className": "Pemodelan Sistem",
+      "class": "TIP-5A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FKH"
+      ],
+      "room": "G2-R3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13QE13",
+      "className": "Rekayasa Mutu",
+      "class": "TIP-5A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "YSM"
+      ],
+      "room": "G2-R6",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13PL12",
+      "className": "Praktikum Penanganan Bahan dan Tata Letak Fasilitas",
+      "class": "TIP-5A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "ZSR"
+      ],
+      "room": "G2-R6",
+      "timeSlot": {
+        "period": 7,
+        "day": "Wednesday",
+        "startTime": "12:30",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "AE13VP52",
+      "className": "Valuasi dan Komersialisasi Produk",
+      "class": "TIP-5A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FKH",
+        "ZSR"
+      ],
+      "room": "G5-Lab2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "AE13DF14",
+      "className": "Perancangan Pabrik dan Analisis Kelayakan Pabrik",
+      "class": "TIP-7A",
+      "prodi": "Teknologi Industri Pertanian",
+      "lecturers": [
+        "FKH",
+        "WKS"
+      ],
+      "room": "G5-Lab1",
+      "timeSlot": {
+        "period": 4,
+        "day": "Thursday",
+        "startTime": "10:00",
+        "endTime": "14:10"
+      },
+      "sks": 4,
+      "needsLab": false,
+      "participants": 15,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13RG02",
+      "className": "Agama",
+      "class": "IF-1A, IF-1B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MNF"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 3,
+        "day": "Friday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 60,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13MD13",
+      "className": "Matematika Diskret ",
+      "class": "IF-1A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "NGT"
+      ],
+      "room": "G2-R5",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13MD13",
+      "className": "Matematika Diskret ",
+      "class": "IF-1B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "NGT"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 7,
+        "day": "Thursday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13KA14",
+      "className": "Kalkulus",
+      "class": "IF-1A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "NGT",
+        "PAY"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "18:00"
+      },
+      "sks": 4,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13KA14",
+      "className": "Kalkulus",
+      "class": "IF-1B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "NGT",
+        "PAY"
+      ],
+      "room": "G3-R4",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:50"
+      },
+      "sks": 4,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13PT12",
+      "className": "Pengantar Teknologi Informasi",
+      "class": "IF-1A, IF-1B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "NGT",
+        "MZF"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 3,
+        "day": "Wednesday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 60,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13P114",
+      "className": "Pemrograman 1",
+      "class": "IF-1A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MNI"
+      ],
+      "room": "G2-R7",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:50"
+      },
+      "sks": 4,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13P114",
+      "className": "Pemrograman 1",
+      "class": "IF-1B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MNI"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "16:20"
+      },
+      "sks": 4,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13ST13",
+      "className": "Statistika Dasar",
+      "class": "IF-1A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "PAY"
+      ],
+      "room": "G5-Lab1",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13ST13",
+      "className": "Statistika Dasar",
+      "class": "IF-1B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "PAY"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13AS13",
+      "className": "Algoritma dan Struktur Data",
+      "class": "IF-3A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MZF"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 38,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13AS13",
+      "className": "Algoritma dan Struktur Data",
+      "class": "IF-3B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MZF"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 37,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13JK13",
+      "className": "Jaringan Komputer",
+      "class": "IF-3A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "TQB"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 38,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13JK13",
+      "className": "Jaringan Komputer",
+      "class": "IF-3B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "TQB"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 3,
+        "day": "Wednesday",
+        "startTime": "09:10",
+        "endTime": "11:40"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 37,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13IM13",
+      "className": "Interaksi Manusia-Komputer",
+      "class": "IF-3A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "LHY"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 38,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13IM13",
+      "className": "Interaksi Manusia-Komputer",
+      "class": "IF-3B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "LHY"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 4,
+        "day": "Thursday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 37,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13RP12",
+      "className": "Rekayasa Perangkat Lunak",
+      "class": "IF-3A, IF-3B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "TQB"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 44,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13RP12",
+      "className": "Rekayasa Perangkat Lunak",
+      "class": "IF-3A, IF-3B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "TQB"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 43,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13SB13",
+      "className": "Sistem Basis Data",
+      "class": "IF-3A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "LHY"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 3,
+        "day": "Tuesday",
+        "startTime": "09:10",
+        "endTime": "11:40"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 38,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13SB13",
+      "className": "Sistem Basis Data",
+      "class": "IF-3B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "LHY"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 37,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13P214",
+      "className": "Pemrograman 2",
+      "class": "IF-3A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MZF"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "16:20"
+      },
+      "sks": 4,
+      "needsLab": true,
+      "participants": 38,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13P214",
+      "className": "Pemrograman 2",
+      "class": "IF-3B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MZF"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "18:00"
+      },
+      "sks": 4,
+      "needsLab": true,
+      "participants": 37,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13MN13",
+      "className": "Metode Numerik",
+      "class": "IF-3A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "NGT",
+        "PAY"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 4,
+        "day": "Thursday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 38,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13MN13",
+      "className": "Metode Numerik",
+      "class": "IF-3B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "NGT",
+        "PAY"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 37,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13AM13",
+      "className": "Pemrograman Aplikasi Mobile",
+      "class": "IF-5A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MZF"
+      ],
+      "room": "G5-Lab1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 28,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13AM13",
+      "className": "Pemrograman Aplikasi Mobile",
+      "class": "IF-5B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MNI"
+      ],
+      "room": "G5-Lab1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 27,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13IL02",
+      "className": "Bahasa Indonesia",
+      "class": "IF-7A,IF-7B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "ARI"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 55,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13IL02",
+      "className": "Bahasa Indonesia",
+      "class": "IF-5A,IF-5B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "ARI"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 3,
+        "day": "Thursday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 55,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13KS13",
+      "className": "Keamanan Siber",
+      "class": "IF-5A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "YIR"
+      ],
+      "room": "B2-R1",
+      "timeSlot": {
+        "period": 5,
+        "day": "Thursday",
+        "startTime": "10:50",
+        "endTime": "14:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 28,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13KS13",
+      "className": "Keamanan Siber",
+      "class": "IF-5B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "YIR"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 27,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13AT13",
+      "className": "Alat dan Teknik Pemrograman",
+      "class": "IF-5A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "YIR"
+      ],
+      "room": "G5-Lab1",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 28,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13AT13",
+      "className": "Alat dan Teknik Pemrograman",
+      "class": "IF-5B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "YIR"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 27,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13ML13",
+      "className": "Manajemen Proyek Perangkat Lunak",
+      "class": "IF-5A,IF-5B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "ADF"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 55,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13AK13",
+      "className": "Analisis Kebutuhan  Perangkat Lunak",
+      "class": "IF-5A",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "TQB"
+      ],
+      "room": "G5-Lab1",
+      "timeSlot": {
+        "period": 8,
+        "day": "Wednesday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 28,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13AK13",
+      "className": "Analisis Kebutuhan  Perangkat Lunak",
+      "class": "IF-5B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "TQB"
+      ],
+      "room": "G2-R4",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 27,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13MP12",
+      "className": "Metodologi Penelitian",
+      "class": "IF-7A,IF-7B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "NGT",
+        "PAY"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 5,
+        "day": "Wednesday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 60,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13UP13",
+      "className": "Pengujian Perangkat Lunak",
+      "class": "IF-7A,IF-7B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "ADF"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 8,
+        "day": "Wednesday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 60,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13DL23",
+      "className": "Matakuliah Pilihan 3: Deep Learning",
+      "class": "IF-7A,IF-7B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MZF"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 3,
+        "day": "Thursday",
+        "startTime": "09:10",
+        "endTime": "11:40"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13PS23",
+      "className": "Matakuliah Pilihan 4: Permodelan dan Simulasi",
+      "class": "IF-7A,IF-7B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "PAY"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF12CC53",
+      "className": "Matakuliah Pilihan 5: Cloud Computing",
+      "class": "IF-7A,IF-7B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "MNI"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13PP13",
+      "className": "Proyek Pengembangan Perangkat Lunak",
+      "class": "IF-7A,IF-7B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "YIR"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IF13IT23",
+      "className": "Matakuliah pilihan 6: Internet of Things",
+      "class": "IF-7A,IF-7B",
+      "prodi": "INFORMATIKA",
+      "lecturers": [
+        "YIR"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 35,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13ST03",
+      "className": "Pengantar Sistem & Teknologi Informasi",
+      "class": "SI-1A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "TKN"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 3,
+        "day": "Wednesday",
+        "startTime": "09:10",
+        "endTime": "11:40"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13EB02",
+      "className": "Pengantar Ekonomi dan Bisnis",
+      "class": "SI-1A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "MAL"
+      ],
+      "room": "CM-205",
+      "timeSlot": {
+        "period": 5,
+        "day": "Monday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13EB02",
+      "className": "Pengantar Ekonomi dan Bisnis",
+      "class": "SI-3A, SI-7A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "MAL"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 7,
+        "day": "Wednesday",
+        "startTime": "12:30",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13EB02",
+      "className": "Pengantar Ekonomi dan Bisnis",
+      "class": "SI-3B, SI-7A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "PTA"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 5,
+        "day": "Monday",
+        "startTime": "10:50",
+        "endTime": "12:30"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13EB02",
+      "className": "Pengantar Ekonomi dan Bisnis",
+      "class": "SI-5A, SI-7A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "PTA"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13MD13",
+      "className": "Matematika Diskrit",
+      "class": "SI-1A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "BMR"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13AL02",
+      "className": "Aljabar Linier",
+      "class": "SI-1A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "PTA"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "15:00"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13JK02",
+      "className": "Jaringan Komputer",
+      "class": "SI-1A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "ADF"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 3,
+        "day": "Monday",
+        "startTime": "09:10",
+        "endTime": "10:50"
+      },
+      "sks": 2,
+      "needsLab": true,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13JK02",
+      "className": "Jaringan Komputer",
+      "class": "SI-1B",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "ADF"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": true,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13SO02",
+      "className": "Pengantar Sistem Operasi",
+      "class": "SI-1A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "FDN"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": true,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13SO02",
+      "className": "Pengantar Sistem Operasi",
+      "class": "SI-1B",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "FDN"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13KI02",
+      "className": "Keterampilan Interpersonal Bisnis",
+      "class": "SI-1A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "GFP"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": true,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13RG02",
+      "className": "Agama",
+      "class": "SI-1A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "MHA"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 6,
+        "day": "Thursday",
+        "startTime": "11:40",
+        "endTime": "14:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13AD03",
+      "className": "Analisis & Desain Proses Bisnis",
+      "class": "SI-3A,SI-3B",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "TKN"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 56,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13SB13",
+      "className": "Sistem Basis Data",
+      "class": "SI-3A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "BMR"
+      ],
+      "room": "G5-Lab2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13SB13",
+      "className": "Sistem Basis Data",
+      "class": "SI-3B",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "BMR"
+      ],
+      "room": "G5-Lab1",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13AS13",
+      "className": "Algoritma dan Struktur Data",
+      "class": "SI-3A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "MNI"
+      ],
+      "room": "G5-Lab2",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "DT13AS13",
+      "className": "Algoritma dan Struktur Data",
+      "class": "SI-3B",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "MNI"
+      ],
+      "room": "G5-Lab2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13VA33",
+      "className": "Visualisasi dan Analisis Data",
+      "class": "SI-3A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "BMR",
+        "ADF"
+      ],
+      "room": "G5-Lab2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13VA33",
+      "className": "Visualisasi dan Analisis Data",
+      "class": "SI-3B",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "BMR",
+        "ADF"
+      ],
+      "room": "G5-Lab2",
+      "timeSlot": {
+        "period": 7,
+        "day": "Monday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13VA33",
+      "className": "Visualisasi dan Analisis Data",
+      "class": "SI-5A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "BMR",
+        "ADF"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 44,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13PL33",
+      "className": "Pengembangan Perangkat Lunak",
+      "class": "SI-3A,SI-3B",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "ADF"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 56,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13EL03",
+      "className": "Bahasa Inggris",
+      "class": "SI-3A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "MAF"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 56,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13SR13",
+      "className": "Simulasi & Redesain Proses Bisnis",
+      "class": "SI-5A,SI-7A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "TKN"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Thursday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 55,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13SR13",
+      "className": "Simulasi & Redesain Proses Bisnis",
+      "class": "SI-5B,SI-7A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "TKN"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 9,
+        "day": "Monday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 55,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13PD23",
+      "className": "Penambangan Data",
+      "class": "SI-5A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "BMR"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13PT02",
+      "className": "Manajemen Proyek TI",
+      "class": "SI-5A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "PTA"
+      ],
+      "room": "CM-103",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13AU33",
+      "className": "Audit TI",
+      "class": "SI-5A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "TKN"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 1,
+        "day": "Friday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13PS23",
+      "className": "Perencanaan Strategis SI",
+      "class": "SI-5A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "GFP"
+      ],
+      "room": "CM-102",
+      "timeSlot": {
+        "period": 4,
+        "day": "Wednesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13MP13",
+      "className": "Metodologi Penelitian & Penulisan Ilmiah",
+      "class": "SI-7A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "GFP"
+      ],
+      "room": "B3-R2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13IM43",
+      "className": "Implementasi Manajemen Proyek TI",
+      "class": "SI-7A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "GFP"
+      ],
+      "room": "CM-208",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13SD53",
+      "className": "Sistem Dinamik",
+      "class": "SI-5A, SI-7A",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "PTA"
+      ],
+      "room": "G4-R3",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "IS13KC53",
+      "className": "Manajemen Perubahan Organisasi",
+      "class": "SI-3A, SI-3B",
+      "prodi": "SISTEM INFORMASI",
+      "lecturers": [
+        "GFP"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 56,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13TI02",
+      "className": "Pengantar Teknologi Informasi",
+      "class": "DKV-1A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "RNU"
+      ],
+      "room": "G2-R7",
+      "timeSlot": {
+        "period": 1,
+        "day": "Wednesday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13ND03",
+      "className": "Nirmana Dwimatra",
+      "class": "DKV-1A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "TAN"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 9,
+        "day": "Thursday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13PD03",
+      "className": "Pengantar DKV",
+      "class": "DKV-1A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "RNA"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 7,
+        "day": "Tuesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13GT03",
+      "className": "Gambar Teknik",
+      "class": "DKV-1A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "MNR"
+      ],
+      "room": "CM-204",
+      "timeSlot": {
+        "period": 3,
+        "day": "Wednesday",
+        "startTime": "09:10",
+        "endTime": "11:40"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13GB03",
+      "className": "Gambar Bentuk",
+      "class": "DKV-1A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "MNR"
+      ],
+      "room": "G2-R6",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13KR03",
+      "className": "Kreatifitas",
+      "class": "DKV-1A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "RNU"
+      ],
+      "room": "G3-R1",
+      "timeSlot": {
+        "period": 6,
+        "day": "Monday",
+        "startTime": "11:40",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13IL02",
+      "className": "Bahasa Indonesia",
+      "class": "DKV-3A, ES-1A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "ARI"
+      ],
+      "room": "G4-R1",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "09:10"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 60,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13MP03",
+      "className": "Metode Reprografika",
+      "class": "DKV-3A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "DAP"
+      ],
+      "room": "G2-R6",
+      "timeSlot": {
+        "period": 4,
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13DI04",
+      "className": "DKV I Desain Informasi",
+      "class": "DKV-3A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "RNA"
+      ],
+      "room": "B3-R1",
+      "timeSlot": {
+        "period": 9,
+        "day": "Monday",
+        "startTime": "14:10",
+        "endTime": "18:00"
+      },
+      "sks": 4,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "VD13SK03",
+      "className": "Sketsa",
+      "class": "DKV-3A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "DAP"
+      ],
+      "room": "G2-R3",
+      "timeSlot": {
+        "period": 9,
+        "day": "Tuesday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13FD03",
+      "className": "Fotografi Dasar",
+      "class": "DKV-3A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "MNR"
+      ],
+      "room": "G5-LabAudioVisual",
+      "timeSlot": {
+        "period": 8,
+        "day": "Thursday",
+        "startTime": "13:20",
+        "endTime": "16:20"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13TG03",
+      "className": "Tipografi",
+      "class": "DKV-3A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "TAN"
+      ],
+      "room": "G4-R4",
+      "timeSlot": {
+        "period": 4,
+        "day": "Monday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13RI03",
+      "className": "Budaya Rupa Indonesia",
+      "class": "DKV-3A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "RNA"
+      ],
+      "room": "CM-207",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "GS13RG02",
+      "className": "Agama",
+      "class": "DKV-5A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "MHA"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 8,
+        "day": "Friday",
+        "startTime": "13:20",
+        "endTime": "15:00"
+      },
+      "sks": 2,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13JN14",
+      "className": "DKV III Jenama",
+      "class": "DKV-5A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "TAN"
+      ],
+      "room": "CM-Lab3",
+      "timeSlot": {
+        "period": 9,
+        "day": "Wednesday",
+        "startTime": "14:10",
+        "endTime": "18:00"
+      },
+      "sks": 4,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13CW03",
+      "className": "Copywriting",
+      "class": "DKV-5A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "RNU"
+      ],
+      "room": "CM-101",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13IK03",
+      "className": "Bisnis Industri Kreatif",
+      "class": "DKV-5A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "TAN"
+      ],
+      "room": "B3-R3",
+      "timeSlot": {
+        "period": 6,
+        "day": "Tuesday",
+        "startTime": "11:40",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 50,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13DK03",
+      "className": "Desain Kemasan",
+      "class": "DKV-5A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "RNA"
+      ],
+      "room": "G4-R2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13SM03",
+      "className": "Seminar dan Metodologi Penelitian",
+      "class": "DKV-7A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "RNU"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 1,
+        "day": "Monday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13EX03",
+      "className": "Exhibition",
+      "class": "DKV-7A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "DAP"
+      ],
+      "room": "CM-201",
+      "timeSlot": {
+        "period": 7,
+        "day": "Wednesday",
+        "startTime": "12:30",
+        "endTime": "15:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13HC03",
+      "className": "Digital Heritage Conservation",
+      "class": "DKV-7A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "DAP"
+      ],
+      "room": "CM-LabVirtual",
+      "timeSlot": {
+        "period": 1,
+        "day": "Thursday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13KM53",
+      "className": "Komik",
+      "class": "DKV-7A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "DAP"
+      ],
+      "room": "CM-202",
+      "timeSlot": {
+        "period": 9,
+        "day": "Monday",
+        "startTime": "14:10",
+        "endTime": "17:10"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 40,
+      "classType": "pagi",
+      "prayerTimeAdded": 30,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13SA53",
+      "className": "Street Art",
+      "class": "DKV-7A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "DAP"
+      ],
+      "room": "CM-206",
+      "timeSlot": {
+        "period": 2,
+        "day": "Friday",
+        "startTime": "08:20",
+        "endTime": "10:50"
+      },
+      "sks": 3,
+      "needsLab": false,
+      "participants": 45,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": true
+    },
+    {
+      "classId": "VD13IE53",
+      "className": "User Interface & User Experience",
+      "class": "DKV-7A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "MNR"
+      ],
+      "room": "G5-Lab2",
+      "timeSlot": {
+        "period": 4,
+        "day": "Thursday",
+        "startTime": "10:00",
+        "endTime": "12:30"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    },
+    {
+      "classId": "VD13GM53",
+      "className": "Desain Game",
+      "class": "DKV-7A",
+      "prodi": "DESAIN KOMUNIKASI VISUAL",
+      "lecturers": [
+        "MNR"
+      ],
+      "room": "G5-Lab2",
+      "timeSlot": {
+        "period": 1,
+        "day": "Tuesday",
+        "startTime": "07:30",
+        "endTime": "10:00"
+      },
+      "sks": 3,
+      "needsLab": true,
+      "participants": 30,
+      "classType": "pagi",
+      "prayerTimeAdded": 0,
+      "isOverflowToLab": false
+    }
+  ],
+  "violation": [
+    {
+      "constraintName": "Preferred Time",
+      "constraintType": "soft",
+      "score": 0.6454081632653061
+    },
+    {
+      "constraintName": "Preferred Room",
+      "constraintType": "soft",
+      "score": 0
+    },
+    {
+      "constraintName": "Transit Time",
+      "constraintType": "soft",
+      "score": 0
+    },
+    {
+      "constraintName": "Compactness",
+      "constraintType": "soft",
+      "score": 0.9720357941834452
+    },
+    {
+      "constraintName": "Prayer Time Overlap",
+      "constraintType": "soft",
+      "score": 0.8844632768361571
+    },
+    {
+      "constraintName": "Evening Class Priority",
+      "constraintType": "soft",
+      "score": 0.8088235294117648
+    },
+    {
+      "constraintName": "Research Day",
+      "constraintType": "soft",
+      "score": 0.8870317002881853
+    },
+    {
+      "constraintName": "Overflow Penalty",
+      "constraintType": "soft",
+      "score": 0.9454802259887001
+    }
+  ]
+}

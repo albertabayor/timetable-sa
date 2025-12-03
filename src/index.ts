@@ -1,82 +1,57 @@
 /**
  * @packageDocumentation
- * University Course Timetabling Problem (UCTP) Solver
+ * Generic Simulated Annealing Library for Constraint Satisfaction Problems
  *
- * A powerful, modular solver for university timetabling using Simulated Annealing.
+ * A powerful, unopinionated optimization library that can solve ANY constraint-satisfaction
+ * problem using Simulated Annealing algorithm.
  *
  * @example
  * ```typescript
- * import { SimulatedAnnealing, loadDataFromExcel } from 'timetable-sa';
+ * import { SimulatedAnnealing } from 'timetable-sa';
+ * import type { Constraint, MoveGenerator, SAConfig } from 'timetable-sa';
  *
- * // Load data from Excel file
- * const data = loadDataFromExcel('./timetable-data.xlsx');
+ * // Define your state type
+ * interface MyState {
+ *   // ... your domain-specific state structure
+ * }
  *
- * // Create solver instance
- * const solver = new SimulatedAnnealing(
- *   data.rooms,
- *   data.lecturers,
- *   data.classes
- * );
+ * // Define constraints
+ * const constraints: Constraint<MyState>[] = [
+ *   // ... your hard and soft constraints
+ * ];
  *
- * // Run optimization
+ * // Define move generators
+ * const moveGenerators: MoveGenerator<MyState>[] = [
+ *   // ... your move operators
+ * ];
+ *
+ * // Configure the algorithm
+ * const config: SAConfig<MyState> = {
+ *   initialTemperature: 1000,
+ *   minTemperature: 0.01,
+ *   coolingRate: 0.995,
+ *   maxIterations: 50000,
+ *   hardConstraintWeight: 10000,
+ *   cloneState: (state) => JSON.parse(JSON.stringify(state)),
+ * };
+ *
+ * // Create solver and run optimization
+ * const solver = new SimulatedAnnealing(initialState, constraints, moveGenerators, config);
  * const solution = solver.solve();
+ *
  * console.log(`Fitness: ${solution.fitness}`);
- * console.log(`Classes scheduled: ${solution.schedule.length}`);
+ * console.log(`Iterations: ${solution.iterations}`);
  * ```
  */
 
-// Core algorithm
-export { SimulatedAnnealing } from "./algorithm/index.js";
-export { DEFAULT_ALGORITHM_CONFIG, DEFAULT_SOFT_CONSTRAINT_WEIGHTS, mergeConfig } from "./algorithm/index.js";
-
-// Constraints
-export { ConstraintChecker } from "./constraints/index.js";
-
-// Parsers
-export { loadDataFromExcel } from "./parsers/index.js";
-export { loadDataFromJSON, loadDataFromObject } from "./parsers/index.js";
-
-// Constants
-export {
-  PRAYER_TIMES,
-  LAB_ROOMS,
-  NON_LAB_ROOMS,
-  EXCLUSIVE_ROOMS,
-  DAYS,
-  TIME_SLOTS_PAGI,
-  TIME_SLOTS_SORE,
-  TIME_SLOTS,
-  initializeTimeSlots,
-} from "./constants/index.js";
-
-// Utilities
-export {
-  timeToMinutes,
-  minutesToTime,
-  getPrayerTimeOverlap,
-  calculateEndTime,
-  isValidFridayStartTime,
-  isStartingDuringPrayerTime,
-  canUseExclusiveRoom,
-  isRoomAvailable,
-  getAvailableRooms,
-} from "./utils/index.js";
-
-// Types
+// Export core library (unopinionated)
+export { SimulatedAnnealing } from './core/index.js';
 export type {
-  Room,
-  Lecturer,
-  ClassRequirement,
-  TimeSlot,
-  ScheduleEntry,
+  Constraint,
+  MoveGenerator,
+  SAConfig,
+  LoggingConfig,
   Solution,
-  ViolationReport,
-  ConstraintViolation,
   OperatorStats,
-  ExclusiveRoomConfig,
-  PrayerTime,
-  AlgorithmConfig,
-  SoftConstraintWeights,
-  TimetableInput,
-  TimetableOutput,
-} from "./types/index.js";
+  Violation,
+} from './core/index.js';

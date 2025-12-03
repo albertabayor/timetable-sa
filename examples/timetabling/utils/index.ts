@@ -39,3 +39,11 @@ export {
   initializeTimeSlots,
   setCustomTimeSlots,
 } from './timeslot-generator.js';
+
+export {
+  getValidTimeSlots,
+  getValidTimeSlotsWithPriority,
+  getValidTimeSlotAndRoomCombinations,
+  getValidTimeSlotAndRoomCombinationsWithPriority,
+  isTimeSlotValid,
+} from './slot-validator.js';

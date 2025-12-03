@@ -12,6 +12,7 @@ export class NoRoomConflict implements Constraint<TimetableState> {
 
   evaluate(state: TimetableState): number {
     const { schedule } = state;
+    let violationCount = 0;
 
     for (let i = 0; i < schedule.length; i++) {
       for (let j = i + 1; j < schedule.length; j++) {
@@ -19,12 +20,14 @@ export class NoRoomConflict implements Constraint<TimetableState> {
         const entry2 = schedule[j];
 
         if (this.hasRoomConflict(entry1, entry2)) {
-          return 0; // Violation found
+          violationCount++;
         }
       }
     }
 
-    return 1; // No violations
+    // Return score between 0 and 1
+    if (violationCount === 0) return 1;
+    return 1 / (1 + violationCount);
   }
 
   describe(state: TimetableState): string | undefined {
@@ -42,6 +45,26 @@ export class NoRoomConflict implements Constraint<TimetableState> {
     }
 
     return undefined;
+  }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule } = state;
+    const violations: string[] = [];
+
+    for (let i = 0; i < schedule.length; i++) {
+      for (let j = i + 1; j < schedule.length; j++) {
+        const entry1 = schedule[i];
+        const entry2 = schedule[j];
+
+        if (this.hasRoomConflict(entry1, entry2)) {
+          violations.push(
+            `Room ${entry1.room} is occupied by both ${entry1.classId} (${entry1.timeSlot.startTime}) and ${entry2.classId} (${entry2.timeSlot.startTime}) on ${entry1.timeSlot.day}`
+          );
+        }
+      }
+    }
+
+    return violations;
   }
 
   private hasRoomConflict(entry1: ScheduleEntry, entry2: ScheduleEntry): boolean {

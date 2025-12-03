@@ -25,7 +25,6 @@ export class SimulatedAnnealing<TState> {
     maxReheats: number;
     logging: Required<NonNullable<SAConfig<TState>['logging']>>;
   };
-
   // Operator statistics
   private operatorStats: OperatorStats = {};
 
@@ -201,7 +200,16 @@ export class SimulatedAnnealing<TState> {
       this.operatorStats[operatorName]!.attempts++;
 
       const newFitness = this.calculateFitness(newState);
-      const acceptProb = this.acceptanceProbability(currentFitness, newFitness, temperature);
+      const newHardViolations = this.countHardViolations(newState);
+
+      // STRICT Phase 2: NEVER accept solutions that increase hard violations
+      const acceptProb = this.acceptanceProbabilityPhase2(
+        bestHardViolations,
+        newHardViolations,
+        currentFitness,
+        newFitness,
+        temperature
+      );
 
       if (Math.random() < acceptProb) {
         this.operatorStats[operatorName]!.accepted++;
@@ -213,12 +221,18 @@ export class SimulatedAnnealing<TState> {
         currentState = newState;
         currentFitness = newFitness;
 
+        // Track if this improves or maintains hard violations
+        if (newHardViolations < bestHardViolations) {
+          bestHardViolations = newHardViolations;
+          this.log('debug', `[Phase 2] Hard violations reduced to ${bestHardViolations}`);
+        }
+
         if (newFitness < bestFitness) {
           bestState = this.config.cloneState(currentState);
           bestFitness = newFitness;
           iterationsWithoutImprovement = 0;
 
-          this.log('debug', `[Phase 2] New best: Fitness = ${bestFitness.toFixed(2)}, Operator = ${operatorName}`);
+          this.log('debug', `[Phase 2] New best: Fitness = ${bestFitness.toFixed(2)}, Hard violations = ${newHardViolations}, Operator = ${operatorName}`);
         } else {
           iterationsWithoutImprovement++;
         }
@@ -318,7 +332,17 @@ export class SimulatedAnnealing<TState> {
     for (const constraint of this.hardConstraints) {
       const score = constraint.evaluate(state);
       if (score < 1) {
-        count++;
+        // If getViolations() is available, count actual violations
+        if (constraint.getViolations) {
+          const violations = constraint.getViolations(state);
+          count += violations.length;
+        } else {
+          // Fallback: try to infer violation count from score
+          // Many constraints use: score = 1 / (1 + violationCount)
+          // Therefore: violationCount ≈ (1/score) - 1
+          const inferredCount = Math.round((1 / score) - 1);
+          count += Math.max(1, inferredCount); // At least 1 if score < 1
+        }
       }
     }
 
@@ -410,6 +434,34 @@ export class SimulatedAnnealing<TState> {
   }
 
   /**
+   * Phase 2 acceptance probability (strictly enforce hard constraints)
+   */
+  private acceptanceProbabilityPhase2(
+    bestHardViolations: number,
+    newHardViolations: number,
+    currentFitness: number,
+    newFitness: number,
+    temperature: number
+  ): number {
+    // CRITICAL: NEVER accept solutions that worsen hard violations
+    if (newHardViolations > bestHardViolations) {
+      return 0.0;
+    }
+
+    // If hard violations improved: always accept
+    if (newHardViolations < bestHardViolations) {
+      return 1.0;
+    }
+
+    // Same hard violations: standard SA acceptance based on fitness
+    if (newFitness < currentFitness) {
+      return 1.0;
+    }
+
+    return Math.exp((currentFitness - newFitness) / temperature);
+  }
+
+  /**
    * Standard acceptance probability
    */
   private acceptanceProbability(
@@ -434,20 +486,34 @@ export class SimulatedAnnealing<TState> {
       const score = constraint.evaluate(state);
 
       if (score < 1) {
-        const violation: Violation = {
-          constraintName: constraint.name,
-          constraintType: constraint.type,
-          score: score,
-        };
-
-        if (constraint.describe) {
-          const description = constraint.describe(state);
-          if (description !== undefined) {
-            violation.description = description;
+        // Use getViolations() if available for detailed violation list
+        if (constraint.getViolations) {
+          const descriptions = constraint.getViolations(state);
+          for (const description of descriptions) {
+            violations.push({
+              constraintName: constraint.name,
+              constraintType: constraint.type,
+              score: score,
+              description: description,
+            });
           }
-        }
+        } else {
+          // Fallback to describe() for backward compatibility
+          const violation: Violation = {
+            constraintName: constraint.name,
+            constraintType: constraint.type,
+            score: score,
+          };
 
-        violations.push(violation);
+          if (constraint.describe) {
+            const description = constraint.describe(state);
+            if (description !== undefined) {
+              violation.description = description;
+            }
+          }
+
+          violations.push(violation);
+        }
       }
     }
 

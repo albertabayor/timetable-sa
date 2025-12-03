@@ -4,6 +4,7 @@
 
 import type { MoveGenerator } from 'timetable-sa';
 import type { TimetableState } from '../types/index.js';
+import { isRoomAvailable, canUseExclusiveRoom } from '../utils/index.js';
 
 export class ChangeRoom implements MoveGenerator<TimetableState> {
   name = 'Change Room';
@@ -24,8 +25,32 @@ export class ChangeRoom implements MoveGenerator<TimetableState> {
     const randomIndex = Math.floor(Math.random() * newState.schedule.length);
     const entry = newState.schedule[randomIndex];
 
-    // Pick random room
-    const newRoom = newState.rooms[Math.floor(Math.random() * newState.rooms.length)];
+    // Filter available rooms (exclude current entry from schedule check)
+    const otherSchedule = newState.schedule.filter((_, idx) => idx !== randomIndex);
+
+    const availableRooms = newState.rooms.filter(room => {
+      // Check capacity
+      if (room.Capacity < entry.participants) return false;
+
+      // Check exclusive room permissions
+      if (!canUseExclusiveRoom(room.Code, entry.className, entry.prodi)) return false;
+
+      // Check if room is available at this time
+      if (!isRoomAvailable(otherSchedule, room.Code, entry.timeSlot, entry.sks)) return false;
+
+      // Check lab requirement
+      if (entry.needsLab && !room.Type.toLowerCase().includes('lab')) return false;
+
+      return true;
+    });
+
+    // If no available rooms, return unchanged state
+    if (availableRooms.length === 0) {
+      return newState;
+    }
+
+    // Pick random available room
+    const newRoom = availableRooms[Math.floor(Math.random() * availableRooms.length)];
 
     // Update room
     entry.room = newRoom.Code;

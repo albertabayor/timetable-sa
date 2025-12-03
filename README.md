@@ -256,6 +256,27 @@ This ensures hard constraints are always satisfied before optimizing for prefere
 
 The solver tracks success rates of each move operator and adaptively selects the most effective ones. Operators with higher success rates are selected more frequently (70% weighted selection + 30% random exploration).
 
+## Documentation
+
+Comprehensive documentation is available in the [`docs/`](./docs) directory:
+
+- **[Getting Started](./docs/getting-started.md)** - Your first program with timetable-sa
+- **[Core Concepts](./docs/core-concepts.md)** - Understanding states, constraints, and moves
+- **[Configuration Guide](./docs/configuration.md)** - Detailed parameter tuning
+- **[Advanced Features](./docs/advanced-features.md)** - Two-phase optimization, reheating, adaptive operators
+- **[API Reference](./docs/api-reference.md)** - Complete API documentation
+- **[Examples](./docs/examples.md)** - Complete working examples
+- **[Migration Guide](./docs/migration-guide.md)** - Migrating from v1.x to v2.0
+
+## Examples
+
+See the [`examples/timetabling/`](./examples/timetabling) directory for a complete university timetabling implementation using v2.0.
+
+Run the example:
+```bash
+npm run example:timetabling
+```
+
 ## Migration from v1.x
 
 v2.0 is a **complete rewrite** with breaking changes. The old v1 API is not compatible.
@@ -276,7 +297,7 @@ In v2, **you** define:
 - Your move operators
 - Everything else specific to your domain
 
-If you were using v1 for university timetabling, examples will be added showing how to build timetabling with v2.
+**See the [Migration Guide](./docs/migration-guide.md) for detailed instructions.**
 
 ## License
 
@@ -284,7 +305,7 @@ MIT
 
 ## Author
 
-Albert A Bayor
+Emmanuel Alejandro Albert A Bayor
 
 ## Contributing
 

@@ -102,4 +102,26 @@ export interface Constraint<TState> {
    * ```
    */
   describe?(state: TState): string | undefined;
+
+  /**
+   * Optional: Get detailed list of all violations for this constraint.
+   *
+   * This method allows constraints to report ALL violations, not just the first one.
+   * If implemented, this method will be used instead of `describe()` for violation reporting.
+   *
+   * @param state - Current state
+   * @returns Array of violation descriptions, or empty array if constraint is satisfied
+   *
+   * @example
+   * ```typescript
+   * getViolations(state: TimetableState): string[] {
+   *   const violations: string[] = [];
+   *   for (const conflict of findConflicts(state)) {
+   *     violations.push(`Room ${conflict.room} has overlapping classes: ${conflict.class1} and ${conflict.class2}`);
+   *   }
+   *   return violations;
+   * }
+   * ```
+   */
+  getViolations?(state: TState): string[];
 }

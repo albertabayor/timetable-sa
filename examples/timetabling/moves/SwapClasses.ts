@@ -4,6 +4,7 @@
 
 import type { MoveGenerator } from 'timetable-sa';
 import type { TimetableState } from '../types/index.js';
+import { calculateEndTime } from '../utils/index.js';
 
 export class SwapClasses implements MoveGenerator<TimetableState> {
   name = 'Swap Classes';
@@ -39,6 +40,16 @@ export class SwapClasses implements MoveGenerator<TimetableState> {
       const tempTimeSlot = entry1.timeSlot;
       entry1.timeSlot = entry2.timeSlot;
       entry2.timeSlot = tempTimeSlot;
+
+      // Recalculate end times based on each class's SKS
+      const calc1 = calculateEndTime(entry1.timeSlot.startTime, entry1.sks, entry1.timeSlot.day);
+      const calc2 = calculateEndTime(entry2.timeSlot.startTime, entry2.sks, entry2.timeSlot.day);
+
+      entry1.timeSlot.endTime = calc1.endTime;
+      entry1.prayerTimeAdded = calc1.prayerTimeAdded;
+
+      entry2.timeSlot.endTime = calc2.endTime;
+      entry2.prayerTimeAdded = calc2.prayerTimeAdded;
     } else if (swapType < 0.66) {
       // Swap rooms only
       const tempRoom = entry1.room;
@@ -54,6 +65,16 @@ export class SwapClasses implements MoveGenerator<TimetableState> {
 
       entry2.timeSlot = tempTimeSlot;
       entry2.room = tempRoom;
+
+      // Recalculate end times based on each class's SKS
+      const calc1 = calculateEndTime(entry1.timeSlot.startTime, entry1.sks, entry1.timeSlot.day);
+      const calc2 = calculateEndTime(entry2.timeSlot.startTime, entry2.sks, entry2.timeSlot.day);
+
+      entry1.timeSlot.endTime = calc1.endTime;
+      entry1.prayerTimeAdded = calc1.prayerTimeAdded;
+
+      entry2.timeSlot.endTime = calc2.endTime;
+      entry2.prayerTimeAdded = calc2.prayerTimeAdded;
     }
 
     return newState;

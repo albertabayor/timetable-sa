@@ -1,16 +1,18 @@
 /**
  * Move operator: Change time slot of a random class
+ *
+ * UPDATED: Now uses constraint-aware slot validation to only select valid slots
  */
 
-import type { MoveGenerator } from 'timetable-sa';
-import type { TimetableState } from '../types/index.js';
-import { TIME_SLOTS_PAGI, TIME_SLOTS_SORE } from '../utils/index.js';
+import type { MoveGenerator } from "timetable-sa";
+import type { TimetableState } from "../types/index.js";
+import { getValidTimeSlotsWithPriority, calculateEndTime } from "../utils/index.js";
 
 export class ChangeTimeSlot implements MoveGenerator<TimetableState> {
-  name = 'Change Time Slot';
+  name = "Change Time Slot";
 
   canApply(state: TimetableState): boolean {
-    return state.schedule.length > 0 && state.availableTimeSlots.length > 0;
+    return state.schedule.length > 0;
   }
 
   generate(state: TimetableState, temperature: number): TimetableState {
@@ -25,20 +27,40 @@ export class ChangeTimeSlot implements MoveGenerator<TimetableState> {
     const randomIndex = Math.floor(Math.random() * newState.schedule.length);
     const entry = newState.schedule[randomIndex];
 
-    // Get available time slots based on class type
-    let availableSlots = entry.classType === 'sore'
-      ? TIME_SLOTS_SORE.filter(s => s.day !== 'Saturday' || entry.prodi.toLowerCase().includes('magister manajemen'))
-      : TIME_SLOTS_PAGI.filter(s => s.day !== 'Saturday' || entry.prodi.toLowerCase().includes('magister manajemen'));
+    // Get constraint-aware valid slots (without room checking for more flexibility)
+    const { preferred, acceptable } = getValidTimeSlotsWithPriority(newState, entry);
 
-    if (availableSlots.length === 0) {
-      return newState;
+    // Prefer non-Friday slots (80% of time), but allow Friday if needed
+    let slotsToUse = preferred;
+    if (preferred.length === 0 || (acceptable.length > 0 && Math.random() < 0.2)) {
+      slotsToUse = acceptable;
     }
 
-    // Pick random time slot
-    const newSlot = availableSlots[Math.floor(Math.random() * availableSlots.length)];
+    // Combine if both available
+    if (preferred.length > 0 && acceptable.length > 0 && Math.random() < 0.8) {
+      slotsToUse = preferred;
+    } else if (acceptable.length > 0) {
+      slotsToUse = acceptable;
+    }
+
+    if (slotsToUse.length === 0) {
+      return newState; // No valid slots available
+    }
+
+    // Pick random valid time slot
+    const newSlot = slotsToUse[Math.floor(Math.random() * slotsToUse.length)];
+
+    // Calculate prayer time adjustment
+    const calc = calculateEndTime(newSlot.startTime, entry.sks, newSlot.day);
 
     // Update time slot
-    entry.timeSlot = { ...newSlot };
+    entry.timeSlot = {
+      period: newSlot.period,
+      day: newSlot.day,
+      startTime: newSlot.startTime,
+      endTime: newSlot.endTime, // Use the pre-calculated end time from validator
+    };
+    entry.prayerTimeAdded = calc.prayerTimeAdded;
 
     return newState;
   }

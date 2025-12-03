@@ -12,20 +12,24 @@ export class RoomCapacity implements Constraint<TimetableState> {
   evaluate(state: TimetableState): number {
     const { schedule, rooms } = state;
     const roomMap = new Map(rooms.map(r => [r.Code, r]));
+    let violationCount = 0;
 
     for (const entry of schedule) {
       const room = roomMap.get(entry.room);
 
       if (!room) {
-        return 0; // Room not found - violation
+        violationCount++; // Room not found
+        continue;
       }
 
       if (room.Capacity < entry.participants) {
-        return 0; // Room too small - violation
+        violationCount++; // Room too small
       }
     }
 
-    return 1; // All rooms have sufficient capacity
+    // Return score between 0 and 1
+    if (violationCount === 0) return 1;
+    return 1 / (1 + violationCount);
   }
 
   describe(state: TimetableState): string | undefined {
@@ -45,5 +49,28 @@ export class RoomCapacity implements Constraint<TimetableState> {
     }
 
     return undefined;
+  }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule, rooms } = state;
+    const roomMap = new Map(rooms.map(r => [r.Code, r]));
+    const violations: string[] = [];
+
+    for (const entry of schedule) {
+      const room = roomMap.get(entry.room);
+
+      if (!room) {
+        violations.push(`Room ${entry.room} not found for class ${entry.classId}`);
+        continue;
+      }
+
+      if (room.Capacity < entry.participants) {
+        violations.push(
+          `Room ${entry.room} capacity (${room.Capacity}) < participants (${entry.participants}) for class ${entry.classId}`
+        );
+      }
+    }
+
+    return violations;
   }
 }

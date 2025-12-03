@@ -4,7 +4,7 @@
 
 import type { Constraint } from 'timetable-sa';
 import type { TimetableState, ScheduleEntry } from '../../types/index.js';
-import { timeToMinutes, calculateEndTime } from '../../utils/index.js';
+import { timeToMinutes, calculateEndTime, hasClassOverlap } from '../../utils/index.js';
 
 export class NoLecturerConflict implements Constraint<TimetableState> {
   name = 'No Lecturer Conflict';
@@ -12,6 +12,7 @@ export class NoLecturerConflict implements Constraint<TimetableState> {
 
   evaluate(state: TimetableState): number {
     const { schedule } = state;
+    let violationCount = 0;
 
     for (let i = 0; i < schedule.length; i++) {
       for (let j = i + 1; j < schedule.length; j++) {
@@ -19,12 +20,14 @@ export class NoLecturerConflict implements Constraint<TimetableState> {
         const entry2 = schedule[j];
 
         if (this.hasLecturerConflict(entry1, entry2)) {
-          return 0; // Violation found
+          violationCount++;
         }
       }
     }
 
-    return 1; // No violations
+    // Return score between 0 and 1
+    if (violationCount === 0) return 1;
+    return 1 / (1 + violationCount);
   }
 
   describe(state: TimetableState): string | undefined {
@@ -43,6 +46,27 @@ export class NoLecturerConflict implements Constraint<TimetableState> {
     }
 
     return undefined;
+  }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule } = state;
+    const violations: string[] = [];
+
+    for (let i = 0; i < schedule.length; i++) {
+      for (let j = i + 1; j < schedule.length; j++) {
+        const entry1 = schedule[i];
+        const entry2 = schedule[j];
+
+        if (this.hasLecturerConflict(entry1, entry2)) {
+          const conflictingLecturer = entry1.lecturers.find(l => entry2.lecturers.includes(l));
+          violations.push(
+            `Lecturer ${conflictingLecturer} has conflict between ${entry1.classId} (${entry1.timeSlot.day} ${entry1.timeSlot.startTime}) and ${entry2.classId} (${entry2.timeSlot.day} ${entry2.timeSlot.startTime})`
+          );
+        }
+      }
+    }
+
+    return violations;
   }
 
   private hasLecturerConflict(entry1: ScheduleEntry, entry2: ScheduleEntry): boolean {

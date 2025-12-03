@@ -13,6 +13,7 @@ export class NoProdiConflict implements Constraint<TimetableState> {
 
   evaluate(state: TimetableState): number {
     const { schedule } = state;
+    let violationCount = 0;
 
     for (let i = 0; i < schedule.length; i++) {
       for (let j = i + 1; j < schedule.length; j++) {
@@ -20,12 +21,18 @@ export class NoProdiConflict implements Constraint<TimetableState> {
         const entry2 = schedule[j];
 
         if (this.hasProdiConflict(entry1, entry2)) {
-          return 0; // Violation found
+          violationCount++;
         }
       }
     }
 
-    return 1; // No violations
+    // Return score between 0 and 1
+    // 0 = all violations, 1 = no violations
+    if (violationCount === 0) return 1;
+
+    // Penalty proportional to number of violations
+    // More violations = lower score (closer to 0)
+    return 1 / (1 + violationCount);
   }
 
   describe(state: TimetableState): string | undefined {
@@ -45,19 +52,42 @@ export class NoProdiConflict implements Constraint<TimetableState> {
     return undefined;
   }
 
+  getViolations(state: TimetableState): string[] {
+    const { schedule } = state;
+    const violations: string[] = [];
+
+    for (let i = 0; i < schedule.length; i++) {
+      for (let j = i + 1; j < schedule.length; j++) {
+        const entry1 = schedule[i];
+        const entry2 = schedule[j];
+
+        if (this.hasProdiConflict(entry1, entry2)) {
+          violations.push(
+            `Prodi ${entry1.prodi} has overlapping classes ${entry1.classId} (${entry1.class}, ${entry1.timeSlot.day} ${entry1.timeSlot.startTime}) and ${entry2.classId} (${entry2.class}, ${entry2.timeSlot.day} ${entry2.timeSlot.startTime})`
+          );
+        }
+      }
+    }
+
+    return violations;
+  }
+
+
+
+
   private hasProdiConflict(entry1: ScheduleEntry, entry2: ScheduleEntry): boolean {
     // Must be same prodi
     if (entry1.prodi !== entry2.prodi) {
       return false;
     }
 
-    // Must be same day
-    if (entry1.timeSlot.day !== entry2.timeSlot.day) {
+    // Must have overlapping classes
+    if (!hasClassOverlap(entry1.class, entry2.class)) {
       return false;
     }
 
-    // Check if class sections overlap (e.g., A overlaps with AB)
-    if (!hasClassOverlap(entry1.class, entry2.class)) {
+    // Must be same day
+    if (entry1.timeSlot.day !== entry2.timeSlot.day) {
       return false;
     }
 

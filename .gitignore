@@ -1,11 +1,51 @@
-/node_modules
-.env
-coverage/
+# Dependencies
+node_modules/
+
+# Build outputs (will be generated)
 dist/
-*.log
-.DS_Store
 out/
+coverage/
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+
+# Generated files
+timetable-result.json
+initial-solution.json
+unscheduled-classes.json
+*.log
+sa-optimization.log
+
+# Data files (potentially large/sensitive)
+data_uisi.xlsx
+*.xlsx
+
+# IDE & Editor
 .vscode/
 .idea/
-data_uisi.xlsx
+.DS_Store
+*.swp
+*.swo
+*~
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Development examples (keep in git for development, but not in npm)
+# Examples are kept in git but excluded from npm package
+# /examples  # Commented out - keep examples in git for development
+
+# Legacy/old files
 /src/examples/result
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

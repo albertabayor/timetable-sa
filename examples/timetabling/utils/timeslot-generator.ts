@@ -9,7 +9,7 @@ export const DEFAULT_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Frid
 // Default configuration
 export const DEFAULT_PAGI_CONFIG: Required<TimeSlotGenerationConfig> = {
   startTime: "07:30",
-  endTime: "17:00",
+  endTime: "15:30", // Changed from 17:00 to avoid overlap with evening classes
   slotDuration: 50,
 };
 

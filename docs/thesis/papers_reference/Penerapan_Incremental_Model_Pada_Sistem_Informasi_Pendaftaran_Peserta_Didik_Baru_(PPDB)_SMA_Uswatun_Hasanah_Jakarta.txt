@@ -1,0 +1,620 @@
+Reputasi: Jurnal Rekayasa Perangkat Lunak
+Volume 3 No. 1 Mei 2022
+ISSN 2747-1799
+
+Penerapan Incremental Model Pada Sistem Informasi Pendaftaran Peserta
+Didik Baru (PPDB) SMA Uswatun Hasanah Jakarta
+Ahmad Al Kaafi1, Lisda Widiastuti2, Febri Arsiadi3
+1
+
+Teknologi Informasi, 2Sistem Informasi Akuntansi Kota Bogor, 3Sistem Informasi Akuntansi, Universitas Bina
+Sarana Informatika
+Jl. Kramat Raya No.98, RW.9, Kwitang, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10450,
+Indonesia
+e-mail: 1ahmad.akf@bsi.ac.id, 2lisda.ltt@bsi.ac.id, 311170178 @bsi.ac.id
+
+Abstrak - SMA Uswatun Hasanah merupakan sebuah lembaga pendidikan yang berada di daerah Jakarta Timur.
+Seiring dengan perkembangan zaman dan perkembangan teknologi pada saat ini sudah semakin pesat, dimana
+hampir semua pekerjaan sudah menggunakan teknologi. Berbagai macam fasilitas disediakan untuk memenuhi
+pekerjaan dalam kehidupan. Perkembangan juga terjadi pada sistem pendidikan termasuk kedalam pendaftaran
+peserta didik baru, dimana pada masa seperti ini, online menjadi salah satu pilihan untuk mendaftar agar lebih
+mudah. SMA Uswatun Hasanah masih melakukan pendaftaran peserta didik baru secara manual, dimana perlu
+banyak petugas dan membutuhkan beberapa buku sebagai pencatatan yang sering kali terjadi kesalahan dalam
+pencatatan. Untuk mengatasi permasalahan yang ada dibutuhkan sebuah sistem informasi yang efektif dan efisien
+dengan metode incremental model. Tujuan penelitian ini menggunakan Incremental Model guna memberikan
+solusi permaslahan yang dialami SMA Uswatun Hasanah dengan penerapan sistem informasi yang langsung dapat
+diimplementasikan tanpa membutuhkan waktu yang lama sampai semua modul selesai, sehingga dapat
+menyelesaikan permasalahan pendafataran peserta didik baru yang dialami.
+Kata Kunci: Incremental Model, Sistem Informasi, PPDB
+
+PENDAHULUAN
+Perkembangan teknologi pada saat ini sudah
+semakin pesat, dimana pada saat ini hampir semua
+pekerjaan sudah menggunakan teknologi. Berbagai
+macam fasilitas disediakan untuk memenuhi
+pekerjaan dalam kehidupan. Pada saat ini pula
+perkembangan teknologi informasi dan komunikasi,
+khususnya teknologi komputer sudah sangat
+mempengaruhi berbagai bidang kehidupan, baik
+dibidang ekonomi, sosial, budaya, maupun
+pendidikan. Salah satu teknologi yang sudah tidak
+asing namanya adalah teknologi website. Website
+merupakan suatu kelompok halaman yang digunakan
+untuk menunjukan informasi teks, gambar diam
+maupun gerak, animasi, suara, dan gabungan dari
+keseluruhan, baik yang bersifat statis atau dinamis
+yang membentuk suatu rangkaian kelompok yang
+saling berkaitan, yang masing-masing dihubungkan
+dengan jaringan sebuah halaman (Handayani,
+Wijianto, & Anggoro, 2018).
+Teknologi sebagai alat mempermudah
+pekerjaan manusia, erat kaitannya dengan kemajuan
+dan inovasi canggih dalam pengolahan informasi
+melalui media internet (Wijaya & Astuti, 2019).
+Teknologi website dapat mempermudah kita untuk
+mengakses data dan mencari berita maupun informasi
+lainnya yang kita butuhkan secara online.
+
+Pemanfaatan teknologi informasi berbasis website ini
+tidak hanya dimanfaatkan badan perusahaan maupun
+badan pemerintahan namun juga dalam dunia
+pendidikan. Hal ini dapat dilihat dari hampir sekolah
+tingkat menengah pertama maupun atas sudah
+mempunyai website. Semakin berkembangnya dunia
+pendidikan akan semakin banyak muncul berbagai
+alternatif lembaga pendidikan yang dibutuhkan oleh
+masyarakat, sehingga sehingga mengharuskan
+manajemen sekolah mengambil kebijakan-kebijakan
+agar sekolah dapat tetap bertahan dalam persaingan
+(A. U. W. Sari, Imron, & Sobri, n.d.). Salah satu
+pemanfaatan teknologi dalam memberikan pelayanan
+optimal kepada masyarakat di dunia Pendidikan yaitu
+sistem informasi Penerimaan Peserta Didik Baru
+(PPDB), karena dapat memudahkan para calon
+peserta didik baru untuk mencari informasi dan
+melakukan interaksi secara online. Penerimaan
+peserta didik baru merupakan kegiatan suatu instansi
+pendidikan yaitu sekolah dimana melakukan
+penerimaan peserta didik baru guna menyaring calon
+peserta didik baru yang akan mendaftarkan ke
+sekolah yang dituju (Farlina & Hudin, 2017).
+Dengan adanya pemanfaatan web dan
+teknologi Informasi dalam hal PPDB ini bisa
+membantu sekolah (L. I. Sari, 2020). Website
+Penerimaan Peserta Didik Baru (PPDB) memberikan
+kemudahan bagi orang tua dan calon peserta didik
+32
+
+This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+
+Reputasi: Jurnal Rekayasa Perangkat Lunak, Volume 3 No. 1 Mei 2022
+ISSN 2747-1799
+
+baru dalam mengetahui informasi mengenai
+pelaksanaan seleksi penerimaan peserta didik baru,
+melakukan pendaftaran serta melakukan pemantauan
+hasil seleksi karena dapat dengan mudah diakses
+melalui gadget atau perangkat lain yang terkoneksi
+dengan internet (Utami, Ishaq, & Maulidiyah, 2018).
+Penerimaan Peserta Didik Baru (PPDB) merupakan
+suatu proses yang terjadi setiap tahun menjelang
+tahun ajaran baru yang dilakukan oleh setiap sekolah
+baik sekolah negeri maupun sekolah swasta. Tanpa
+dukungan sistem informasi dapat menimbulkan
+beberapa permasalahan yang terjadi, seperti
+kesalahan dalam pengelolahan data, kesulitan
+pencarian
+informasi
+data
+pendaftar
+dan
+membutuhkan sumber daya manusia yang banyak,
+waktu yang lama dalam seleksi berkas formulir
+pendaftaran. Permasalahan tersebut juga dialami oleh
+SMA Uswatun Hasanah Jakarta. SMA Uswatun
+Hasanah merupakan lembaga Pendidikan yang
+berdiri sejak 1991 dibawah naungan Yayasan
+Dakwah dan Pendidikan Islam Uswatun Hasanah.
+SMA Uswatun Hasanah ini merupakan salah satu
+sekolah umum dengan memberikan nilai lebih dalam
+hal keagamaan yang penerimaan peserta didik
+barunya masih dilakukan secara manual dengan
+membutuhkan jumlah panitia yang tidak sedikit,
+biaya yang mahal dan orang tua atau wali murid harus
+datang serta daftar langsung ke sekolah. Maka dari itu
+dibutuhkan suatu sistem informasi yang dapat
+membantu menyelesaikan permasalahan yang ada
+pada SMA Uswatun Hasanah. Pentingnya sistem
+informasi Penerimaan Peserta Didik Baru (PPDB)
+pada SMA Uswatun Hasanah dinilai akan membantu
+efektifitas dan efisien dalam penerimaan peserta didik
+baru.
+Sistem yang baik adalah sistem yang sudah
+bisa mengatasi permasalahan dari sebuah sistem yang
+ada
+serta
+mampu
+memenuhi
+kebutuhankebutuhannya. Oleh sebab itu, pembangunan sistem
+yang baru maupun pengembangan sistem yang
+sedang berjalan benar-benar harus sesuai dengan apa
+yang diharapkan oleh para penggunanya. Dalam
+penelitian sebelumnya menunjukkan
+kepuasan
+pengguna sistem informasi PPDB online tingkat
+SMP,
+dipengaruhi
+oleh
+kualitas sistem,
+sedangkan kualitas
+informasi
+serta
+kualitas
+layanan tidak berpengaruh pada kepuasan pengguna
+(Sulistyorini, Rusli, & Kurniawan, 2020).
+Dalam
+pembuatannya,
+sistem
+ini
+menggunakan Incremental Model. Menurut Fanani
+dan Sholiq, Model Incremental juga dapat
+meminimalisir resiko cacat/bug selama proses
+pengembangan perangkat lunak karena setiap release
+dilakukan pengujian secara bertahap (Kaafi, Azmi,
+Nurelasari, & Widiastuti, 2020).
+Penerapan Incremental Model pada penelitian
+ini bertujuan memberikan sistem informasi yang
+dapat langsung digunakan secara bertahap tanpa
+harus menunggu semua modul selesai sehingga jika
+ada perbaikan atau penambahan fitur dapat segera
+http://jurnal.bsi.ac.id/index.php/reputasi
+
+dieksekusi dan tetap bisa digunakan. Model ini sangat
+sesuai dengan permasalahan dan keinginan SMA
+Uswatun Hasanah Jakarta untuk menyelesaikan
+permasalah PPDB dengan segera dan langsung
+diimplementasikan.
+METODE PENELITIAN
+Pengembangan sistem ini menggunakan
+model incremental. Model incremental merupakan
+salah satu dari Software Development Life Cycle
+(SDLC) dan merupakan gabungan elemen dari
+waterfall model dengan spiral model yang keduanya
+sama-sama sebuah gaya yang interactive (Janti &
+Susanti, 2017). Model ini merupakan model
+manajemen sederhana, risiko lebih rendah terhadap
+keseluruhan pengembagan sistem, dan sistem dapat
+segera digunakan.
+Pada model ini membagi pengembangan
+perangkat lunak ke dalam pengembangan komponen
+yang lebih kecil, kemudian komponen tersebut
+diintegrasikan
+dalam
+setiap
+pengulangan
+pengembangan dan diuji secara keseluruhan (Riana,
+Sanjaya, & Kalsoem, 2018).
+Berikut tahapan yang dilakukan dalam
+penelitian:
+
+Sumber: (Riana et al., 2018)
+Gambar 1. Model Pengembangan Perangkat Lunak
+Tahapan
+analisis
+dilakukan
+dengan
+mengumpulkan data atau informasi yang diperlukan
+dalam penelitian ini diantaranya dengan cara:
+1. Mengamati secara langsung terhadap kegiatankegiatan yang dilakukan di SMA Uswatun
+Hasanah Jakarta agar dapat mengetahui setiap
+proses yang dikerjakan.
+2. Berinteraksi langsung dan melakukan tanya jawab
+dengan pihak-pihak dari SMA Uswatun Hasanah
+33
+
+Reputasi: Jurnal Rekayasa Perangkat Lunak, Volume 3 No. 1 Mei 2022
+ISSN 2747-1799
+
+yang berhubungan langsung dengan masalah yang
+diteliti
+Dalam tahapan design dilakukan dengan
+penuangan pikiran dan perancangan sistem terhadap
+solusi dari permasalahan yang ada dengan
+menggunakan perangkat pemodelan sistem seperti
+diagram hubungan entitas (entity relationship
+diagram), struktur menu dan basis data. Entity
+Relationship (ER) data model didasarkan pada
+persepsi terhadap realita yang tersusun atas kumpulan
+objek-objek dasar yang disebut entitas dan hubungan
+antar objek (Hasan & Nurlelah, 2020).
+Tahap pengkodean merupakan penerjemahan
+design dalam bahasa yang bisa dikenali oleh komputer
+dengan menggunakan bahasa pemrograman PHP dan
+MySQL.
+Setelah pengkodean selesai maka akan
+dilakukan testing terhadap sistem yang dibuat tadi.
+Testing dilakukan dengan melakukan pengujian
+menggunakan Black Box. Black-Box Testing
+merupakan Teknik pengujian perangkat lunak yang
+berfokus pada spesifikasi fungsional dari perangkat
+lunak (Snadhika Jaya, 2018). Tujuan dilakukannya
+testing tersebut untuk menemukan apakah terdapat
+kesalahan sistem yang apabila terdapat kesalahan
+maka kemudian perlu dilakukan perbaikan.
+Dengan menggunakan incremental model
+dapat membantu untuk mengurangi biaya karena
+manajemen sederhana dan resiko untuk kegagalan
+proyek secara keseluruhan lebih rendah sehingga
+perangkat lunak dapat segera digunakan dengan tepat
+waktu, tepat biaya, mampu menyelesaikan
+permasalahan yang ada serta bisa disesuaikan dengan
+kebutuhan yang diinginkan para pengguna.
+
+Sumber: Peneliti
+Gambar 2. Use Case Halaman Utama User
+
+Sumber: Peneliti
+Gambar 3. Use Case Halaman Utama Admin
+C.
+
+Activity Diagram
+
+HASIL DAN PEMBAHASAN
+A.
+
+Analisis Kebutuhan
+Analisa ini dibuat sesuai dengan kebutuhan
+pengguna dimana pengguna dapat melakukan berbagai
+hal sesuai hak akses yang diberikan. Berdasarkan
+proses penerimaan peserta didik baru pada SMA
+Uswatun Hasanah Jakarta, kebutuhannya antara lain:
+1. Halaman User:
+dapat mengakses menu
+pendaftaran, menu pembayaran, melakukan
+transaksi pembayaran dan menerima bukti telah
+melakukan pembayaran.
+2. Halaman Admin: mengelola identitas sekolah,
+mengelola data siswa, mengelola pembayaran,
+memverifikasi pembayaran, membuat bukti
+pembayaran dan mengirim bukti pembayaran.
+B.
+
+Use Case Diagram
+Rancangan Use Case Diagram dari masingmasing pengguna sebagai berikut:
+Sumber: Peneliti
+Gambar 4. Activity Diagram Pendaftaran
+http://jurnal.bsi.ac.id/index.php/reputasi
+
+34
+
+Reputasi: Jurnal Rekayasa Perangkat Lunak, Volume 3 No. 1 Mei 2022
+ISSN 2747-1799
+
+Sumber: Peneliti
+Gambar 7. Logical Relationship Structure (LRS)
+Sumber: Peneliti
+Gambar 5. Activity Diagram Pembayaran
+
+D.
+
+E.
+
+User Interface
+Implementasi user interface pada sistem
+meliputi:
+1. Halaman Utama User
+
+Desain Database
+
+Sumber: Peneliti
+Gambar 6. Entity Relationship Diagram (ERD)
+
+Sumber: Peneliti
+Gambar 8. Tampilan Halaman Utama
+2. Menu Formulir Pendaftaran
+
+http://jurnal.bsi.ac.id/index.php/reputasi
+
+35
+
+Reputasi: Jurnal Rekayasa Perangkat Lunak, Volume 3 No. 1 Mei 2022
+ISSN 2747-1799
+
+Sumber: Peneliti
+Gambar 9. Tampilan Formulir Pendaftaran
+
+Sumber: Peneliti
+Gambar 11. Tampilan Petunjuk Pendaftaran dan
+Pembayaran
+
+3. Menu Form Pembayaran
+5. Login Admin
+
+Sumber: Peneliti
+Gambar 10. Tampilan Form Pembayaran
+4. Menu Petunjuk Pendaftaran dan Pembayaran
+
+http://jurnal.bsi.ac.id/index.php/reputasi
+
+Sumber: Peneliti
+Gambar 12. Tampilan Login Admin
+6. Halaman Utama Admin
+
+36
+
+Reputasi: Jurnal Rekayasa Perangkat Lunak, Volume 3 No. 1 Mei 2022
+ISSN 2747-1799
+
+Sumber: Peneliti
+Gambar 16. Tampilan Verifikasi Pembayaran
+Gambar 13. Tampilan Halaman Utama Admin
+F.
+7. Daftar Pembayaran
+
+Black Box
+Pengujian dilakukan terhadap program yang
+dibuat menggunakan blackbox testing yang fokus
+terhadap proses masukan dan keluaran sistem
+Penerimaan Peserta Didik Baru (PPDB) pada SMA
+Uswatun Hasanah Jakarta.
+
+No
+1.
+Sumber: Peneliti
+Gambar 14. Tampilan Daftar Pembayaran
+8. Daftar Verifikasi
+
+Sumber: Peneliti
+
+Tabel 1. Black Box Testing
+Skenario
+Hasil Yang
+Kesimpulan
+Pengujian
+Diharapkan
+Nama user
+Sistem akan
+Valid
+dan
+menolak
+Password
+akses dan
+tidak di isi
+menampilkan
+kemudian
+pesan“Usern
+klik tombol
+ame atau
+login
+Password
+yang Anda
+masukan
+Salah”
+
+2.
+
+Mengisi
+nama user
+dan
+Password
+tidak di isi
+(kosong)
+kemudian
+klik
+tombol login
+
+Sistem akan
+menolak
+akses dan
+menampilka
+n pesan
+“Username
+atau
+Password
+yang Anda
+masukan
+Salah”
+
+Valid
+
+3.
+
+Nama user
+tidak di isi
+(kosong) dan
+Password
+diisi
+kemudian
+klik tombol
+login.
+
+Nama user
+tidak di isi
+(kosong) dan
+Password
+diisi
+kemudian
+klik tombol
+login
+
+Valid
+
+Gambar 15. Tampilan Daftar Verifikasi
+9. Verifikasi Pembayaran
+
+Sumber: Peneliti
+http://jurnal.bsi.ac.id/index.php/reputasi
+
+37
+
+Reputasi: Jurnal Rekayasa Perangkat Lunak, Volume 3 No. 1 Mei 2022
+ISSN 2747-1799
+
+REFERENSI
+
+4.
+
+Mengetikan
+salah satu
+kondisi salah
+pada
+username
+atau
+password
+kemudian
+klik
+Login.
+
+Sistem akan
+menolak
+akses dan
+menampilka
+n pesan
+“Username
+atau
+Password
+yang Anda
+masukan
+Salah”
+
+Valid
+
+5.
+
+Mengetikan
+username
+dan
+password
+dengan
+benar
+kemudian
+klik tombol
+login
+
+Sistem akan
+menerima
+akses dan
+menampilka
+n menu
+utama
+admin.
+
+Valid
+
+Sumber: Peneliti
+KESIMPULAN
+Dari
+pembahasan
+mengenai
+Sistem
+Pendaftaran Peserta Didik Baru (PPDB) pada SMA
+Uswatun Hasanah Jakarta dapat disimpulkan bahwa
+sistem pendaftaran manual sangat tidak efektif dan
+efisien dalam proses penerimaan peserta didik baru.
+Dengan semakin berkembangnya teknologi,
+dibutuhkan sebuah sistem informasi sehingga calon
+peserta didik dapat melakukan pendaftaran dimana
+saja dan kapan saja tanpa perlu melakukan kontak
+fisik. Agar dalam pendataan peserta didik baru tidak
+terjadi kesalahan maka harus lebih ditingkatkan lagi
+requirement
+dalam sistem
+dan
+perangkat
+komputernya, serta diharapkan dapat memberikan
+masukan terhadap pemangku kepentingan dalam
+mengambil keputusan. Disamping itu sistem
+kedepannya juga diharapkan dapat dikembangkan
+kembali dengan mengurangi input yang dilakukan
+oleh pengguna.
+http://jurnal.bsi.ac.id/index.php/reputasi
+
+Farlina, Y., & Hudin, J. M. (2017). Kajian Kepuasan
+Pengguna Informasi Penerimaan Peserta Didik
+Baru (PPDB) Online. IJCIT (Indonesian
+Journal on Computer and Information
+Technology), 2(2), 48–54. Retrieved from
+http://ejournal.bsi.ac.id/ejurnal/index.php/ijcit/
+article/view/2778/1824
+Handayani, V. R., Wijianto, R., & Anggoro, A.
+(2018). Sistem Informasi Pendaftaran Seleksi
+Kerja Berbasis Web Pada Bkk (Bursa Kerja
+Khusus) Tunas Insan Karya Smk Negeri 2
+Banyumas. Evolusi : Jurnal Sains Dan
+Manajemen, 6(1), 76–84.
+Hasan, F. N., & Nurlelah, E. (2020). Perancangan
+Sistem Monitoring Kinerja Staf Berbasis Web
+Studi Kasus Bsi Entrepreneur Center,
+2(Agustus), 201–211.
+Janti, S., & Susanti, M. (2017). Penerapan Sistem
+Inventory Sebagai Pemenuhan Kebutuhan
+Informasi Antar Bagian Berbasis Web Dengan
+Incremental
+Model.
+Jurnal
+Bianglala
+Informatika, 5(2), 1–7.
+Kaafi, A. Al, Azmi, R., Nurelasari, E., & Widiastuti,
+L. (2020). Implementasi Sistem Informasi
+Rekam Medis Pada Laboratorium Klinik
+MediCall dengan Penerapan Incremental
+Model. Journal Speed, 12(3), 17–22. Retrieved
+from
+http://speed.web.id/jurnal/index.php/speed/arti
+cle/view/650
+Riana, D., Sanjaya, R., & Kalsoem, O. (2018). Sistem
+Informasi Manajemen Laboratorium Patologi
+Anatomi Menggunakan Model MVC Berbasis
+Laravel Framework. Konferensi Nasional
+Sistem Informasi 2018 STMIK Atma Luhur
+Pangkalpinang, 8 – 9 Maret 2018, 8–9.
+Sari, A. U. W., Imron, A., & Sobri, A. Y. (n.d.).
+EFEKTIVITAS PENERIMAAN PESERTA
+DIDIK BARU (PPDB) MELALUI SISTEM
+PENERIMAAN PESERTA DIDIK ONLINE
+Asri Ulfah Wulan Sari 1 , Ali Imron 2 , Ahmad
+Yusuf Sobri 3, 1–11.
+Sari, L. I. (2020). Pemanfaatan Web Sebagai Sistem
+Informasi PPDB pada SLBN Koba Bangka
+Tengah. Techno Xplore : Jurnal Ilmu Komputer
+Dan Teknologi Informasi, 5(2), 64–73.
+https://doi.org/10.36805/technoxplore.v5i2.11
+56
+Snadhika Jaya, T. (2018). Pengujian Aplikasi dengan
+Metode Blackbox Testing Boundary Value
+Analysis (Studi Kasus: Kantor Digital
+Politeknik
+Negeri
+Lampung).
+Jurnal
+Informatika: Jurnal Pengembangan IT (JPIT),
+38
+
+Reputasi: Jurnal Rekayasa Perangkat Lunak, Volume 3 No. 1 Mei 2022
+ISSN 2747-1799
+
+03(02), 45–48.
+Sulistyorini, P., Rusli, C. Y., & Kurniawan, F. (2020).
+Analisis Kepuasan Pengguna Sistem Informasi
+Ppdb Online Tingkat Smp Di Kota Pekalongan.
+IC-Tech. Retrieved from https://ejournal.stmikwp.ac.id/index.php/ictech/article/view/120
+Utami, L. A., Ishaq, A., & Maulidiyah, N. (2018).
+Analisa Pengaruh Kualitas Website PPDB
+Terhadap Kepuasan Pengguna. SinkrOn, 3(1),
+31–37.
+
+http://jurnal.bsi.ac.id/index.php/reputasi
+
+https://doi.org/10.33395/sinkron.v3i1.10146
+Wijaya, Y. D., & Astuti, M. W. (2019). Sistem
+Informasi Penjualan Tiket Wisata Berbasis
+Web Menggunakan Metode Waterfall. Seminar
+Nasional
+Teknologi
+Informasi
+Dan
+Komunikasi, 273–276.
+
+39
+
+

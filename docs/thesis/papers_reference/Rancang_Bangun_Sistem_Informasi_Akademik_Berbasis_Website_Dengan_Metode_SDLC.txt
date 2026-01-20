@@ -1,0 +1,487 @@
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023
+
+Rancang Bangun Sistem Informasi Akademik Berbasis Website Dengan
+Metode SDLC
+Wati Erawati1*, Sujiliani Heristian2, Rachmat Adi Purnama 3
+1 Program Studi Teknologi Informasi, Fakultas Teknik & Informatika, Universitas Bina Sarana Informatika
+
+Jl. Kramat Raya No.98, RT.2/RW.9, Kwitang, Kec. Senen, Kota Jakarta Pusat, DKI Jakarta, Indonesia
+2Program Studi Teknologi Komputer, Fakultas Teknik & Informatika, Universitas Bina Sarana Informatika
+
+Jl. Kramat Raya No.98, RT.2/RW.9, Kwitang, Kec. Senen, Kota Jakarta Pusat, DKI Jakarta, Indonesia
+3 Program Studi Ilmu Komputer, Fakultas Teknik & Informatika, Universitas Bina Sarana Informatika
+Jl. Kramat Raya No.98, RT.2/RW.9, Kwitang, Kec. Senen, Kota Jakarta Pusat, DKI Jakarta, Indonesia
+
+e-mail: 1watierawati63@gmail.com, 2sujiliani.she@bsi.ac.id, 3 rachmat.rap@bsi.ac.id
+(*) Corresponding Author
+
+Artikel Info : Diterima : 10-04-2023 | Direvisi : 25-06-2023 | Disetujui : 14-07-2023
+Abstrak - Di era globalisasi saat ini, teknologi informasi berkembang pesat. Sekolah sangat membutuhkan sistem
+informasi akademik yang mendukung dan memudahkan pekerjaan dosen, pegawai dan orang tua siswa.. Penelitian
+ini di latar belakangi oleh kurangnya informasi tentang perkembangan belajar anak. Dan akibat minimnya
+informasi terkait perkembangan belajar anak kepada orang tua siswa pada sekolah akibatnya, orang tua tidak
+mengetahui perkembangan pembelajaran sekolah anaknya. Tujuan dari penelitian ini tentunya memberikan
+manfaat bagi staff, guru maupun orangtua untuk lebih mempermudah mendapatkan informasi atau pun hasil
+perkembangan sekolah dari siswa-siswa. Teknik yang digunakan untuk mengembangkan perangkat lunak ini
+adalah model air terjun SDLC (Software Development Life Cycle). Oleh karena itu,peneliti mencoba membantu
+permasalahan yang ada di sekolah seperti kurang updatenya data-data atau pun informasi yang terdapat di sekolah.
+Dengan membuat sistem yang sudah terkomputerisasi diharapkan dapat bekerja membantu guru memberikan
+informasi kepada orang tua murid. Sistem yang dibuat berbasis web yang berisi daftar hadir siswa, rencana
+kegiatan harian siswa,serta raport yang merupakan hasil akhir dari perkembangan siswa di sekolah. Penulis
+menguji sistem informasi akademik ini dengan menggunakan uji coba regresi. Hasil pengujian menunjukkan
+bahwa sistem ini memenuhi kriteria keberhasilan pengujian, seperti akurasi dan kecepatan dalam mengolah data.
+Sistem informasi akademik berbasis website dengan metode SDLC dapat membantu penggunanya dalam
+mengelola data akademik dengan mudah, cepat, dan akurat. Metode SDLC yang digunakan dapat membantu
+pengembangan sistem yang baik dan benar, serta sesuai dengan kebutuhan pengguna.
+Kata Kunci : Rancang Bangun; Sistem Informasi ; Akademik; Metode Waterfall; Berbasis Web
+Abstracts - In the conditions of today's globalization, information technology is developing rapidly. School really
+need an academic information system that supports and makes it easy for staff and parents of student.This research
+is motivated by a lack of information about children’s learning development. And because parents of
+schoolchildren lack information about their children's learning, the result is that parents do not know the
+development of their child’s school learning. The purpose of this research is of course to provide benefits for staff,
+teacher and parents to make it easier to get information or the results of school development from students. The
+method that the author uses in developing this software is the SDLC (Software Development Life Cycle) waterfall
+model. Therefore, researchers try to help with problems that exist in schools such as the lack of updating of data
+or information contained in schools. By creating a computerized system, it is hoped that it can work to help teacher
+provide information to parents of students. A web-based system that contains student attendance list, student daily
+activity plans, and report cards which are the end result of student development at school.The author tested this
+academic information system by using a regression test. The test results show that this system meets the test success
+criteria, such as acccuracy and speed in processing data. A website-based academic information system using the
+SDLC method can help users manage academic data easily, quicly and accurately. The SDLC method used can
+help develop a good and correct system, and according to user needs.
+Keywords : Design; Information System; Academic; Waterfall Method; Web-Based
+68
+
+This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023 | E-ISSN: 2774-9711 | P-ISSN: 2808-9065
+
+PENDAHULUAN
+Implementasi teknologi informasi banyak digunakan dalam berbagai bidang salah satunya pendidikan.
+Tentunya lembaga pendidikan sangat membutuhkan informasi dalam kegiatan akademik. Keberadaan sistem
+informasi memberikan kemudahan bagi pengguna untuk mengolah data dan menikmati informasi kapan saja dan
+di mana saja yang tentunya membuat pekerjaan akan lebih mudah. Saat ini penerapan sistem informasi di sekolah
+atau pun dunia pendidikan sangat dibutuhkan untuk mengolah data akademik seperti data siswa, hasil evaluasi
+pembelajaran, kehadiran, dll. Penerapan sistem informasi selain bermanfaat untuk mempersingkat pekerjaan juga
+data yang tersimpan akan terlihat lebih rapi sehingga output atau hasil yang diperoleh sesuai harapan.
+Sistem adalah suatu jaringan prosedur yang saling terkait yang dikumpulkan untuk mencapai tujuan
+tertentu (Anggraini, Pasha, Damayanti dan Setiawan, 2020) Sistem informasi merupakan salah satu hal terpenting
+dalam suatu perusahaan, dengan adanya sistem informasi, organisasi atau perusahaan dapat menjamin kualitas
+informasi yang diberikan dan mengambil keputusan berdasarkan informasi yang cepat, akurat dan tepat, yang
+sangat diperlukan. (Riswanda & Priandika, 2021). Akademik adalah mata pelajaran yang mempelajari kurikulum
+atau mengenal dalam sifatnya untuk mengembangkan informasi dalam hal sekolah atau belajar yang dapat
+dikendalikan melalui perguruan tinggi atau lembaga akademik (Hakim & Meilina, 2022). Sistem Informasi
+Akademik adalah perangkat yang memetode fakta dan mencakup metode instruksional mengeni mahasiswa,
+dosen,administrasi instruksional, keuangan dan berbagai fakta karakteristik lainnya (Akbar.P.D, Andriani.R.D,
+Rismayadi.D.A, Rusdi.J.F, & Prinayanti.A, 2019). Diagram entitas-hubungan memuat komponen-komponen
+suatu entitas dan sekumpulan relasi yang masing-masing dilengkapi dengan atribut yang mewakili semua fakta
+“dunia nyata” (Fatansyah, 2018). Use case adalah deskripsi tentang bagaimana sistem bekerja dari sudut pandang
+pengguna (Munawar, 2018).
+Database adalah sistem yang terdiri dari kumpulan file dan tabel yang saling berhubungan (dalam sistem
+informasi sistem komputer) dan sekumpulan program yang memungkinkan banyak pengguna dan/atau program
+lain untuk mengakses dan memanipulasi file dan tabel-tabel; (Dantes, 2019). Sistem informasi akademik ini dibuat
+dengan menggunakan bahasa pemrograman PHP, XAMPP sebagai server dan MySql sebagai database.
+PhpMyAdmin adalah bagian untuk mengelola database MySQL di komputer Anda (Haqi, 2019). MySQL adalah
+jenis server basis data yang terkenal. Popularitasnya karena fakta bahwa MySQL menggunakan SQL sebagai
+bahasa dasar untuk akses database (Prasetyo, Pattiasina, & Soetarmono, 2019).
+Informasi akademik adalah sistem pengelolaan informasi akademik melalui pemanfaatan teknologi
+informasi. Agar seluruh proses kegiatan akademik tersalurkan menjadi informasi yang berguna bagi pengelolaan
+dan pengambilan keputusan lembaga serta menghindari atau meminimalisir terjadinya kesalahan dalam aspek
+pelayanan sehingga dapat memberikan informasi yang diperlukan.
+Berdasarkan penelitian sebelumnya tentang pembuatan halaman web antara lain Eri Bayu Pratama dkk
+tentang penerapan metode SDLC pada produksi aplikasi periklanan online dengan model waterfall (Pratama dan
+Meilinda, 2018). Daniel Riano Kaparang dkk tentang perancangan sistem informasi akademik online untuk SMK
+(Kaparang, Ilyas dan Pratasik, 2022). Taufik Rahman dkk pada perancangan sistem informasi akademik berbasis
+web di SMK Bina Medika Jakarta menggunakan metode SDLC (Rahman, Pramastya, Nurdin, & Sumarna, 2019).
+Uci Rahmalisa dkk tentang penerapan metodologi SDLC waterfall untuk membuat studi kasus sistem informasi
+akademik online di SD Islam Terpadu Bustanul Ulum Pekanbaru (Rahmalisa, Zulkifli, Muhaimin, & Hidayat,
+2022). Pada saat ini memang sangat bermanfaat dengan perkembangan teknologi terutama di bidang web.
+Selain penelitian sebelumnya di atas masih terdapat beberapa referensi penelitian yang kami gunakan
+sebagai bahan acuan penelitian kami diantaranya penelitian yang cocok untuk petunjuk perancangan sistem
+informasi akademik (sibijar) metode penelitian ini menggunakan metode waterfall (Hidayat & Fatmawati, 2020).
+Penelitian yang berjudul perancangan sistem informasi akademik online di SMA Al Mustofa, dimana metode
+waterfall juga digunakan dalam penelitian ini (Kom dan Kom, 2021). Penelitian selanjutnya berjudul Sistem
+Informasi Akademik Berbasis Web menggunakan model waterfall di SMA Nasional Karawang (Fitriani,
+Firmansyah, Aryanti, & Walim, 2018). Kajian lain yang kami lakukan sebagai pembanding adalah desain Sistem
+Informasi Akademik Sekolah (SIAS) berbasis web. (Solahudin, 2021).
+Dari penelitian sebelumnya pembuatan berbasis web yang telah dilakukan, maka penulis melakukan
+penelitian mengenai sistem akademik berbasis web yang mampu membantu para staff atau pun para guru dan juga
+sangat bermanfaat bagi siswa dan orang tua dalam hal dapatkan informasi siswa seperti jadwal, lihat nilai dan
+informasi terbaru yang diunggah oleh sekolah secara online.
+
+METODE PENELITIAN
+Metode Penelitian kuantitatif adalah metode penelitian yang didasarkan pada positivis (data konkrit), data
+penelitian berupa angka-angka yang diukur dengan menggunakan statistik sebagai alat uji perhitungan yang
+berkaitan dengan masalah yang diteliti untuk menarik suatu kesimpulan. (Sugiyono, 2018)
+http://jurnal.bsi.ac.id/index.php/co-science
+
+69
+
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023 | E-ISSN: 2774-9711 | P-ISSN: 2808-9065
+
+Tahapan Penelitian
+
+Sumber : Hasil Penelitian (2023)
+Gambar 1 Tahapan Penelitian Proses SDLC dengan pendekatan Waterfall
+Pendekatan yang penulis gunakan untuk mengembangkan perangkat lunak ini adalah model waterfall
+SDLC (Software Development Life Cycle). “SDLC (Software Development Life Cycle) adalah proses
+pengembangan atau mengubah suatu sistem perangkat lunak dengan menggunakan model dan metodologi yang
+digunakan orang untuk mengambangkan sistem perangkat lunak sebelumnya” (Sukamto dan Shalahuddin, 2018).
+Keuntungan dari waterfall SDLC (Software Development Life Cycle) adalah struktur fase pengembangan
+sistem, jelas, dokumentasi dibuat di setiap fase pengembangan, setiap fase diimplementasikan setelah fase
+sebelumnya selesai..
+Waterfall model menyediakan siklus hidup perangkat lunak berurutan. Langkah selanjutnya sesuai
+dengan metode waterfall (Sukamto dan Shalahuddin, 2018) :
+1. Analisis Kebutuhan
+Penulis menganalisis persyaratan sistem untuk institusi penelitian selama sekitar 3 bulan di perusahaan untuk
+mencari tahu sistem apa yang bekerja isntansi tersebut. Penulis mengumpulkan informasi yang diperlukan, seperti
+informasi siswa, informasi guru, evaluasi hasil belajar dan absen masuk.
+2. Rancangan/Design
+Rancangan perangkat lunak yang penulis harapkan akan menarik dan mudah digunakan. Tahap ini mengubah
+kebutuhan representasi software sebelum mengimplementasikan ERD dan LRS pada kode program penelitian ini
+menggunakan Unified Modelling Language (UML) untuk merancang sistem software. UML adalah seperangkat
+diagram standar untuk menggambarkan perangkat lunak berorientasi objek. Gunakan diagram kasus, diagram
+aktivitas, diagram kelas, diagram urutan digunakan sebagai diagram UML. Proses perancangan database
+menggunakan Entity Relationship Diagram (ERD) dan Logical Record Structure (LRS).
+3. Pembuatan Kode Program
+Mengenai bagian dalam perancangan kode program penulis menggunakan perangkat lunak yaitu HTML,
+JavaScript dan PHP.
+4. Pemeliharaan (maintenance)
+Ketika sudah dikirimkan ke user perangkat lunak memungkinkan mengalami perubahan. Saat debuging terjadi
+kesalahan yang tidak terdeteksi, hal tersebut yang memungkinkan perangkat lunak mengalami perubahan. Proses
+pengembangan dapat terulang pada tahap pemeliharaan dimulai dari tahapan analisis software yang ada, akan
+tetapi tidak membuat software baru. Agr web yang dibangun dapat berjalan dengan baik, hal yang dilakukan yaitu
+mengembanglan sistem dengan melakukan pengecekan database agar kapasitas tidak overload pada saat sistem
+terjadi error. Ini adalah foto model air terjun (waterfall) :
+
+Sumber : (Rosa A.S.M. Shalahuddin, 2019)
+Gambar 2. Ilustrasi Model Waterfall
+http://jurnal.bsi.ac.id/index.php/co-science
+
+70
+
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023 | E-ISSN: 2774-9711 | P-ISSN: 2808-9065
+
+HASIL DAN PEMBAHASAN
+1. Activity Diagram
+
+Sumber : Hasil Penelitian (2023)
+Gambar 3 Activity Diagram Pengolahan Data Akademik
+Activity diagram merupakan penggambaran atau alur dari sistem yang dibuat. Didalam activity diagram terdapat
+admin, guru dan juga orang tua.
+2. Use Case Diagram
+
+Sumber : Hasil Penelitian (2023)
+Gambar 4 Use Case Diagram Halaman Admin
+
+http://jurnal.bsi.ac.id/index.php/co-science
+
+71
+
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023 | E-ISSN: 2774-9711 | P-ISSN: 2808-9065
+
+Tabel 1 Deskripsi Use Case Diagram Data Admin
+Data kontrol proses
+Admin dapat menangani data pengguna
+Administrator dapat mengolah data guru, mengolah data siswa, mengedit RPP,
+mengelola data kelas, dan mengelola nilai rapor.
+Goal
+Pre-Conditions
+Admin sedang login saat ini
+Post-Conditions
+Masuk informasi administrator
+Failed end Condition admin belum masuk
+Actors
+Admin
+1. Admin memasukkan alamat email dan password untuk login
+2. Administrator mengelola data guru
+3. Administrator mengontrol data siswa
+4. Admin mengontrol rencana topik
+5. Admin mengelola data kursus
+Arus utama
+6. Admin mengelola nilai suara pelanggan
+7. Administrator dapat keluar dari sistem
+1. Administrator menambahkan data guru baru
+2. Administrator mengubah data guru
+3. Administrator menghapus data guru
+4. Admin menambahkan data siswa baru
+5. Admin mengubah data siswa
+6. Admin menghapus data siswa
+7. Admin menambahkan jadwal baru
+8. Admin merubah jadwal
+9. Admin menghapus jadwal
+10. Sepuluh Admin menambahkan rencana topik
+11. Admin menambahkan data mata kuliah
+Alternate
+12. Perubahan Tanggal Kursus oleh Administrator
+Flow/Invariant A
+13. Administrator menghapus data kelas
+14. Manajemen menambah nilai testimonial
+15. Administrator mengubah data nilai laporan
+16. Admin menghapus data nilai port
+Sumber : Hasil Penelitian (2023)
+Use Case Name
+Requirements
+
+A. Use Case Diagram Guru
+
+Sumber : Hasil Penelitian (2023)
+Gambar 5 Use Case Diagram Halaman Guru
+
+http://jurnal.bsi.ac.id/index.php/co-science
+
+72
+
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023 | E-ISSN: 2774-9711 | P-ISSN: 2808-9065
+
+Tabel 2 Gunakan deskripsi diagram kasus Data Guru
+Use Case Name
+
+Mengelola data guru
+
+Requirements
+
+Admin dapat mengelola informasi guru
+
+Goal
+
+Administrator menemukan informasi guru
+
+Pre-Conditions
+
+Administrator harus memiliki detail guru
+
+Post-Conditions
+
+Admin dapat mengelola informasi guru
+
+Failed end Condition
+
+Administrator belum memiliki informasi tentang seorang guru
+
+Actors
+Main Flow/Basic Path
+
+Admin
+1. Administrator memasukkan kode guru
+2. Sistem menampilkan informasi guru untuk diverifikasi
+A1. Sistem menampilkan menu informasi guru
+
+Alternate Flow/Invariant A
+Invariant B
+
+B1. Administrator memilih halaman login
+B2. Administrator memasukkan kode guru
+B3. Administrator menginput data guru
+
+Sumber : Hasil Penelitian (2023)
+B. Use Case Diagram Siswa
+
+Sumber : Hasil Penelitian (2023)
+Gambar 6 Use Case Diagram Halaman Siswa
+Tabel 3 Panduan Pengguna Deskripsi Bagan Data Siswa
+Use Case Name
+
+Kelola data siswa
+
+Requirements
+
+Administrator dapat mengelola data siswa
+
+Goal
+
+Administrator sistem dapat mengetahui data siswa
+
+Pre-Conditions
+
+Administrator sistem harus memiliki data siswa
+
+Post-Conditions
+
+Administrator dapat mengelola data siswa
+
+Failed end Condition
+
+Admin belum memiliki data siswa
+
+Actors
+Main Flow/Basic Path
+
+Admin
+1. Admin memasukan kode siswa
+2. Sistem menampilkan informasi siswa yang akan diverifikasi
+A1. Sistem menampilkan menu informasi siswa
+
+http://jurnal.bsi.ac.id/index.php/co-science
+
+73
+
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023 | E-ISSN: 2774-9711 | P-ISSN: 2808-9065
+
+Alternate Flow/Invariant A
+B1. Administrator memilih halaman login
+B2. Administrator sistem memasukkan kode siswa
+B3. Administrator sistem memasukkan data siswa
+
+Invariant B
+Sumber : Hasil Penelitian (2023)
+3. Activity Diagram Admin Login
+
+Sumber : Hasil Penelitian (2023)
+Gambar 7 Activity Diagram Admin Login
+Diagram aktivitas adalah jenis diagram UML yang menggambarkan aktivitas apa yang terjadi dalam
+suatu sistem. Diagram fungsional di atas merupakan penggambaran activity diagram admin login. Adapun
+penjelasan dari activity diagram di atas yaitu :
+1. Mengakses ke halaman website
+2. Selanjutnya masuk ke tampilan menu utama
+3. Langkah selanjutnya menampilkan menu login, lalu masukkan username dan password.
+Lalu verifikasi Jika username dan password sudah benar maka akan masuk ke halaman admin yang di inginkan.
+4. Entity Relationship Diagram (ERD)
+
+Sumber : Hasil Penelitian (2023)
+Gambar 8 Entity Relationship Diagram Akademik
+http://jurnal.bsi.ac.id/index.php/co-science
+
+74
+
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023 | E-ISSN: 2774-9711 | P-ISSN: 2808-9065
+
+Database memiliki pengaturan file yang berbeda yang membentuk database atau basis data dalam
+program komputer ketika informasi spesifik diperlukan. Diagram hubungan entitas adalah model yang berguna
+untuk membuat basis data sehingga berbagai jenis informasi yang terkait dengan basis data yang dibuat selanjutnya
+dapat ditampilkan. Pada sistem akademik di atas, dibuat diagram hubungan entitas yang terdiri dari file mahasiswa,
+absensi,kelas, tahun akademik, jadwal, transkip nilai dan file pengajar.
+5. User Interface
+
+Sumber : Hasil Penelitian (2023)
+Gambar 9 User Interface Menu Utama Admin
+Menu yang dapat dilakukan pada interface menu utama admin yaitu mengolah Data Murid, Data Guru, Data User
+dan Data Kelas.
+
+Sumber : Hasil Penelitian (2023)
+Gambar 10 Interface Data Siswa
+Pada interface data siswa dapat menambahkan informasi tambahan ke menu, mengedit informasi siswa dan juga
+menghapus data siswa
+
+Sumber : Hasil Penelitian (2023)
+Gambar 11 Interface Data Guru
+
+http://jurnal.bsi.ac.id/index.php/co-science
+
+75
+
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023 | E-ISSN: 2774-9711 | P-ISSN: 2808-9065
+
+Pada interface data guru dapat melakukan menu tambah data, edit data guru dan juga menghapus data guru.
+
+Sumber : Hasil Penelitian (2023)
+Gambar 12 Interface Jadwal Rencana Pelaksanaan Pembelajaran Harian
+Menu interface jadwal rencana pelaksanaan pembelajaran harian merupakan interface transaksi yang berfungsi
+untuk melihat rencana pembelajaran harian yang isinya berupa sub tema, materi kegiatan dan juga keterangan
+untuk melengkapi pelaksanaan pembelajaran.
+
+Sumber : Hasil Penelitian (2023)
+Gambar 13 Interface Data Raport
+Pada menu ini merupakan interface terpenting karena interface data raport merupakan laporan dari hasil
+pembelajaran siswa selama 1 semester.
+
+KESIMPULAN
+Berdasarkan kajian yang telah dibahas, dapat disimpulkan bahwa perancangan sistem informasi
+didasarkan pada website ini mempermudah pihak sekolah dalam pengambilan keputusan terkait sistem informasi
+di sekolah. Dengan adanya website ini mempermudah staff admin dan para guru dalam penginputan data
+akademik, Selain itu, sistem informasi akademik online ini memungkinkan siswa atau orang tua siswa dengan
+mudah mendapatkan informasi siswa seperti RPP, nilai dan informasi terkini. di upload di web oleh pihak sekolah.
+Secara garis besar sistem informasi berbasis website ini sangat berperan besar dalam meningkatkan pengembangan
+sistem informasi dan memberikan kemudahan tentunya bagi para pelaku di sekolah, siswa dan juga orang tua
+murid. Selain memberikan banyak manfaat dengan terbentuknya website ini, tetapi dari hasil penelitian ini penulis
+akan berupaya melakukan pengembangan terkait website ini ke depannya yaitu pembaharuan serta perawatan
+secara berkala terhadap perangkat, pengembangan website dengan informasi lain seperti fitur baru berupa
+pembayaran spp dan seluruh kegiatan akademik yang ada disekolah selain itu peneliti berupaya mengembangkan
+penelitiannya dalam sistem informasi akademik menjadi berbasis android.
+
+http://jurnal.bsi.ac.id/index.php/co-science
+
+76
+
+Computer Science (CO-SCIENCE)
+Vol. 3 No. 2 Juli 2023 | E-ISSN: 2774-9711 | P-ISSN: 2808-9065
+
+REFERENSI
+Akbar.P.D, Andriani.R.D, Rismayadi.D.A, Rusdi.J.F, & Prinayanti.A. (2019). Sistem Informasi Akademik,
+Keuangan Dan Ujian Online Berbasis Website Dan Android (Studi Kasus Smk Negeri 2 Cimahi). Seminar
+Nasional Sistem Informasi Dan Tekhnik Informatika Sensitif 2019, 1379–1390.
+Anggraini, Y., Pasha, D., Damayanti, D., & Setiawan, A. (2020). Sistem Informasi Penjualan Sepeda Berbasis
+Web Menggunakan Framework Codeigniter. Jurnal Teknologi dan Sistem Informasi, 1(2), 64–70.
+https://doi.org/10.33365/jtsi.v1i2.236
+Dantes. (2019). Pengantar Basis Data. Depok: PT. RajaGrafindo Persada.
+Fatansyah. (2018). Basis Data. Bandung: Informatika Bandung.
+Fitriani, E., Firmansyah, D., Aryanti, R., & Walim, W. (2018). Implementasi Model Waterfall Pada Sistem
+Informasi Akademik Berbasis Web Pada Smk Pertanian Karawang. Jurnal Techno Nusa Mandiri, 15(2),
+137. https://doi.org/10.33480/techno.v15i2.923
+Hakim, Z., & Meilina, P. (2022). Sistem Informasi Akademik Berbasis Webiste ( Studi Kasus : Smpit Avicenna ),
+12(3), 32–37.
+Haqi. (2019). Aplikasi Absensi Dosen Dengan Java dan Smartphone. Jakarta: PT. Gramedia.
+Hidayat, M. K., & Fatmawati, S. F. (2020). Rancang Bangun Sistem Informasi Akademik Bimbingan Belajar
+(SIBIJAR).
+J
+I
+M
+P
+Jurnal
+Informatika
+Merdeka
+Pasuruan,
+4(3),
+12–17.
+https://doi.org/10.37438/jimp.v4i3.226
+Kaparang, D. R., Ilyas, R., & Pratasik, S. (2022). PERANCANGAN SISTEM INFORMASI AKADEMIK
+BERBASIS WEB PADA SMK. Edutik : Jurnal Pendidikan Teknologi Informasi dan Komunikasi, 2(5),
+696–703. Diambil dari https://ejurnal.unima.ac.id/index.php/edutik/article/view/2922
+Kom, N. S., & Kom, M. (2021). Perancangan Sistem Informasi Akademik pada SMP Al-Mustofa Berbasis Web.
+Scientia Sacra: Jurnal Sains, 1(2), 28–42.
+Munawar. (2018). Analisis perancangan sistem berbasis objek dengan UML.
+Prasetyo, B., Pattiasina, T. J., & Soetarmono, A. N. (2019). Perancangan dan Pembuatan Sistem Informasi Gudang
+(Studi Kasus : PT. PLN (Persero) Area Surabaya Barat). Teknika, 4(1), 12–16.
+https://doi.org/10.34148/teknika.v4i1.30
+Pratama, E. B., & Meilinda, E. (2018). Penerapan Metode Sdlc Dengan Model Waterfall Dalam Pembuatan
+Aplikasi Promosi Produk Makanan Berbasis Website. Jurnal Teknologi Informasi MURA, 10(1), 39.
+https://doi.org/10.32767/jti.v10i1.287
+Rahmalisa, U., Zulkifli, A., Muhaimin, A., & Hidayat, L. (2022). Perancangan Dan Implementasi Sistem Informasi
+Akademik Di Sekolah Dasar Islam Terpadu Bustanul Ulum Pekanbaru Berbasis Web. Jurnal Ilmu
+Komputer, 11(2), 86–93. https://doi.org/10.33060/jik/2022/vol11.iss2.279
+Rahman, T., Pramastya, A. B., Nurdin, H., & Sumarna. (2019). Perancangan Sistem Informasi Akademik Berbasis
+Website Pada SMK Bina Medika Jakarta. JSAI (Journal Scientific and Applied Informatics), 2(3), 223–229.
+https://doi.org/10.36085/jsai.v2i3.460
+Riswanda, D., & Priandika, A. T. (2021). Analisis Dan Perancangan Sistem Informasi Manajemen Pemesanan
+Barang Berbasis Online. Jurnal Informatika dan Rekayasa Perangkat Lunak, 2(1), 94–101.
+https://doi.org/https://doi.org/10.33365/jatika.v2i1.730
+Rosa A.S.M. Shalahuddin. (2019). Rekayasa Perangkat Lunak Terstruktur dan Berorientasi Objek. Bandung:
+Informatika Bandung.
+Solahudin, M. (2021). Rancang Bangun Sistem Informasi Akademik Sekolah (SIAS) Berbasis Website.
+DoubleClick:
+Journal
+of
+Computer
+and
+Information
+Technology,
+4(2),
+107.
+https://doi.org/10.25273/doubleclick.v4i2.8315
+Sugiyono. (2018). Metode Penelitian Kuantitatif, Kualitatif dan R & D.
+Sukamto dan Shalahuddin. (2018). Rekayasa Perangkat Lunak. Bandung: Informatika Bandung.
+
+http://jurnal.bsi.ac.id/index.php/co-science
+
+77
+
+

@@ -1,46 +1,46 @@
 # BAB 2
 # TINJAUAN PUSTAKA
 
-## 2.1 University Course Timetabling Problem dan Konstrain
+## 2.1 University Course Timetabling Problem dan Kendala (Constraint)
 
-University Course Timetabling Problem (UCTP) merupakan salah satu permasalahan kompleks yang sering dihadapi oleh institusi pendidikan tinggi di seluruh dunia. UCTP secara formal didefinisikan sebagai masalah optimasi kombinatorial yang bertujuan untuk mengalokasikan sumber daya berupa waktu, ruang, dosen, dan mata kuliah ke dalam slot waktu tertentu dengan mempertimbangkan berbagai constraint yang telah ditetapkan oleh institusi (Bashab et al., 2023).
+University Course Timetabling Problem (UCTP) merupakan permasalahan optimasi penjadwalan yang secara luas dihadapi oleh institusi pendidikan tinggi di berbagai negara. UCTP secara formal didefinisikan sebagai masalah optimasi kombinatorial yang bertujuan mengalokasikan sumber daya berupa waktu, ruang, dosen, dan mata kuliah ke dalam slot waktu tertentu dengan tetap memenuhi kendala (constraint) yang ditetapkan institusi (Bashab et al., 2023).
 
-Sebagai masalah NP-COP (Non-Polynomial Combinatorial Optimization Problem), UCTP memiliki karakteristik khusus yang membedakannya dari masalah optimisasi konvensional. Pertama, tidak ada metode yang dapat menyelesaikannya dalam waktu polinomial yang masuk akal, membuat pendekatan brute-force tidak feasible untuk kasus nyata. Kedua, waktu komputasi yang diperlukan untuk mencapai solusi feasible meningkat secara eksponensial seiring bertambahnya ukuran masalah (jumlah dosen, kelas, ruang, dan constraint). Solusi optimal hanya dapat dicapai untuk kasus-kasus berukuran kecil, sementara mayoritas kasus nyata memerlukan algoritma aproksimasi yang tidak menjamin optimalitas tetapi mampu menghasilkan solusi yang cukup baik (Bashab et al., 2023).
+Sebagai masalah NP-COP (Non-Polynomial Combinatorial Optimization Problem), UCTP memiliki karakteristik yang membedakannya dari masalah optimasi konvensional. Pertama, tidak terdapat algoritma yang mampu menyelesaikan UCTP dalam waktu polinomial yang wajar, sehingga pendekatan brute-force tidak feasible untuk kasus nyata. Kedua, waktu komputasi yang dibutuhkan untuk mencapai solusi feasible meningkat secara eksponensial seiring bertambahnya ukuran masalah, seperti jumlah dosen, kelas, ruang, dan kendala yang terlibat. Solusi optimal umumnya hanya dapat diperoleh untuk kasus berukuran kecil, sedangkan mayoritas kasus nyata memerlukan algoritma aproksimasi yang tidak menjamin optimalitas tetapi mampu menghasilkan solusi yang cukup baik (Bashab et al., 2023).
 
 ### Jenis-jenis Constraint dalam UCTP
 
-Dalam konteks UCTP, constraint atau batasan dapat dikategorikan menjadi dua kategori utama yaitu **hard constraints** dan **soft constraints**.
+Dalam konteks UCTP, kendala dapat dikategorikan menjadi dua kategori utama yaitu **hard constraints** dan **soft constraints**.
 
-**Hard constraints** adalah batasan yang harus dipenuhi 100% untuk menghasilkan jadwal yang valid dan feasible. Pelanggaran terhadap hard constraints membuat jadwal tidak dapat digunakan sama sekali karena akan mengakibatkan konflik fundamental seperti dosen mengajar di dua kelas berbeda pada waktu yang sama, atau ruangan yang digunakan secara bersamaan oleh dua mata kuliah berbeda. Contoh hard constraints yang umum ditemukan meliputi lecturer conflict (tidak boleh terjadi bentrokan jadwal dosen), room capacity conflict (kapasitas ruangan harus sesuai dengan jumlah mahasiswa), daily SKS limit (dosen tidak boleh melebihi batas maksimal SKS per hari), dan exclusive room constraint (ruang laboratorium bersifat eksklusif untuk program studi tertentu) (Wiktasari & Suseno, 2016).
+**Hard constraints** merupakan kendala yang wajib dipenuhi sepenuhnya agar jadwal yang dihasilkan valid dan dapat digunakan. Pelanggaran terhadap hard constraints menyebabkan jadwal tidak layak dipakai karena menimbulkan konflik fundamental, misalnya satu dosen mengajar di dua kelas berbeda pada waktu yang sama atau satu ruangan digunakan secara bersamaan oleh dua mata kuliah berbeda. Contoh hard constraints yang umum meliputi lecturer conflict (konflik jadwal dosen), room capacity conflict (kapasitas ruangan), daily SKS limit (batas SKS harian dosen), dan exclusive room constraint (ruang laboratorium eksklusif) (Wiktasari & Suseno, 2016).
 
-**Soft constraints** adalah batasan yang tidak wajib dipenuhi 100%, tetapi pelanggaran memberikan penalti yang mengurangi kualitas jadwal. Minimisasi pelanggaran soft constraints bertujuan untuk meningkatkan kepuasan pengguna (dosen dan mahasiswa) dengan mempertimbangkan preferensi dan kenyamanan. Contoh soft constraints meliputi teaching time preference (preferensi mengajar dosen pada waktu tertentu), room preference (kebutuhan ruang dengan teknologi spesifik), transit time between classes (waktu memadai untuk berpindah antar ruang), dan schedule density optimization (menghindari jadwal yang terlalu renggang atau terlalu padat). Penelitian oleh Bashab et al. (2023) menunjukkan bahwa semakin banyak constraint yang dipertimbangkan, semakin kompleks ruang solusi dan semakin sulit untuk menemukan jadwal yang optimal.
+**Soft constraints** merupakan kendala yang tidak wajib dipenuhi sepenuhnya, tetapi pelanggaran memberikan penalti yang mengurangi kualitas jadwal. Minimisasi pelanggaran soft constraints bertujuan meningkatkan kepuasan pengguna dengan mempertimbangkan preferensi dan kenyamanan. Contoh soft constraints meliputi teaching time preference (preferensi waktu mengajar), room preference (preferensi ruangan), transit time between classes (waktu perpindahan), dan schedule density optimization (kepadatan jadwal). Penelitian Bashab et al. (2023) menunjukkan bahwa semakin banyak kendala yang dipertimbangkan, semakin kompleks ruang solusi.
 
 ### Kompleksitas dan Tantangan UCTP
 
-Kompleksitas UCTP meningkat secara eksponensial dengan penambahan jumlah variabel dan constraint yang harus dipertimbangkan. Menurut Bashab et al. (2023), tantangan utama dalam menyelesaikan UCTP meliputi kebutuhan untuk mengakomodasi preferensi dari berbagai pihak (dosen, mahasiswa, administrator), kompleksitas dataset berskala besar dengan ratusan kelas, puluhan dosen, dan puluhan ruangan, serta kebutuhan khusus institusional yang bersifat context-specific seperti batasan religius atau jam istirahat fakultas.
+Kompleksitas UCTP meningkat secara signifikan dengan bertambahnya jumlah variabel dan kendala yang harus dipertimbangkan. Tantangan utama meliputi kebutuhan mengakomodasi preferensi berbagai pihak (dosen, mahasiswa, administrator), kompleksitas dataset berskala besar dengan ratusan kelas, puluhan dosen, dan puluhan ruangan, serta kebutuhan khusus institusional yang bersifat kontekstual seperti batasan religius atau jam istirahat fakultas (Bashab et al., 2023).
 
-Berdasarkan karakteristik tersebut, UCTP di Universitas Internasional Semen Indonesia (UISI) memiliki kompleksitas tambahan berupa constraint spesifik seperti religious time prohibition (tidak boleh ada jadwal pada jam sekitar Dzuhur/Maghrib dan periode Jumat) dan class category constraint (kelas pagi dan sore harus dijadwalkan sesuai waktunya). Kompleksitas ini memerlukan pendekatan algoritma yang sophisticated untuk dapat menghasilkan jadwal yang feasible dan optimal dalam waktu yang reasonable.
+Pada konteks Universitas Internasional Semen Indonesia (UISI), UCTP memiliki kompleksitas tambahan berupa kendala spesifik seperti religious time prohibition (larangan penjadwalan pada jam sekitar Dzuhur/Maghrib dan periode Shalat Jumat) dan class category constraint (pembagian kategori kelas pagi dan sore yang harus dijadwalkan sesuai slot waktunya). Kompleksitas ini memerlukan pendekatan algoritmik yang canggih untuk menghasilkan jadwal yang feasible dan mendekati optimal dalam waktu komputasi yang wajar.
 
 
-## 2.2 Decision Support System dan Arsitektur
+## 2.2 Decision Support System
 
 Decision Support System (DSS) atau Sistem Pendukung Keputusan merupakan sistem informasi berbasis komputer yang membantu pengambil keputusan dalam memanfaatkan data, model analitis, dan alat komunikasi untuk mengidentifikasi dan memecahkan masalah (Uysal et al., 2025). DSS berbeda dari sistem informasi manajemen tradisional karena DSS fokus pada keputusan semi-terstruktur dan tidak terstruktur yang memerlukan judgment manusia, sedangkan sistem informasi manajemen tradisional lebih fokus pada keputusan terstruktur yang dapat diotomatisasi sepenuhnya.
 
-Dalam konteks penjadwalan kuliah, DSS berfungsi sebagai alat bantu bagi pengambil keputusan (dalam hal ini bagian Administrasi Akademik) untuk menghasilkan jadwal kuliah yang optimal. Sistem DSS untuk penjadwalan memungkinkan pengguna untuk memasukkan parameter dan constraint yang diinginkan, menjalankan algoritma optimasi, dan menganalisis solusi yang dihasilkan untuk kemudian melakukan penyesuaian jika diperlukan. Penelitian Uysal et al. (2025) menunjukkan bahwa web-based DSS yang menggunakan algoritma Simulated Annealing dapat secara signifikan meningkatkan efisiensi proses penjadwalan dengan menghasilkan distribusi beban yang lebih seimbang dan meminimalkan konflik jadwal.
+Dalam konteks penjadwalan kuliah, DSS berfungsi sebagai alat bantu bagi bagian Administrasi Akademik untuk menghasilkan jadwal perkuliahan yang optimal. Sistem DSS untuk penjadwalan memungkinkan pengguna memasukkan parameter dan kendala yang diinginkan, menjalankan algoritma optimasi, dan menganalisis solusi yang dihasilkan untuk kemudian melakukan penyesuaian jika diperlukan. Penelitian Uysal et al. (2025) menunjukkan bahwa DSS berbasis web yang menggunakan algoritma Simulated Annealing dapat meningkatkan efisiensi proses penjadwalan secara signifikan dengan menghasilkan distribusi beban yang lebih seimbang dan meminimalkan konflik jadwal.
 
 ### Komponen Arsitektur DSS untuk Penjadwalan
 
-Arsitektur DSS untuk sistem penjadwalan umumnya terdiri dari beberapa komponen utama:
+Arsitektur DSS untuk sistem penjadwalan umumnya terdiri dari beberapa komponen utama yang bekerja secara terintegrasi:
 
-**Database Management System** menyimpan data akademis seperti data dosen, mata kuliah, ruangan, dan mahasiswa. Komponen ini bertanggung jawab untuk mengelola integritas data dan menyediakan akses data yang efisien untuk komponen lainnya.
+**Database Management System** menyimpan data akademis seperti data dosen, mata kuliah, ruangan, dan mahasiswa. Komponen ini bertanggung jawab mengelola integritas data dan menyediakan akses data yang efisien untuk komponen lainnya.
 
 **Model Management System** mengandung berbagai model matematika dan algoritma untuk optimasi penjadwalan. Dalam konteks penelitian ini, komponen ini mengimplementasikan algoritma Simulated Annealing dengan berbagai variasi dan konfigurasi.
 
-**User Interface** memungkinkan interaksi antara pengguna dan sistem untuk memasukkan parameter, menjalankan algoritma, dan menampilkan hasil. Antarmuka yang ramah pengguna memungkinkan administrator dan faculty members untuk dengan mudah menggunakan sistem tanpa pelatihan khusus (Latpate et al., 2024).
+**User Interface** memungkinkan interaksi antara pengguna dan sistem untuk memasukkan parameter, menjalankan algoritma, dan menampilkan hasil. Antarmuka yang ramah pengguna memungkinkan administrator dan faculty members untuk menggunakan sistem tanpa pelatihan khusus (Latpate et al., 2024).
 
-**Communication System** menghubungkan semua komponen dan memfasilitasi pertukaran data. Arsitektur REST API menjadi pilihan yang populer karena memungkinkan integrasi yang modular dan skalabilitas yang tinggi (Romaguera et al., 2023).
+**Communication System** menghubungkan semua komponen dan memfasilitasi pertukaran data. REST API menjadi pilihan populer karena memungkinkan integrasi modular dan skalabilitas tinggi (Romaguera et al., 2023).
 
-Berdasarkan penelitian Romaguera et al. (2023), implementasi web-based DSS untuk penjadwalan memerlukan arsitektur yang memungkinkan akses online dan kemampuan untuk menangani berbagai jenis dataset. Dalam arsitektur yang diusulkan, backend sistem dibangun dengan arsitektur REST API yang menyediakan endpoint untuk berbagai operasi seperti input data, proses optimasi penjadwalan, dan output hasil jadwal. Frontend dikembangkan menggunakan React.js yang menyediakan antarmuka web yang responsif dan interaktif untuk pengguna. Arsitektur ini memungkinkan integrasi yang modular antara komponen-komponen sistem dan memfasilitasi pengembangan yang paralel antara frontend dan backend.
+Arsitektur DSS untuk penjadwalan umumnya menerapkan prinsip modularitas, di mana komponen database, model optimasi, antarmuka pengguna, dan sistem komunikasi dikembangkan secara terpisah tetapi terintegrasi. Modularitas ini memungkinkan pengembangan paralel, pemeliharaan yang lebih mudah, dan kemampuan untuk mengganti atau meningkatkan komponen tertentu tanpa memengaruhi komponen lainnya (Romaguera et al., 2023).
 
 
 ## 2.3 Simulated Annealing
@@ -76,19 +76,13 @@ Metropolis criterion adalah aturan penerimaan yang paling umum digunakan dalam S
 
 Beberapa parameter penting yang mempengaruhi performansi SA meliputi:
 
-**Initial Temperature (T₀)**: Suhu awal menentukan tingkat eksplorasi pada awal algoritma. Suhu yang terlalu rendah dapat menyebabkan algoritma terjebak dalam local optimum terlalu cepat, sementara suhu yang terlalu tinggi akan memperlambat konvergensi karena terlalu banyak iterasi yang dihabiskan pada pencarian yang tidak produktif. Penentuan suhu awal dapat dilakukan melalui beberapa metode, salah satunya adalah dengan menghitung perubahan rata-rata objective function dari solusi-solusi acak (Wiktasari & Suseno, 2016):
-
-$$T_0 = \frac{\overline{\Delta E^+}}{\ln(2)}$$
-
-Di mana $\overline{\Delta E^+}$ adalah rata-rata perubahan positif objective function dari sampel solusi acak.
+**Initial Temperature (T₀)**: Suhu awal menentukan tingkat eksplorasi pada awal algoritma. Suhu yang terlalu rendah dapat menyebabkan algoritma terjebak dalam local optimum terlalu cepat, sementara suhu yang terlalu tinggi akan memperlambat konvergensi. Penentuan suhu awal dapat dilakukan melalui dua pendekatan umum: (1) penentuan adaptif berdasarkan karakteristik masalah, seperti menghitung rata-rata perubahan fitness dari solusi acak sehingga diperoleh probabilitas penerimaan sekitar 50% untuk solusi yang lebih buruk; atau (2) penentuan eksperimental melalui trial-and-error untuk menemukan nilai yang optimal untuk masalah tertentu (Kirkpatrick et al., 1983; Xu et al., 2025).
 
 **Cooling Rate (α)**: Faktor pendinginan menentukan seberapa cepat suhu menurun setiap iterasi. Scheduling pendinginan yang paling umum adalah geometric cooling (Kalivas, 1995):
 
 $$T_{k+1} = \alpha \cdot T_k$$
 
 Di mana $0.8 \leq \alpha \leq 0.99$ dan $k$ adalah iterasi saat ini. Nilai α yang lebih kecil akan menghasilkan pendinginan yang lebih cepat, sementara nilai yang lebih dekat dengan 1 akan menghasilkan pendinginan yang lebih gradual.
-
-**Markov Chain Length**: Jumlah iterasi yang dilakukan pada setiap suhu sebelum suhu diturunkan. Panjang chain yang lebih besar memungkinkan eksplorasi yang lebih thorough pada setiap level suhu, tetapi juga meningkatkan waktu komputasi (van Laarhoven & Aarts, 1987).
 
 **Final Temperature**: Suhu minimum yang menandakan akhir algoritma. Ketika suhu mencapai nilai ini, algoritma dihentikan meskipun solusi optimal belum tentu telah ditemukan.
 
@@ -106,24 +100,23 @@ Pemilihan neighborhood structure yang tepat dapat mempengaruhi acceptance rate d
 
 ### Reheating dan Variasi SA
 
-Reheating adalah teknik yang digunakan dalam SA untuk meningkatkan suhu secara sementara ketika algoritma menunjukkan tanda-tanda stagnasi. Hal ini memungkinkan algoritma untuk keluar dari local optimum yang mungkin telah terjebak (Goh et al., 2017).
+Reheating adalah teknik yang digunakan dalam SA untuk meningkatkan suhu secara sementara ketika algoritma menunjukkan tanda-tanda stagnasi, yaitu kondisi di mana tidak ada perbaikan signifikan pada fitness function dalam sejumlah iterasi tertentu. Hal ini memungkinkan algoritma untuk keluar dari local optimum yang mungkin telah terjebak dengan meningkatkan tingkat eksplorasi secara sementara sebelum pendinginan dilanjutkan kembali. Tanpa mekanisme reheating, SA memiliki kecenderan untuk konvergen terlalu cepat ke lokal optimum terdekat, terutama pada masalah optimasi dengan ruang solusi yang kompleks dan banyak lokal optimum (Xu et al., 2025).
 
-Simulated Annealing with Improved Reheating and Learning (SAIRL) yang dikembangkan oleh Goh et al. (2017) menggunakan reheating berdasarkan kondisi stuck, yaitu ketika perbaikan solusi tidak terjadi setelah sejumlah iterasi tertentu. Suhu reheating dapat dihitung sebagai:
+Konsep reheating pertama kali diperkenalkan secara eksplisit dalam konteks penjadwalan oleh Goh et al. (2017) melalui Simulated Annealing with Improved Reheating and Learning (SAIRL). SAIRL menggunakan reheating berdasarkan kondisi stuck, yaitu ketika perbaikan solusi tidak terjadi setelah sejumlah iterasi tertentu. Suhu reheating dihitung menggunakan formula yang mempertimbangkan berbagai faktor. Hasil eksperimen pada Socha Dataset menunjukkan bahwa SAIRL mampu meningkatkan kemampuan escape dari local optimum dibandingkan dengan SA konvensional. Penelitian ini juga memperkenalkan penggunaan success rate untuk seleksi operator, di mana operator yang lebih sering menghasilkan perbaikan solusi akan memiliki probabilitas lebih tinggi untuk dipilih di iterasi berikutnya. Goh et al. mendokumentasikan penggunaan tabu tenure dalam konteks UCTP, dengan formula tabu_tenure = RANDOM[10) + |unplaced_events| yang mempertimbangkan jumlah event yang belum ditempatkan. Implementasi dalam penelitian ini mengadopsi konsep success rate tracking dan reheating dari SAIRL untuk meningkatkan performansi algoritma.
 
-$$T_{reheat} = [heat \times 0.2 \times f(current) + f(current)] \times \overline{\Delta f} \times D$$
+Penelitian Muklason et al. (2024) mengembangkan algoritma Tabu-Simulated Annealing Hyper-Heuristics yang menggabungkan Simulated Annealing, Tabu Search, dan konsep hyper-heuristics. Algoritma ini memanfaatkan mekanisme reheating dan tabu list secara simultan, sehingga mampu keluar dari local optimum ketika terjadi stagnasi pencarian solusi. Selain itu, mereka menerapkan pemilihan operator tetangga secara adaptif berbasis success rate, sehingga operator yang lebih sering menghasilkan perbaikan memiliki probabilitas pemilihan yang lebih besar. Hasil eksperimen pada Socha Dataset menunjukkan algoritma hibrida SA-TS dengan reheating mampu menghasilkan penalty score rata-rata 0 untuk small instances dan di bawah 200 untuk medium instances (Muklason et al., 2024).
 
-Di mana $heat$ adalah langkah inkremental, $f(current)$ adalah nilai objective function saat ini, $\overline{\Delta f}$ adalah rata-rata perubahan biaya (cost changes) dari move uphill dan downhill, dan $D$ adalah koefisien.
+Penelitian Kaviani et al. (2014) mengembangkan algoritma hibrida TABUSA yang menggabungkan Tabu Search dan Simulated Annealing untuk Quadratic Assignment Problem (QAP). Pendekatan hibrida ini menunjukkan bahwa menggabungkan reheating dengan mekanisme memori dari Tabu Search dapat menghasilkan algoritma yang lebih kuat dalam menyelesaikan masalah optimasi kombinatorial. TABUSA memanfaatkan keunggulan masing-masing metode: Tabu Search untuk exploitation melalui penggunaan tabu list, sementara Simulated Annealing memiliki kemampuan exploration yang baik melalui penerimaan solusi worse secara probabilistik dan reheating. Konsep ini menjadi dasar bagi pengembangan algoritma hybrid SA-TS selanjutnya (Kaviani et al., 2014).
 
-Teknik lain yang meningkatkan performansi SA adalah penggunaan adaptive cooling schedule yang dapat menyesuaikan tingkat pendinginan berdasarkan kondisi saat ini.
 
 ### Keunggulan dan Kelemahan Simulated Annealing
 
 **Keunggulan utama SA meliputi:**
-- Kemampuan untuk menghindari local optimum melalui penerimaan probabilistik solusi worse
+- Kemampuan menghindari local optimum melalui penerimaan probabilistik solusi worse
 - Implementasi yang relatif sederhana
 - Fleksibilitas untuk berbagai jenis masalah optimasi
 - Tidak memerlukan gradient dari fungsi objective
-- Dapat menghasilkan solusi berkualitas baik dalam waktu yang reasonable
+- Dapat menghasilkan solusi berkualitas baik dalam waktu komputasi yang wajar
 
 **Kelemahan SA meliputi:**
 - Memerlukan tuning parameter yang tepat untuk performansi optimal
@@ -151,7 +144,7 @@ Implementasi algoritma SA dengan Metropolis criterion dapat dituliskan sebagai p
 4. RETURN solusi terbaik yang ditemukan
 ```
 
-### Fungsi Fitness dan Perhitungan Konstrain
+### Fungsi Fitness dan Perhitungan Kendala
 
 Fungsi fitness merupakan komponen krusial dalam algoritma metaheuristik untuk optimasi UCTP. Fungsi fitness mengevaluasi kualitas solusi jadwal dengan mempertimbangkan pelanggaran terhadap hard constraints dan soft constraints. Penelitian Cruz-Rosales et al. (2022) mengembangkan model matematika komprehensif untuk fungsi fitness yang menggabungkan penalti untuk pelanggaran constraint dengan bobot yang sesuai.
 
@@ -227,6 +220,108 @@ Keunggulan Tabu Search terletak pada kemampuannya untuk melakukan eksploitasi ya
 
 Pengembangan terkini dalam literatur menunjukkan bahwa pendekatan hibrida yang menggabungkan Simulated Annealing dan Tabu Search memberikan performansi yang sangat kompetitif dalam menyelesaikan UCTP. Penelitian Muklason et al. (2024) mengembangkan algoritma Tabu-Simulated Annealing Hyper-Heuristics yang menggabungkan kedua metode tersebut dengan konsep hyper-heuristics. Studi mereka menggunakan Socha Dataset sebagai benchmark dan hasilnya menunjukkan bahwa algoritma yang dikembangkan menduduki peringkat kedua dari sepuluh algoritma yang diuji, dengan solusi terbaik pada 6 dari 11 dataset yang diuji.
 
+### Alur Kerja Hybrid SA-TS
+
+Algoritma hybrid yang dikembangkan dalam penelitian ini menggabungkan Simulated Annealing (SA) dan Tabu Search (TS) dengan pola interaksi sebagai berikut:
+
+```
+START
+│
+├─ Generasi Initial Solution (Greedy)
+│
+├─ Initialisasi Tabu List = kosong
+│
+└─ Mulai Loop Optimasi
+│
+│   ├─ Setiap Iterasi SA:
+│   │   ├─ 1. Generate Solusi Tetangga (move operator)
+│   │   ├─ 2. Cek Tabu Status
+│   │   │   ├─ Jika TIDAK tabu → lanjut ke langkah 3
+│   │   │   └─ Jika tabu → cek Aspiration Criteria
+│   │   │       ├─ Jika memenuhi aspirasi → terima
+│   │   │       └─ Jika tidak → tolak (generate baru)
+│   │   ├─ 3. Hitung Fitness Baru
+│   │   ├─ 4. Hitung Probabilitas Penerimaan (Metropolis Criterion)
+│   │   ├─ 5. Cek Aspiration Criteria (jika tabu)
+│   │   ├─ 6. Accept/Reject berdasarkan probabilitas
+│   │   ├─ 7. Update Tabu List (jika diterima)
+│   │   │   └─ Tambahkan signature solusi yang ditinggalkan
+│   │   ├─ 8. Update Suhu (Cooling)
+│   │   └─ 9. Cek Reheating (jika stagnasi)
+│   │
+│   └─ Kriteria Stop?
+│       ├─ Ya → RETURN solusi terbaik
+│       └─ Tidak → ulangi iterasi
+```
+
+**Keterangan Alur Kerja:**
+
+1. **Generate Solusi Tetangga**: Pada setiap iterasi, SA menggunakan move operator (misalnya: SwapClasses, ChangeTimeSlot, dll) untuk menghasilkan solusi baru dari neighborhood solusi saat ini. TS **TIDAK** melakukan pencarian neighborhood terpisah, melainkan hanya mengecek apakah solusi yang dihasilkan SA termasuk tabu.
+
+2. **Cek Tabu Status**: TS bertindak sebagai "filter" yang mencegah SA kembali ke solusi yang pernah dikunjungi. Solusi tetangga yang dihasilkan SA diperiksa:
+   - Jika signature solusi **TIDAK** ada di tabu list → SA boleh lanjut mengevaluasi
+   - Jika signature solusi **ADA** di tabu list → SA cek aspirasi
+
+3. **Aspiration Criteria**: Jika solusi tabu memiliki fitness lebih baik dari global best solution, maka solusi tersebut **TIDAK DIANGGAP TABU** dan boleh diterima oleh SA. Ini memastikan solusi sangat baik tidak dilewatkan hanya karena status tabu.
+
+4. **Metropolis Criterion**: SA menggunakan probabilitas penerimaan P = exp(-ΔE/T) untuk menentukan apakah solusi lebih buruk boleh diterima untuk exploration.
+
+5. **Update Tabu List**: Jika solusi diterima oleh SA, solusi yang ditinggalkan ditambahkan ke tabu list untuk mencegah cycling kembali. Tabu list memiliki tenure (N iterasi) sehingga solusi bisa kembali dikunjungi setelah N iterasi.
+
+6. **Update Suhu (Cooling)**: Setiap iterasi, suhu diturunkan secara geometric: T = α × T.
+
+7. **Cek Reheating (jika stagnasi)**: Jika tidak ada perbaikan fitness dalam sejumlah iterasi tertentu, suhu ditingkatkan drastis untuk escape dari local optimum.
+
+### Mekanisme Acceptance pada Hybrid SA-TS
+
+Dalam implementasi hybrid SA-TS, terdapat dua mekanisme penerimaan yang bekerja secara bersamaan:
+
+**1. Metropolis Criterion (SA)**:
+Solusi lebih buruk boleh diterima dengan probabilitas:
+P(accept) = exp(-ΔE/T)
+
+Fungsi: Meningkatkan exploration dengan menerima solusi yang lebih buruk secara probabilistik.
+
+**2. Aspiration Criteria (TS)**:
+Solusi yang berada dalam tabu list TETAPI memiliki fitness lebih baik dari global best solution DITERIMA meskipun tabu.
+
+Fungsi: Memastikan solusi sangat baik tidak dilewatkan hanya karena status tabu.
+
+**Perbedaan Mendasar:**
+- Metropolis Criterion bekerja berdasarkan probabilitas stochastic
+- Aspiration Criteria bekerja berdasarkan threshold deterministik (fitness < global best)
+
+**Kombinasi dalam Implementasi:**
+Pada setiap iterasi SA, kedua mekanisme ini dievaluasi secara bersamaan:
+- Jika solusi TIDAK tabu → hanya Metropolis Criterion yang dievaluasi
+- Jika solusi tabu DAN memenuhi aspirasi → solusi DITERIMA (override tabu)
+- Jika solusi tabu DAN TIDAK memenuhi aspirasi → solusi DITOLAK (generate baru)
+
+Ilustrasi:
+```
+Solusi yang dihasilkan SA:
+├─ TIDAK tabu → Dievaluasi dengan Metropolis Criterion
+│   └─ Lebih baik → Accept (P=1.0)
+│   └─ Lebih buruk → Accept dengan P=exp(-ΔE/T)
+└─ Ada di tabu list → Cek Aspiration Criteria
+    ├─ Fitness < globalBest → Accept (override tabu)
+    └─ Fitness ≥ globalBest → Reject (generate baru)
+```
+
+### Integrasi dengan Reheating
+
+Ketika algoritma mengalami stagnasi (tidak ada perbaikan dalam sejumlah iterasi tertentu), mekanisme reheating diaktifkan untuk meningkatkan suhu secara drastis. Peningkatan suhu ini memberikan efek berikut:
+
+1. **Meningkatkan P(accept)**: Suhu yang lebih tinggi membuat probabilitas penerimaan solusi lebih buruk menjadi lebih besar, memungkinkan escape dari local optimum.
+
+2. **Mengatasi Aspiration Criteria**: Dengan suhu yang lebih tinggi, solusi yang lebih baik dapat ditemukan lebih cepat, memicu activation lebih sering dari aspiration criteria.
+
+3. **Reset Partial Exploration**: Peningkatan suhu memberikan kesempatan kedua untuk algoritma mengeksplorasi area baru yang mungkin belum terjangkau sebelumnya.
+
+Penting: Reheating tidak mengubah tabu list. Solusi yang masih dalam tenure tetap dianggap tabu kecuali memenuhi aspiration criteria.
+
+**Kesimpulan Interaksi**: SA adalah algoritma utama yang melakukan exploration dan exploitation. TS berperan sebagai fitur tambahan untuk mencegah cycling dengan memori (tabu list) dan aspiration criteria untuk memastikan solusi sangat baik tidak dilewatkan. TS **TIDAK** melakukan pencarian terpisah atau neighborhood search sendiri.
+
 ### Keunggulan Pendekatan Hybrid
 
 Keunggulan utama dari pendekatan hybrid SA-TS adalah keseimbangan antara exploitation dan exploration dalam proses pencarian solusi. Tabu Search memiliki kemampuan exploitation yang kuat melalui penggunaan tabu list untuk menghindari kunjungan ke solusi yang sama secara berulang. Sementara Simulated Annealing memiliki kemampuan exploration yang baik melalui penerimaan solusi worse secara probabilistik untuk menghindari local optima. Kombinasi kedua metode ini memungkinkan algoritma untuk secara efektif mencari solusi optimal dalam ruang solusi yang kompleks (Muklason et al., 2024).
@@ -240,20 +335,30 @@ Roulette Wheel Selection, juga dikenal sebagai Fitness Proportionate Selection, 
 
 ### Prinsip Dasar Roulette Wheel Selection
 
-Prinsip dasar Roulette Wheel Selection adalah bahwa solusi atau operator dengan nilai fitness yang lebih tinggi memiliki probabilitas yang lebih besar untuk dipilih. Probabilitas pemilihan untuk operator $i$ dapat dihitung sebagai:
+Dalam konteks hyper-heuristic untuk UCTP, terdapat perbedaan penting dalam menginterpretasikan nilai "fitness" sebagai nilai kualitas solusi atau sebagai nilai penalti. 
 
-$$P(i) = \frac{fitness(i)}{\sum_{j=1}^{n} fitness(j)}$$
+**Dalam Roulette Wheel Selection standar (saat digunakan untuk memilih solusi di algoritma evolusioner)**, nilai fitness yang lebih tinggi merefleksikan solusi yang lebih baik (lebih dekat ke optimal), sehingga solusi dengan fitness tinggi memiliki probabilitas pemilihan yang lebih besar.
 
-Di mana $fitness(i)$ adalah nilai fitness operator $i$ dan $n$ adalah jumlah total operator yang tersedia.
+**Namun dalam implementasi hyper-heuristic untuk UCTP ini (seperti yang dikembangkan dalam penelitian Muklason et al., 2024)**, yang digunakan adalah **success_rate** dari operator neighborhood, bukan nilai fitness solusi. Success_rate dihitung sebagai rasio antara jumlah perbaikan (improvements) dan jumlah percobaan (attempts), dengan nilai antara 0 hingga 1:
+- Success rate tinggi = operator yang sering menghasilkan perbaikan solusi → lebih efektif
+- Success rate rendah = operator yang jarang menghasilkan perbaikan → kurang efektif
+
+Oleh karena itu, formula Roulette Wheel yang digunakan dalam implementasi ini adalah:
+
+$$P(i) = \frac{success\_rate(i)}{\sum_{j=1}^{n} success\_rate(j)}$$
+
+Di mana:
+- $success\_rate(i)$ adalah rasio keberhasilan operator $i$
+- $n$ adalah jumlah total operator yang tersedia
 
 ### Pseudocode Roulette Wheel Selection
 
 Pseudo-code Roulette Wheel Selection dapat dituliskan sebagai berikut:
 
 ```
-1. Hitung total fitness dari semua operator
-2. Generate bilangan random r dalam interval [0, total_fitness)
-3. Akumulasikan fitness operator hingga akumulasi ≥ r
+1. Hitung total success rate dari semua operator
+2. Generate bilangan random r dalam interval [0, total_success_rate)
+3. Akumulasikan success rate operator hingga akumulasi ≥ r
 4. Pilih operator pada titik akumulasi tersebut
 5. RETURN operator yang dipilih
 ```
@@ -261,6 +366,10 @@ Pseudo-code Roulette Wheel Selection dapat dituliskan sebagai berikut:
 ### Keunggulan Roulette Wheel Selection
 
 Keunggulan Roulette Wheel Selection dalam hyper-heuristic adalah kemampuannya untuk menyeimbangkan antara exploitation (memilih operator yang terbukti efektif) dan exploration (memberikan kesempatan kepada operator lain). Hal ini sangat relevan dalam konteks UCTP di mana karakteristik ruang solusi dapat berubah seiring proses optimasi berlangsung (Muklason et al., 2024).
+
+**Perbedaan Pendekatan:**
+- **Roulette Wheel Standar**: Menggunakan fitness solusi (lebih tinggi = lebih baik)
+- **Implementasi Hybrid**: Menggunakan success_rate operator (tinggi = lebih efektif)
 
 ### Modifikasi Hybrid Selection
 
@@ -300,20 +409,16 @@ Dalam penelitian ini, Greedy Algorithm digunakan untuk menghasilkan solusi awal 
 
 1. Urutkan mata kuliah berdasarkan prioritas (misalnya: jumlah mahasiswa, jumlah SKS, atau kategori)
 2. Untuk setiap mata kuliah dalam urutan tersebut:
-   a. Cari slot waktu dan ruangan yang tersedia yang tidak melanggar hard constraints
-   b. Pilih slot yang paling sesuai berdasarkan preferensi atau soft constraints
+   a. Cari slot waktu dan ruangan yang tersedia yang tidak melanggar kendala keras
+   b. Pilih slot yang paling sesuai berdasarkan preferensi atau kendala lunak
    c. Assign mata kuliah ke slot tersebut
 
 Pendekatan greedy ini sangat cepat dalam menghasilkan solusi awal karena tidak memerlukan iterasi ekstensif seperti metaheuristik. Namun, solusi yang dihasilkan mungkin bukan solusi optimal karena keputusan lokal yang optimal tidak menjamin solusi global yang optimal.
 
 
-## 2.8 REST API dan Pengembangan Web
+## 2.8 Arsitektur REST API dan Stack Teknologi
 
-REST (Representational State Transfer) API adalah arsitektur perangkat lunak yang memungkinkan komunikasi antara client dan server melalui protokol HTTP. REST API telah menjadi standar de facto untuk pengembangan layanan web karena kemudahan implementasinya, skalabilitas yang tinggi, dan fleksibilitas dalam berbagai platform. Dalam konteks DSS untuk penjadwalan, REST API memungkinkan akses modular terhadap algoritma optimasi yang dapat dipanggil oleh berbagai jenis client seperti web application, mobile application, atau sistem lain yang memerlukan kemampuan penjadwalan (Romaguera et al., 2023).
-
-Penelitian Romaguera et al. (2023) menunjukkan bahwa implementasi web-based course timetabling system menggunakan arsitektur yang memungkinkan akses online dan kemampuan untuk menangani berbagai jenis dataset. Sistem yang dibangun harus memiliki antarmuka yang ramah pengguna yang memungkinkan administrator dan faculty members untuk dengan mudah menggunakan sistem tanpa pelatihan khusus (Latpate et al., 2024). Arsitektur REST API menjadi pilihan yang populer karena memungkinkan integrasi yang modular dan skalabilitas yang tinggi.
-
-Dalam arsitektur yang diusulkan, backend sistem dibangun dengan arsitektur REST API yang menyediakan endpoint untuk berbagai operasi seperti input data, proses optimasi penjadwalan, dan output hasil jadwal. Frontend dikembangkan menggunakan React.js yang menyediakan antarmuka web yang responsif dan interaktif untuk pengguna. Arsitektur ini memungkinkan integrasi yang modular antara komponen-komponen sistem dan memfasilitasi pengembangan yang paralel antara frontend dan backend.
+REST (Representational State Transfer) API merupakan arsitektur perangkat lunak yang memungkinkan komunikasi antara client dan server melalui protokol HTTP. REST API telah menjadi standar de facto untuk pengembangan layanan web karena kemudahan implementasi, skalabilitas tinggi, dan fleksibilitas lintas platform. Dalam konteks DSS untuk penjadwalan, REST API memungkinkan akses modular terhadap algoritma optimasi yang dapat dipanggil oleh berbagai jenis client seperti web application, mobile application, atau sistem lain yang memerlukan kemampuan penjadwalan (Romaguera et al., 2023).
 
 
 ## 2.9 Penelitian Terdahulu
@@ -326,7 +431,7 @@ Pada subbab ini, dibahas penelitian-penelitian terdahulu yang relevan dan berkon
 
 ### Kaviani et al. (2014) - Algoritma Hybrid TABUSA
 
-Pada tahun 2014, Kaviani et al. mengembangkan algoritma hibrida TABUSA yang menggabungkan Tabu Search dan Simulated Annealing untuk menyelesaikan Quadratic Assignment Problem (QAP). Penelitian ini merupakan salah satu kontribusi penting dalam pengembangan pendekatan hybrid untuk masalah optimasi kombinatorial. Algoritma TABUSA memanfaatkan keunggulan masing-masing metode: Tabu Search untuk exploitation dan Simulated Annealing untuk exploration. Hasil eksperimen menunjukkan bahwa algoritma hibrida TABUSA mampu menemukan solusi optimal pada sebagian besar kasus QAP dan memberikan relative percentage deviation (RPD) yang lebih rendah dibandingkan dengan Tabu Search murni. Keunggulan utama dari pendekatan hybrid SA-TS yang diusulkan Kaviani et al. adalah keseimbangan antara exploitation dan exploration dalam proses pencarian solusi. Tabu Search memiliki kemampuan exploitation yang kuat melalui penggunaan tabu list untuk menghindari kunjungan ke solusi yang sama secara berulang, sementara Simulated Annealing memiliki kemampuan exploration yang baik melalui penerimaan solusi worse secara probabilistik untuk menghindari local optima. Penelitian ini menjadi dasar bagi pengembangan algoritma hybrid SA-TS selanjutnya, termasuk yang dikembangkan dalam penelitian ini.
+Pada tahun 2014, Kaviani et al. mengembangkan algoritma hibrida TABUSA yang menggabungkan Tabu Search dan Simulated Annealing untuk menyelesaikan Quadratic Assignment Problem (QAP). Hasil eksperimen menunjukkan bahwa algoritma TABUSA mampu menemukan solusi optimal pada sebagian besar kasus QAP dan memberikan relative percentage deviation (RPD) yang lebih rendah dibandingkan dengan Tabu Search murni. Keunggulan utama pendekatan hybrid SA-TS adalah keseimbangan antara exploitation dan exploration dalam proses pencarian solusi (Kaviani et al., 2014).
 
 ### Wiktasari dan Suseno (2016) - Simulated Annealing untuk UCTP Indonesia
 
@@ -377,6 +482,3 @@ Pada tahun 2025, Uysal, Ceran, Tanrıverdi, Özdoğan, dan Üstündağ mengemban
 | 9 | Uysal et al. (2025) | Web-based DSS dengan SA | Online Course Timetabling | Data online education | Peningkatan distribusi koneksi concurrent dan efisiensi bandwidth | DSS berbasis web |
 
 
-## 2.10 Daftar Pustaka
-
-Lihat Daftar Pustaka di file terpisah: daftar_pustaka.md

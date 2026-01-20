@@ -1,6 +1,12 @@
 # Daftar Pustaka
 
-Al-Yasir, Y. I., Al-Raweshidy, H., & Abd-Alhameed, R. A. (2023). Hybrid Intelligent Optimization Algorithms for Solving Complex Scheduling Problems. Applied Sciences, 13(4), 2341-2358. https://doi.org/10.3390/app13042341
+Janti, S., & Susanti, M. (2017). Penerapan Sistem Inventory Sebagai Pemenuhan Kebutuhan Informasi Antar Bagian Berbasis Web Dengan Incremental Model. Jurnal Bianglala Informatika, 5(2), 1-7.
+
+Kaafi, A. A., Widiastuti, L., & Arsiadi, F. (2022). Penerapan Incremental Model Pada Sistem Informasi Pendaftaran Peserta Didik Baru (PPDB) SMA Uswatun Hasanah Jakarta. Reputasi: Jurnal Rekayasa Perangkat Lunak, 3(1), 30-40.
+
+Riana, D., Sanjaya, R., & Kalsoem, O. (2018). Sistem Informasi Manajemen Laboratorium Patologi Anatomi Menggunakan Model MVC Berbasis Laravel Framework. Konferensi Nasional Sistem Informasi 2018 STMIK Atma Luhur Pangkalpinang, 8-9 Maret 2018.
+
+Sukamto, R. A., & Shalahuddin, M. (2018). Rekayasa Perangkat Lunak. Bandung: Informatika Bandung.
 
 Bashab, A., Ibrahim, A. O., Hashem, I. A. T., Aggarwal, K., Mukhlif, F., Ghaleb, F. A., & Abdelmaboud, A. (2023). Optimization Techniques in University Timetabling Problem: Constraints, Methodologies, Benchmarks, and Open Issues. Computers, Materials & Continua, 74(3), 6461-6484. https://doi.org/10.32604/cmc.2023.034051
 

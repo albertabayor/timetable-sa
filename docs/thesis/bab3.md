@@ -1,192 +1,140 @@
 # BAB 3
 # METODOLOGI PENELITIAN
 
-## 3.1 Metode Penelitian
+## 3.1 Tahapan Penelitian
 
-Penelitian ini menggunakan pendekatan Research and Development (R&D) untuk mengembangkan Sistem Pendukung Keputusan (DSS) berbasis web untuk penjadwalan perkuliahan. Pendekatan R&D dipilih karena penelitian ini bertujuan untuk menghasilkan produk berupa sistem informasi yang dapat digunakan secara praktis. Menurut Sugiyono (2018), metode R&D adalah metode penelitian yang digunakan untuk menghasilkan produk tertentu dan menguji keefektifan produk tersebut. Dalam konteks penelitian ini, produk yang dihasilkan adalah DSS dengan algoritma optimasi SA-TS hybrid.
+Tahapan penelitian ini disusun secara sistematis untuk memastikan tujuan penelitian tercapai dengan baik. Alur penelitian mengikuti kerangka kerja pengembangan perangkat lunak (SDLC) model Incremental yang dikombinasikan dengan tahapan eksperimen algoritma. 
 
-Paradigma penelitian yang digunakan adalah paradigma kuantitatif dengan fokus pada pengukuran performansi algoritma optimasi melalui metrik-metrik yang terukur. Pengukuran dilakukan terhadap kualitas solusi jadwal yang dihasilkan, waktu komputasi yang diperlukan, dan tingkat pelanggaran constraints. Teknik pengumpulan data meliputi studi literatur, dokumentasi sistem existing, dan pengujian sistem melalui eksperimen. Data yang digunakan adalah data institusional UISI meliputi data dosen, mata kuliah, ruangan, dan constraint requirements.
+Alur tahapan penelitian digambarkan dalam diagram alir (*flowchart*) berikut:
 
-## 3.2 Alur Penelitian
+```mermaid
+flowchart TD
+    Start([Mulai]) --> A[Studi Literatur]
+    A --> B[Identifikasi Masalah]
+    B --> C[Pengumpulan Data]
+    C --> D[Analisis Kebutuhan]
+    D --> E[Perancangan Sistem & Algoritma]
+    E --> F[Implementasi Incremental]
+    F --> G{Pengujian Valid?}
+    G -- Tidak --> F
+    G -- Ya --> H[Penarikan Kesimpulan]
+    H --> End([Selesai])
 
-Alur penelitian dalam penelitian ini dapat dibagi menjadi beberapa tahap utama yang saling berkaitan dan membentuk siklus pengembangan sistem. Tahap pertama adalah studi literatur dan analisis kebutuhan, di mana peneliti melakukan kajian mendalam terhadap literatur terkait UCTP, metaheuristik, dan pengembangan DSS. Tahap kedua adalah perancangan sistem yang mencakup perancangan arsitektur, basis data, dan algoritma. Tahap ketiga adalah implementasi sistem dengan mengembangkan kode program sesuai dengan rancangan yang telah dibuat. Tahap keempat adalah pengujian dan evaluasi untuk memverifikasi bahwa sistem berfungsi sesuai dengan spesifikasi dan mengukur kualitas solusi yang dihasilkan. Tahap kelima adalah dokumentasi dan publikasi hasil penelitian.
-
-Tahap studi literatur dilakukan dengan mengkaji paper-paper penelitian terdahulu yang relevan, buku-buku teks tentang optimasi dan metaheuristik, serta dokumentasi teknis terkait teknologi yang digunakan. Kajian literatur memberikan fondasi teoretis yang kuat untuk pengembangan algoritma dan sistem. Analisis kebutuhan dilakukan dengan mempelajari proses penyusunan jadwal yang berjalan saat ini di UISI, mengidentifikasi constraint yang berlaku, dan mengumpulkan data yang diperlukan untuk pengujian sistem.
-
-Tahap perancangan sistem dimulai dengan perancangan arsitektur keseluruhan sistem yang mencakup komponen-komponen utama dan interaksinya. Kemudian dilakukan perancangan basis data untuk menyimpan data akademis seperti data dosen, mata kuliah, ruangan, dan jadwal. Perancangan algoritma mencakup definisi struktur data untuk representasi solusi, implementasi fungsi fitness, dan pseudocode algoritma SA-TS hybrid. Hasil perancangan didokumentasikan dalam bentuk diagram UML dan spesifikasi teknis.
-
-Tahap implementasi dilakukan dengan menulis kode program berdasarkan rancangan yang telah dibuat. Implementasi dilakukan secara iteratif dengan membangun komponen-komponen sistem satu per satu dan melakukan integrasi secara bertahap. Setiap komponen diuji secara individual sebelum diintegrasikan dengan komponen lainnya. Pengujian dilakukan secara terus-menerus selama proses implementasi untuk memastikan kualitas kode dan mencegah akumulasi bug.
-
-## 3.3 Perancangan Sistem
-
-### 3.3.1 Arsitektur Sistem
-
-Sistem Pendukung Keputusan yang dikembangkan memiliki arsitektur berbasis web dengan pola client-server menggunakan REST API. Arsitektur ini dipilih karena memungkinkan akses modular terhadap algoritma optimasi, memisahkan logika bisnis dari presentasi, dan memfasilitasi integrasi dengan sistem lain di masa depan. Arsitektur sistem terdiri dari tiga lapisan utama yaitu lapisan presentasi (presentation layer), lapisan bisnis (business logic layer), dan lapisan data (data layer).
-
-Lapisan presentasi diimplementasikan menggunakan React.js yang menyediakan antarmuka web yang responsif dan interaktif. Komponen-komponen React.js menangani interaksi pengguna, validasi input di sisi klien, dan rendering tampilan hasil optimasi. State management menggunakan React Hooks dan Context API untuk mengelola data yang bersirkulasi antar komponen. Styling menggunakan CSS Modules atau styled-components untuk memastikan konsistensi tampilan.
-
-Lapisan bisnis diimplementasikan dalam backend menggunakan Node.js dengan Express.js sebagai framework web server. Lapisan ini menangani logika aplikasi, pemrosesan data, dan eksekusi algoritma optimasi. REST API endpoints didefinisikan untuk operasi-operasi seperti upload data, inisiasi proses optimasi, monitoring progress, dan download hasil jadwal. Algoritma SA-TS hybrid diimplementasikan sebagai modul terpisah yang dapat dipanggil oleh controller.
-
-Lapisan data menggunakan database relasional PostgreSQL untuk menyimpan data struktural seperti data dosen, mata kuliah, ruangan, dan program studi. PostgreSQL dipilih karena mendukung fitur-fitur lanjutan seperti constraint validation, indexing untuk optimasi query, dan kemampuan untuk menangani data dalam jumlah besar. Untuk data yang bersifat semi-struktural seperti konfigurasi parameter algoritma dan hasil eksperimen, dapat digunakan MongoDB atau disimpan dalam format JSON.
-
-Komunikasi antar lapisan menggunakan protokol HTTP dengan format data JSON. REST API mengadopsi prinsip-prinsip desain yang baik seperti penggunaan HTTP methods yang sesuai (GET untuk read, POST untuk create, PUT untuk update, DELETE untuk delete), URL yang deskriptif, dan response format yang konsisten. Autentikasi dan otorisasi diimplementasikan menggunakan JWT (JSON Web Token) untuk mengamankan akses ke endpoint-endpoint yang memerlukan hak akses khusus.
-
-### 3.3.2 Diagram Konteks Sistem
-
-Diagram konteks sistem DSS penjadwalan perkuliahan menunjukkan interaksi antara sistem dengan entitas-entitas eksternal. Entitas eksternal utama adalah Administrator Akademik yang bertanggung jawab memasukkan data, menjalankan proses optimasi, dan mengelola hasil jadwal. Sistem akademik internal (SIAKAD) dan sistem manajemen ruang (Ruang UISI) merupakan sistem eksternal yang dapat bertukar data dengan DSS. File data dalam format Excel atau CSV dapat diimpor ke sistem untuk input data. Hasil jadwal dapat diekspor dalam format yang kompatibel dengan sistem-sistem eksternal.
-
-Proses bisnis utama yang mengalir melalui sistem dimulai dari输入 data berupa data master (dosen, mata kuliah, ruangan) dan data operasional (preferensi dosen, batasan jadwal). Data tersebut divalidasi untuk memastikan kelengkapan dan konsistensi. Setelah data siap, proses optimasi dijalankan menggunakan algoritma SA-TS hybrid. Progress optimasi dapat dimonitor secara real-time melalui antarmuka web. Hasil optimasi berupa jadwal perkuliahan dapat dilihat, diedit jika diperlukan, dan diekspor ke format yang diinginkan.
-
-## 3.4 Implementasi Algoritma SA-TS Hybrid
-
-### 3.4.1 Struktur Data Solusi
-
-Representasi solusi dalam algoritma optimasi sangat mempengaruhi efisiensi dan efektivitas pencarian solusi. Penelitian ini menggunakan representasi berbasis matrix assignment di mana setiap slot waktu (hari × jam) memiliki entri yang menunjukkan mata kuliah yang dijadwalkan pada slot tersebut. Representasi ini dipilih karena intuitif dan memudahkan perhitungan pelanggaran constraint.
-
-Struktur data utama untuk merepresentasikan jadwal adalah array dua dimensi dengan dimensi pertama adalah slot waktu dan dimensi kedua adalah ruangan. Setiap sel dalam array berisi identifier mata kuliah yang dijadwalkan pada kombinasi slot waktu dan ruangan tersebut. Data pendukung seperti informasi dosen, kapasitas ruangan, dan preferensi disimpan dalam lookup tables terpisah untuk memudahkan akses selama perhitungan fitness.
-
-Konstruksi solusi awal menggunakan Greedy Algorithm dengan heuristik Largest-First yang mengurutkan mata kuliah berdasarkan jumlah mahasiswa secara descending. Untuk setiap mata kuliah dalam urutan tersebut, algoritma mencari slot waktu dan ruangan yang tersedia dan tidak melanggar hard constraints. Jika ditemukan multiple pilihan, dipilih yang paling sesuai dengan preferensi (soft constraints). Proses ini berlanjut hingga semua mata kuliah ditempatkan atau tidak ada slot yang tersedia.
-
-### 3.4.2 Fungsi Fitness
-
-Fungsi fitness mengevaluasi kualitas solusi dengan menghitung total penalti dari pelanggaran constraints. Implementasi fungsi fitness mengikuti formulasi matematika yang telah diuraikan pada Bab 2 dengan beberapa optimasi untuk meningkatkan efisiensi komputasi. Perhitungan dilakukan secara incremental untuk mengurangi overhead komputasi pada setiap evaluasi neighbor solution.
-
-Fungsi fitness menerima parameter berupa solusi jadwal dan mengembalikan nilai numerik yang merepresentasikan total penalti. Nilai yang lebih rendah menunjukkan solusi yang lebih baik. Hard constraints diberikan penalti yang sangat tinggi (1000 per pelanggaran) untuk memastikan prioritas utama adalah feasibility. Soft constraints diberikan penalti yang lebih rendah (1-10 per pelanggaran) untuk memberikan fleksibilitas optimasi.
-
-Implementasi perhitungan hard constraints menggunakan early termination strategy. Jika pada tahap perhitungan ditemukan pelanggaran hard constraint, fungsi langsung mengembalikan nilai fitness yang sangat tinggi tanpa melanjutkan perhitungan untuk constraint lainnya. Strategi ini mengoptimalkan runtime dengan menghindari perhitungan yang tidak diperlukan untuk solusi yang jelas infeasible.
-
-### 3.4.3 Algoritma Simulated Annealing
-
-Implementasi algoritma Simulated Annealing mengikuti pseudo-code standar dengan beberapa modifikasi yang disesuaikan untuk konteks UCTP. Parameter-parameter utama yang dikonfigurasi meliputi initial temperature, cooling rate, Markov chain length, dan final temperature. Penentuan initial temperature menggunakan metode adaptive berdasarkan variasi objective function dari solusi-solusi acak.
-
-Pseudo-code algoritma SA yang diimplementasikan:
-
-```
-1. T₀ ← hitung_initial_temperature()
-2. X ← Greedy_Algorithm_Initial_Solution()
-3. f_best ← f(X)
-4. X_best ← X
-5. T ← T₀
-6. WHILE T > T_final:
-7.     FOR i = 1 TO Markov_Length:
-8.         X' ← generate_neighbor(X)
-9.         ΔE ← f(X') - f(X)
-10.        IF ΔE ≤ 0 THEN
-11.            X ← X'
-12.            IF f(X) < f_best THEN
-13.                X_best ← X
-14.                f_best ← f(X)
-15.            END IF
-16.        ELSE
-17.            IF exp(-ΔE/T) > random(0,1) THEN
-18.                X ← X'
-19.            END IF
-20.        END IF
-21.    END FOR
-22.    T ← α × T (α = 0.95)
-23. END WHILE
-24. RETURN X_best
+    style Start fill:#f9f,stroke:#333,stroke-width:2px
+    style End fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#e1f5fe,stroke:#01579b
+    style G fill:#fff9c4,stroke:#fbc02d
 ```
 
-Neighbor generation menggunakan kombinasi dari beberapa move operators meliputi single move (memindahkan satu mata kuliah ke slot waktu/ruangan berbeda), swap (menukar dua mata kuliah), dan Kempe chain move (memindahkan chain event yang terhubung). Pemilihan move operator dilakukan secara adaptif berdasarkan Roulette Wheel Selection dengan probabilitas proporsional terhadap historical success rate masing-masing operator.
+**Keterangan Tahapan:**
 
-### 3.4.4 Algoritma Tabu Search
+1.  **Studi Literatur:** Mempelajari teori dan penelitian terdahulu terkait *University Course Timetabling Problem* (UCTP) serta metodologi pengembangan sistem.
+2.  **Identifikasi Masalah:** Mengidentifikasi permasalahan spesifik pada proses penjadwalan di lapangan melalui observasi dan wawancara, serta merumuskan tantangan yang harus diselesaikan.
+3.  **Pengumpulan Data:** Mengumpulkan data operasional dari SIAKAD, sistem peminjaman ruang, dan aturan akademik sebagai bahan dasar dataset penjadwalan.
+4.  **Analisis Kebutuhan:** Menganalisis kebutuhan fungsional dan non-fungsional sistem serta mengidentifikasi *hard constraints* dan *soft constraints*.
+5.  **Perancangan Sistem & Algoritma:** Merancang arsitektur sistem, basis data, antarmuka pengguna, serta desain detail algoritma hibrida SA-TS.
+6.  **Implementasi (Incremental):** Membangun sistem secara bertahap (per increment) mulai dari *backend*, algoritma, hingga *frontend*.
+7.  **Pengujian:** Melakukan pengujian fungsionalitas sistem dan pengujian performa algoritma untuk memvalidasi kualitas jadwal. Jika hasil belum valid atau optimal, proses kembali ke tahap implementasi/perbaikan.
+8.  **Penarikan Kesimpulan:** Menganalisis hasil pengujian dan menarik kesimpulan.
 
-Implementasi algoritma Tabu Search menggunakan tabu list untuk menghindari cycling dan mendorong eksplorasi area solusi yang belum tereksplorasi. Tabu list menyimpan informasi tentang move yang telah dilakukan recently dan tidak boleh diulang dalam jangka waktu tertentu (tabu tenure). Ukuran tabu tenure dikonfigurasi berdasarkan kompleksitas dataset.
+## 3.2 Studi Literatur dan Pengumpulan Data
 
-Pseudo-code algoritma Tabu Search yang diimplementasikan:
+Tahap ini dilakukan dengan dua pendekatan utama untuk membangun landasan teori yang kuat serta mendapatkan data operasional yang valid:
 
-```
-1. X ← Greedy_Algorithm_Initial_Solution()
-2. f_best ← f(X)
-3. X_best ← X
-4. tabu_list ← empty
-5. tenure_base ← |unplaced_events|
-6. counter ← 0
-7. WHILE counter < max_iterations:
-8.     candidates ← generate_candidates(X)
-9.     best_candidate ← NULL
-10.    best_fitness ← ∞
-11.    FOR each c in candidates:
-12.        IF c not in tabu_list OR aspiration(c):
-13.            IF f(c) < best_fitness THEN
-14.                best_candidate ← c
-15.                best_fitness ← f(c)
-16.            END IF
-17.        END IF
-18.    END FOR
-19.    X ← apply_move(X, best_candidate)
-20.    tenure ← random(10) + tenure_base
-21.    add_to_tabu_list(best_candidate, tenure)
-22.    IF f(X) < f_best THEN
-23.        X_best ← X
-24.        f_best ← f(X)
-25.        counter ← 0
-26.    ELSE
-27.        counter ← counter + 1
-28.    END IF
-29. END WHILE
-30. RETURN X_best
-```
+1.  **Kajian Pustaka (Literature Review):** Mempelajari buku, jurnal, dan prosiding terkait algoritma *Simulated Annealing*, *Tabu Search*, dan *Greedy Algorithm*. Fokus kajian mencakup representasi solusi, formulasi fungsi *fitness*, dan mekanisme hibridasi yang efektif.
+2.  **Pengumpulan Data Operasional:** Mengumpulkan data riil yang dibutuhkan untuk proses penjadwalan dari sumber resmi di Universitas Internasional Semen Indonesia (UISI), antara lain:
+    *   **Sistem Informasi Akademik (SIAKAD):** Mengambil data master Dosen, daftar Mata Kuliah yang dibuka, pembagian Kelas, dan beban SKS.
+    *   **Sistem Peminjaman Ruang:** Mendapatkan data inventaris Ruangan, kapasitas kursi, dan jenis ruangan (Lab/Teori).
+    *   **Bagian Administrasi Akademik:** Melakukan studi dokumen terhadap Panduan Akademik, Kalender Akademik, serta aturan *plotting* jadwal yang berlaku.
 
-Aspiration criteria yang diimplementasikan adalah if a move in tabu list produces a solution better than the current best, it is allowed to be used. Mekanisme ini memungkinkan algoritma untuk tidak melewatkan solusi yang sangat baik hanya karena status tabu.
+## 3.3 Identifikasi Masalah
 
-### 3.4.5 Hybrid SA-TS
+Tahap ini bertujuan untuk memetakan permasalahan spesifik di lapangan. Identifikasi masalah dilakukan melalui:
 
-Pendekatan hybrid yang diimplementasikan menggunakan strategi cascade di mana output dari satu algoritma menjadi input untuk algoritma lainnya. Tahap pertama menggunakan Greedy Algorithm untuk menghasilkan solusi awal. Tahap kedua menggunakan Simulated Annealing untuk mengoptimalkan solusi dengan fokus pada exploration. Tahap ketiga menggunakan Tabu Search untuk intensifikasi dan exploitation.
+1.  **Observasi:** Mengamati langsung proses penyusunan jadwal manual yang sedang berjalan untuk memahami kompleksitas dan potensi *human error*.
+2.  **Wawancara:** Melakukan tanya jawab dengan staf Administrasi Akademik guna memvalidasi kendala (*constraints*) unik, seperti aturan waktu sholat, preferensi dosen, dan kebijakan kelas pagi/sore.
 
-Strategi hybrid yang dipilih adalah Sequential Hybrid dengan Tabu Search sebagai post-optimization step setelah SA. Hal ini didasarkan pada temuan Muklason et al. (2024) bahwa pendekatan sequential hybrid memberikan hasil yang lebih baik dibandingkan intrascheme hybrid atau parallel hybrid untuk masalah UCTP. SA efektif dalam menemukan promising regions dalam ruang solusi, kemudian TS melakukan intensif search di regions tersebut untuk menemukan local optimum.
+Berdasarkan hasil observasi dan wawancara, masalah utama yang diidentifikasi adalah:
+1.  Waktu penyusunan jadwal manual yang lama.
+2.  Kesulitan mengakomodasi *constraints* yang kompleks (konflik dosen, ruang, dan waktu ibadah) secara manual.
+3.  Belum adanya alat bantu otomatis yang dapat memberikan rekomendasi jadwal optimal.
 
-## 3.5 Pengujian dan Evaluasi
+## 3.4 Analisis Kebutuhan
 
-### 3.5.1 Skenario Pengujian
+Analisis kebutuhan dilakukan untuk mendefinisikan spesifikasi sistem yang akan dibangun agar sesuai dengan harapan pengguna.
 
-Pengujian sistem dilakukan melalui beberapa skenario untuk memastikan bahwa sistem berfungsi sesuai dengan spesifikasi dan menghasilkan solusi berkualitas. Skenario pertama adalah pengujian unit untuk memverifikasi bahwa setiap komponen berfungsi dengan benar secara individual. Pengujian dilakukan menggunakan framework testing yang sesuai dengan bahasa pemrograman yang digunakan (Jest untuk JavaScript/Node.js, Pytest untuk Python).
+### 3.4.1 Analisis Kebutuhan Fungsional
 
-Skenario kedua adalah pengujian integrasi untuk memverifikasi bahwa komponen-komponen sistem berinteraksi dengan benar satu sama lain. Pengujian ini mencakup integrasi antara frontend dan backend melalui REST API, integrasi antara algoritma optimasi dan database, serta integrasi antara modul-modul dalam algoritma SA-TS hybrid. Skenario ketiga adalah pengujian sistem secara keseluruhan untuk memverifikasi bahwa sistem dapat menjalankan seluruh alur proses dari input data hingga output jadwal.
+Kebutuhan fungsional mendefinisikan layanan-layanan yang harus disediakan oleh sistem, sebagaimana dirinci pada Tabel 3.1 berikut:
 
-Skenario keempat adalah pengujian performansi algoritma menggunakan dataset benchmark. Untuk validasi hasil, digunakan dataset dari Socha ITC-2007 yang merupakan standar de facto untuk evaluasi algoritma UCTP. Hasil yang diperoleh dibandingkan dengan hasil dari penelitian lain untuk memverifikasi efektivitas algoritma yang diimplementasikan.
+**Tabel 3.1 Daftar Kebutuhan Fungsional**
 
-### 3.5.2 Metrik Evaluasi
+| Kode | Deskripsi Kebutuhan Fungsional |
+|------|-------------------------------|
+| KF-01 | Sistem harus dapat mengelola (CRUD) data master akademik (Dosen, Mata Kuliah, Ruangan, dan Slot Waktu). |
+| KF-02 | Sistem harus memungkinkan konfigurasi parameter algoritma secara comprehensive. |
+| KF-03 | Sistem mampu menjalankan proses pembuatan jadwal otomatis menggunakan algoritma hibrida SA-TS. |
+| KF-04 | Sistem harus dapat menampilkan visualisasi jadwal hasil optimasi dalam format tabel/matriks yang interaktif. |
+| KF-05 | Sistem mampu mendeteksi dan menandai konflik (bentrok) pada jadwal secara visual dan informatif. |
+|KF-06 | Sistem harus menyediakan fitur edit manual pada jadwal yang dihasilkan. |
+| KF-07 | Sistem menyediakan fitur ekspor hasil penjadwalan ke dalam format dokumen eksternal (Excel/CSV/PDF). |
 
-Evaluasi kualitas solusi jadwal yang dihasilkan menggunakan beberapa metrik utama. Metrik pertama adalah feasibility rate yang mengukur persentase solusi yang memenuhi semua hard constraints. Solusi dengan feasibility rate 100% adalah solusi yang valid dan dapat digunakan. Metrik kedua adalah total penalty score yang mengukur pelanggaran soft constraints. Nilai penalty yang lebih rendah menunjukkan solusi yang lebih baik dari perspektif kualitas.
+### 3.4.2 Analisis Kebutuhan Non Fungsional
 
-Metrik ketiga adalah waktu komputasi yang mengukur lama proses optimasi diperlukan untuk mencapai solusi. Metrik ini penting untuk menilai efisiensi algoritma terutama untuk dataset berskala besar. Metrik keempat adalah consistency yang mengukur variasi kualitas solusi dari beberapa kali running algoritma dengan parameter yang sama. Consistency yang tinggi menunjukkan algoritma yang stabil dan reliable.
+Kebutuhan non-fungsional mendefinisikan batasan kualitas sistem:
+1.  **Performance:** Algoritma harus mampu menghasilkan solusi jadwal yang *feasible* (tanpa pelanggaran *hard constraint*) dalam waktu komputasi yang wajar (misalnya < 15 menit untuk satu semester).
+2.  **Usability:** Antarmuka pengguna (Web UI) harus intuitif dan responsif.
+3.  **Reliability:** Sistem mampu menangani kegagalan proses tanpa merusak integritas data.
+4.  **Scalability:** Arsitektur sistem mendukung penambahan data jumlah kelas atau dosen di masa depan tanpa perubahan kode yang signifikan.
 
-Metrik kelima adalah RPD (Relative Percentage Deviation) yang membasikan solusi yang diperoleh dengan solusi terbaik yang diketahui dari literatur. RPD dihitung dengan formula:
+## 3.5 Perancangan Sistem
 
-$$RPD = \frac{f_{obtained} - f_{best\_known}}{f_{best\_known}} \times 100\%$$
+Perancangan sistem bertujuan untuk memberikan gambaran teknis mengenai bagaimana sistem akan dibangun.
 
-Nilai RPD yang mendekati 0 menunjukkan performansi algoritma yang kompetitif dibandingkan dengan metode-metode yang telah dipublikasikan.
+### 3.5.1 Use Case Diagram
 
-## 3.6 Teknologi dan Tools
+Perancangan interaksi pengguna dengan sistem digambarkan melalui Use Case Diagram yang mencakup aktor **Admin Akademik**. Use case utama meliputi:
+*   **Login:** Autentikasi pengguna untuk masuk ke sistem.
+*   **Kelola Data Master:** Mengelola data dosen, ruangan, mata kuliah, dan waktu.
+*   **Konfigurasi Parameter:** Mengatur parameter algoritma (Suhu awal, Iterasi, Bobot Penalti).
+*   **Generate Jadwal:** Menjalankan proses optimasi jadwal.
+*   **Lihat & Edit Jadwal:** Melihat hasil jadwal dan melakukan perubahan manual jika diperlukan.
+*   **Ekspor Laporan:** Mengunduh jadwal dalam format dokumen.
 
-Implementasi sistem menggunakan teknologi-teknologi modern yang dipilih berdasarkan kebutuhan fungsional dan non-fungsional sistem. Pemilihan teknologi mempertimbangkan faktor-faktor seperti maturitas teknologi, ketersediaan dokumentasi, dukungan komunitas, dan kesesuaian dengan kebutuhan proyek.
+### 3.5.2 Rencana Increment
 
-Frontend dikembangkan menggunakan React.js sebagai library JavaScript untuk membangun user interface. React.js dipilih karena memiliki arsitektur berbasis komponen yang mendukung reusability, virtual DOM untuk performa rendering yang optimal, dan ekosistem yang kaya dengan berbagai libraries dan tools pendukung. State management menggunakan Redux Toolkit atau React Context API tergantung pada kompleksitas state yang dikelola. Styling menggunakan Tailwind CSS atau styled-components untuk pengembangan yang efisien.
+Sesuai dengan metode SDLC Incremental, pengembangan dibagi menjadi beberapa iterasi (increment) fungsional:
 
-Backend dikembangkan menggunakan Node.js dengan Express.js framework. Node.js dipilih karena memiliki event-driven architecture yang cocok untuk aplikasi real-time dan I/O intensive seperti optimasi penjadwalan. Express.js menyediakan routing yang intuitif dan middleware yang fleksibel untuk penanganan request-response cycle. Database menggunakan PostgreSQL untuk data relasional dan MongoDB opsional untuk data semi-struktural.
+*   **Increment 1: Core Engine & Basic Data.**
+    *   Fokus: Implementasi struktur data dasar, algoritma *Greedy* untuk solusi awal, dan validasi *hard constraint* dasar.
+    *   Output: Sistem CLI yang bisa menghasilkan jadwal kasar tanpa konflik fatal.
+*   **Increment 2: Optimization Algorithm (SA-TS).**
+    *   Fokus: Implementasi *Simulated Annealing*, integrasi *Tabu List*, dan fungsi objektif *soft constraints*.
+    *   Output: *Engine* optimasi yang mampu meningkatkan kualitas jadwal secara iteratif.
+*   **Increment 3: Web API & Database Integration.**
+    *   Fokus: Membungkus *engine* dalam REST API, persistensi data ke database.
+    *   Output: Backend server yang siap menerima *request*.
+*   **Increment 4: User Interface & Visualization.**
+    *   Fokus: Pengembangan antarmuka React untuk input data dan melihat hasil jadwal (Tabel/Matriks).
+    *   Output: Aplikasi web utuh yang *user-friendly*.
 
-Algoritma SA-TS hybrid diimplementasikan dalam JavaScript/TypeScript untuk memudahkan integrasi dengan backend Node.js. Untuk komputasi yang intensif, dapat digunakan Web Workers atau child processes untuk menghindari blocking event loop. Library tambahan yang digunakan meliputi mathematical.js untuk operasi matrix dan numerical computation, papaparse untuk parsing file CSV/Excel, dan fs untuk operasi file system.
+### 3.5.3 Desain Antarmuka
 
-Version control menggunakan Git dengan GitHub sebagai remote repository. Continuous Integration/Continuous Deployment (CI/CD) menggunakan GitHub Actions untuk otomatisasi testing dan deployment. Dokumentasi menggunakan Markdown dan API documentation tools seperti Swagger/OpenAPI untuk endpoint-endpoint REST API.
+Desain antarmuka dirancang untuk kemudahan penggunaan (*User Experience*).
+1.  **Dashboard:** Menampilkan ringkasan statistik (Total Dosen, Kelas, Ruang) dan status server.
+2.  **Timetable View:** Tampilan jadwal dalam format kalender mingguan *grid* yang interaktif. Pengguna dapat memfilter berdasarkan Ruangan, Dosen, atau Tingkat Semester.
+3.  **Conflict Monitor:** Panel notifikasi yang menunjukkan detail pelanggaran *constraint* (jika ada) dan memberikan saran perbaikan.
 
-## 3.7 Tahapan Implementasi
+### 3.5.4 Desain Arsitektur Sistem
 
-Implementasi sistem dilakukan secara bertahap dengan metodologi Agile yang memungkinkan iterasi dan penyesuaian berdasarkan feedback. Setiap sprint berfokus pada pembangunan fitur-fitur tertentu dengan Definition of Done yang jelas. Sprint planning dilakukan di awal setiap iterasi untuk menentukan scope dan deliverables.
+Arsitektur sistem menggunakan pola *Client-Server* dengan komunikasi melalui REST API.
+1.  **Frontend (Client):** Dibangun menggunakan **React** (TypeScript) sebagai antarmuka pengguna.
+2.  **Backend (Server):** Dibangun menggunakan **Node.js/Bun** (TypeScript) yang menangani logika bisnis.
+3.  **Optimization Engine:** Modul khusus di sisi backend yang menjalankan algoritma Hibrida *Simulated Annealing* dan *Tabu Search*. Representasi solusi dikodekan sebagai himpunan *assignment* (Kelas, Waktu, Ruangan), dengan fungsi fitness meminimalkan penalti pelanggaran *constraints*.
 
-Sprint pertama berfokus pada setup project infrastructure meliputi inisialisasi repository, konfigurasi development environment, setup database schema, dan implementasi basic routing di backend dan frontend. Deliverable sprint pertama adalah project skeleton yang dapat dijalankan dan diakses melalui browser.
+## 3.6 Pengujian
 
-Sprint kedua berfokus pada pengembangan data management module meliputi CRUD operations untuk data master (dosen, mata kuliah, ruangan), import functionality untuk bulk data upload, dan export functionality untuk hasil jadwal. Deliverable sprint kedua adalah modul pengelolaan data yang fully functional.
+Pengujian dilakukan untuk memverifikasi bahwa sistem memenuhi spesifikasi yang telah ditetapkan.
 
-Sprint ketiga berfokus pada pengembangan core algorithm meliputi implementasi Greedy Algorithm untuk initial solution, implementasi Simulated Annealing, implementasi Tabu Search, dan integrasi kedua algoritma dalam hybrid approach. Deliverable sprint ketiga adalah algoritma optimasi yang dapat menerima input dan menghasilkan output jadwal.
-
-Sprint keempat berfokus pada pengembangan frontend dan integration meliputi implementasi user interface untuk input data, monitoring progress, dan display hasil, integrasi frontend dengan REST API, dan implementasi feedback mechanisms. Deliverable sprint keempat adalah sistem yang dapat digunakan end-to-end.
-
-Sprint kelima berfokus pada testing dan optimization meliputi comprehensive testing (unit, integration, system), performance optimization, bug fixing, dan user acceptance testing. Deliverable sprint kelima adalah sistem production-ready yang telah diuji dan dioptimasi.
-
-## 3.8 Kerangka Pengerjaan
-
-Kerangka pengerjaan penelitian dijadwalkan dalam rentang waktu tertentu dengan milestone yang jelas untuk setiap tahap. Tahap persiapan meliputi review literatur dan analisis kebutuhan yang memerlukan waktu untuk memahami konteks penelitian secara mendalam. Tahap perancangan meliputi desain arsitektur, database, dan algoritma yang memerlukan waktu untuk menghasilkan spesifikasi teknis yang komprehensif.
-
-Tahap implementasi memerlukan waktu yang paling lama karena mencakup pengembangan fitur-fitur sistem dan algoritma. Pendekatan iterative memungkinkan delivery value yang berkelanjutan dan penyesuaian berdasarkan feedback. Tahap pengujian memerlukan waktu yang memadai untuk memastikan kualitas sistem dan validasi hasil. Tahap dokumentasi dilakukan secara parallel dengan tahap-tahap lainnya dan disempurnakan di akhir.
+1.  **Pengujian Algoritma (White Box):** Mengukur performa algoritma dalam mencapai solusi optimal. Metrik yang digunakan adalah *Fitness Value* (harus mendekati 0), jumlah pelanggaran *hard constraint* (wajib 0), dan waktu eksekusi.
+2.  **Pengujian Sistem (Black Box):** Menguji fungsionalitas fitur-fitur pada aplikasi web (Input, Proses, Output) untuk memastikan sistem berjalan sesuai skenario *Use Case* dan bebas dari *error*.

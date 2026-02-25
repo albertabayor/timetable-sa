@@ -71,6 +71,6 @@
     "typescript": "^5.9.3"
   },
   "publishConfig": {
-    "registry": "https://www.npmjs.com/package/timetable-sa"
+    "registry": "https://registry.npmjs.org"
   }
 }

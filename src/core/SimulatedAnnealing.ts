@@ -247,6 +247,33 @@ export class SimulatedAnnealing<TState> {
       hardViolations: currentHardViolations,
     });
 
+    // Calculate and log soft violations for initial state
+    const initialViolations = this.getViolations(currentState);
+    const initialSoftViolations = initialViolations.filter(
+      (v) => v.constraintType === 'soft'
+    ).length;
+    const initialHardViolations = initialViolations.filter(
+      (v) => v.constraintType === 'hard'
+    ).length;
+
+    this.log('info', 'Initial state violations summary', {
+      hardViolations: initialHardViolations,
+      softViolations: initialSoftViolations,
+      totalViolations: initialViolations.length,
+    });
+
+    // Calculate breakdown per constraint type
+    const violationsByConstraint = initialViolations.reduce(
+      (acc, v) => {
+        const key = `${v.constraintType}:${v.constraintName}`;
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+
+    this.log('info', 'Initial violations breakdown by constraint', violationsByConstraint);
+
     // Phase 1: Eliminate hard constraints
     const phase1Result = this.runPhase1(
       currentState,

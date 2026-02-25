@@ -1,0 +1,752 @@
+BINA INSANI ICT JOURNAL
+Vol. 10, No. 1, Juni 2023, 113-122
+ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online)
+
+Penerapan Metode Prototype Dalam Meracang Sistem
+Monitoring Pelanggaran Siswa Pada SMK Kota Bekasi
+Hilman Nurdin Saputra 1,*, Mardi Yudhi Putra 2, Dwi Ismiyana Putri 2
+1
+
+Sistem Informasi; Universitas Bina Insani; Jl. Siliwangi No. 6 Rawa Panjang,
+Bekasi, telp/fax. (021) 82436886 / (021) 82436996; e-mail: hilmansaputra29.hs@gmail.com
+2
+Rekayasa Perangkat Lunak; Universitas Bina Insani; Jl. Siliwangi No. 6 Rawa Panjang,
+Bekasi, telp/fax. (021) 82436886 / (021) 82436996; e-mail: mardi@binainsani.ac.id,
+dwiismiyana@binainsani.ac.id
+* Korespondensi: e-mail: mardi@binainsani.ac.id
+Diterima: 19 Juni 2023 ; Review: 22 Juni 2023 Disetujui: 26 Juli 2023
+Cara sitasi: Saputra HN, Putra MY, Putri DI. 2023. Penerapan Metode Prototype Dalam
+Monitoring Sistem Poin Dalam Upaya Pengurangan Pelanggaran Siswa Berbasis Web. Bina
+Insani ICT Journal. Vol 10 (1): 113-122.
+
+Abstrak: Sekolah merupakan tempat melaksanakan kegiatan proses pembelajaran untuk
+menimba ilmu. Agar proses pembelajaran dapat berjalan dengan baik serta aman dan nyaman
+maka perlu adanya tata tertib yang harus dipatuhi siswa-siswi. Penelitian ini dilakukan pada
+SMK Harapan Bangsa, saat dilakukan observasi sudah berjalan dengan baik namun perlu
+dilakukan pemantauan tingkat ketidakdisiplinan siswa-siswi dilingkungan sekolah sehingga
+dapat menekan seminimal mungkin tingkat pelanggaran siswa di sekolah. Bagi siswa yang
+melanggar maka diberikan poin dengan range 0-1000 poin pelanggaran dan siswa harus siap
+menerima konsekuensi dari perbuatannya sesuai dengan bobot poin. Saat ini proses
+pencatatan data pelanggaran siswa pada sekolah masih dicatat menggunakan buku
+mengakibatkan tindakan pelanggaran yang diambil sering terlambat. Pada bagian Bimbingan
+Konseling tidak dapat memonitoring mengenai pelanggaran siswa antar kelas, Kepala Sekolah
+tidak mendapat laporan mengenai pelanggaran siswa dan orang tua siswa tidak mendapatkan
+laporan mengenai pelanggaran yang dilakukan oleh anaknya. Oleh karena itu, perlu
+tersedianya sistem informasi monitoring pelanggaran siswa dengan menggunakan metode
+prototype. Pendekatan pengembangan prototipe dipilih dalam penelitian ini karena dapat
+mengurangi waktu yang dibutuhkan dalam pengembangan sistem dan mendorong partisipasi
+pengguna dalam pengembangan sistem. Hal ini memungkinkan hasil aplikasi dapat disesuaikan
+dengan kebutuhan pengguna dengan mudah. Sistem monitoring yang akan diimplementasi diuji
+terlebih dahulu menggunakan blackbox testing. Pengujian yang dilakukan diantaranya form
+login, form penangan pelanggaran siswa dan form laporan dengan hasil pengujian sesuai
+skenario pengujian dengan kesimpulan valid artinya fungsionalitas sistem sesuai fungsinya
+berjalan dengan baik. Hasil penelitian ini adalah sebuah sistem yang dapat mengontrol atau
+memonitoring pelanggaran apa saja yang telah dilakukan oleh siswa sehingga dapat membantu
+pihak sekolah dalam mempermudah dan mempercepat proses penghitungan poin pelanggaran
+siswa, pembinaan, sampai pemberian sanksi kepada siswa.
+Kata kunci: Monitoring, Pelanggaran Siswa, Prototype, Sistem Informasi.
+Abstract: School is a place to carry out learning process activities to gain knowledge. In order
+for the learning process to run well and safely and comfortably, it is necessary to have rules that
+must be obeyed by students. This research was conducted at Harapan Bangsa Vocational
+School, when observations were made it was going well but it is necessary to monitor the level
+of indiscipline of students in the school environment so that it can reduce to a minimum the level
+of student violations at school. For students who violate, points are given in the range of 0-1000
+violation points and students must be prepared to accept the consequences of their actions
+according to the points weighted. At present the process of recording data on student violations
+at schools is still recorded using a book resulting in violation actions being taken often late. In
+Copyright@2020. LPPM UNIVERSITAS BINA INSANI
+
+113
+
+114
+
+ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online); 113-122
+
+the Counseling Guidance section it cannot monitor student violations between classes, the
+Principal does not receive reports regarding student violations and student parents do not
+receive reports regarding violations committed by their children. Therefore, it is necessary to
+provide an information system for monitoring student violations using the prototype method. The
+prototype development approach was chosen in this study because it can reduce the time
+required for system development and encourage user participation in system development. This
+allows application results to be adapted to user needs easily. The monitoring system that will be
+implemented is tested first using blackbox testing. Tests carried out included login forms,
+student violation handling forms and report forms with test results according to test scenarios
+with valid conclusions meaning that the system functionality according to its function is running
+well. The results of this study are a system that can control or monitor any violations that have
+been committed by students so that it can assist the school in facilitating and speeding up the
+process of calculating student violation points, coaching, and imposing sanctions on students.
+Keywords: Monitoring, Student Violation, Prototype, Information system
+1. Pendahuluan
+Pendidikan merupakan salah satu aspek yang sangat perlu menjadi perhatian dalam
+kehidupan sehari-hari. Kemajuan di bidang teknologi informasi dan komunikasi dituntut agar
+tenaga pengajar melaksanakan tugas sebagai pendidik yang profesional yakni berperan
+sebagai pengajar, pembimbing dan mentor bagi anak dikemudian hari sehingga dapat
+mengarahkan peserta didika ke arah pembelajaran yang aktif, kreatif, inovatif dan menghasilkan
+minat belajar yang tinggi [1].
+Sekolah adalah wadah pembelajaran secara resmi sehingga para peserta didik dapat
+mengasah dan meningkatkan potensi pada dirinya. Dengan terdapatnya pembelajaran di
+sekolah diharapkan siswa tidak cuma memahami modul pelajaran namun pula dituntut guna
+bisa membentuk karakter siswa supaya cocok dengan nilai-nilai serta norma-norma yang
+berlaku dalam masyarakat.
+Siswa-siswi seringkali melakukan pelanggaran terhadap peraturan sekolah, seperti
+meningkatnya penyimpangan terhadap norma-norma kehidupan agama dan sosial
+kemasyarakatan. Hal ini terlihat dari perilaku yang kurang hormat terhadap guru, kurang disiplin
+dalam menjaga waktu, tidak mengindahkan tata tertib dan peraturan sekolah, dan masih
+banyak lagi.
+Pelanggaran siswa merupakan salah satu sikap menyimpang yang melanggar
+peraturan sekolah, sehingga menyebabkan terganggunya suasana belajar mengajar serta
+merugikan siswa lain. Ada 6 Hal yang dianggap sebagai penyebab pelanggaran siswa seperti
+kondisi fisik, kurangnya perhatian orang tua, metode pembelajaran guru yang kurang inovatif,
+bahasa yang sulit dicerna siswa, lingkungan negatif, dan materi pelajaran terlalu banyak [2].
+SMK Harapan Bangsa merupakan salah satu sekolah yang berada di daerah
+Cimanggis Kota Depok. SMK Harapan Bangsa ini telah berdiri sejak tahun 2000. Kegiatan
+belajar mengajar pada SMK Harapan Bangsa berlangsung setiap hari, proses belajar mengajar
+sangat diperlukan agar dapat berjalan dengan aman dan nyaman serta berkarakter. Oleh
+karena itu, pihak sekolah perlu membuat aturan yang dipatuhi oleh setiap siswa-siswi. Tanpa
+adanya tata tertib disekolah akan membuat siswa menjadi semena-mena dan menjadi tidak
+disiplin yang pada akhirnya berdampak pada karakter siswa cendrung negatif.
+Untuk siswa yang tidak taat pada peraturan yang ditelah ditetapkan sekolah akan
+dikenakan hukuman dan siswa harus siap dengan konsekuensi atas pelanggaran yang
+dilakukan. Hukuman yang diterima siswa dibuat agar siswa tidak mengulangi kembali serta
+membuatnya lebih disiplin. Hukuman fisik seperti memukul, mencubit, mengejek bahkan
+memberikan julukan bernada negatif yang pada akhirnya menyakiti perasaan dan membuat
+siswa menjadi malu. Perilaku tersebut pada umumnya akan melahirkan perasaan dendam dan
+membuat siswa mengulagi kesalahan [3].
+Hukuman yang diberlakukan berupa poin untuk setiap pelanggaran. Rentang poin
+sesuai bobot pelanggaran yang dimulai dari poin 0-1000 tergantung dari jenis pelanggaran.
+Sisitem poin ini telah menjadi aturan yang disepakati dari sekolah, hal ini dilakukan agar para
+guru tidak memberikan hukuman fisik kepada siswa sehingga siswa tidak memiliki rasa trauma
+untuk kembali ke sekolah.
+
+Hilman Nurdin Saputra II Penerapan Metode Prototype…
+
+BINA INSANI ICT JOURNAL ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online);113-122
+Vol. 10, No. 1, Juni 2023
+
+Berdasarkan observasi penelitian, bahwa permasalahan pada penelitian ini sebagai
+berikut:1) Pencatatan data pelanggaran siswa pada SMK Harapan Bangsa masih
+menggunakan buku, mengakibatkan tindakan pelanggaran yang diambil sering terlambat. 2)
+Pada bagian Bimbingan Konseling tidak dapat memonitoring mengenai pelanggaran siswa
+antar kelas. 3) Kepala Sekolah tidak mendapat laporan mengenai pelanggaran siswa. 4) Orang
+tua siswa tidak mendapatkan laporan mengenai pelanggaran yang dilakukan oleh anaknya.
+Sistem yang berjalan saat ini masih menggunakan cara-cara konvensional sehingga
+mengakibatkan guru BK membutuhkan waktu yang cukup panjang dalam menangani siswasiswi yang memiliki masalah. Hal ini disebabkan karena harus membuat beberapa arsip
+pembukuan terkait pelanggaran siswa dan menulis buku pelanggaran tersebut dengan tulis
+tangan tanpa bantuan komputer sehingga memunculkan tindak lanjut yang kurang pas [4].
+Sistem merupakan rangkaian jaringan kerja dari beberapa proses yang dapat saling terintegrasi
+dengan subsistem lainnya dalam hal membuat jaringan kerja yang bermanfaat dalam
+mencapai sasaran yang ingin dicapai [5]. Data yang telah diolah menjadi informasi memiliki
+makna dan manfaat yang lebih penting bagi penerimanya. Sumber informasi berasal dari data
+realitas yang mencerminkan peristiwa dan kenyataan yang ada. Peristiwa atau event sendiri
+merupakan kejadian yang terjadi pada waktu tertentu [6].
+Pelanggaran yang sering terjadi di sekolah sangat beragam. Pelanggaran ringan
+termasuk terlambat masuk sekolah, tidak menyelesaikan pekerjaan rumah, merokok, dan
+berkelahi. Sedangkan jenis kategori sedang termasuk membolos, merokok, dan berkelahi. Jenis
+kategori berat termasuk melakukan tindakan kriminal, membawa atau mengedarkan narkoba
+dan miras, serta banyak lagi [7]. Monitoring merupakan kegiatan berjalan, pengamatan atau
+pemantauan dilakukan untuk memastikan bahwa program berjalan sesuai dengan perencanaan
+[8]. Prototyping ialah langkah-langkah dalam merancang sistem secara berulang yang
+melibatkan pengubahan persyaratan menjadi sistem yang berfungsi dan terus-menerus
+ditingkatkan melalui kolaborasi antara pengguna dan analis [9].
+Penelitian terdahulu yang berkaitan dengan monitoring pelanggaran siswa
+menyebutkan bagi siswa-siswi yang membuat pelanggaran akan diberikan arahan oleh guru
+BK, prosesnya dengan mencatat pelanggaran pada sebuah buku sehingga timbul masalah data
+ganda, kesalahan penskoran, hilangnya buku sampai dengan adanya proses manipulasi data.
+Hasil implementasi menunjukkan dengan penerapan black box testing dengan diuji berdasarkan
+functionality menghasilkan 95% artinya terdapat kesesuaian fungsi pada sistem dan usability
+menghasilkan 75%. Artinya secara keseluruhan dapat disimpulkan layak untuk diimplementasi
+agar dapat membantu proses pengolahan data point pelanggaran dan prestasi siswa [10].
+Penelitian lainnya juga menyebutkan bahwa Instansi pendidikan khususnya lingkungan
+sekolah, kesulitan dalam mengontrol pelanggaran siswa. Untuk memantau dan mengontrol
+pelanggaran diberikan tanggung jawab sepenuhnya kepada guru BP (Bimbingan dan
+Penyuluhan). Penelitian ini berusaha membuat sistem informasi monitoring pelanggaran siswa
+berbasis web agar dapat membantu guru BP dalam pengelolaan pelanggaran. Hasil penelitian
+berupa sistem informasi yang bisa dimanfaatkan sebagai dasar membuat ssebuah keputusan
+maupun kebijakan sekolah [11].
+Adapun tujuan dari peneitian ini yaitu: 1). Untuk memfasilitasi dan mempercepat
+perhitungan nilai pelanggaran siswa, pengembangan, serta tindakan disiplin terhadap siswa
+demi memudahkan pihak sekolah. 2). Dapat mempermudah bagian Bimbingan Konseling dalam
+memonitoring mengenai pelanggaran siswa. 3). Dapat mempermudah Kepala Sekolah untuk
+melihat laporan mengenai pelanggaran siswa. 4). Memberikan informasi kepada orang tua
+siswa atas pelanggaran apa saja yang sudah dilakukan oleh siswa selama bersekolah di SMK
+Harapan Bangsa.
+2. Metode Penelitian
+Ada dua jenis metodologi penelitian yang digunakan yakni pengumpulan data dan
+pengembangan sistem.
+Metode Pengumpulan Data
+Pengumpulan data dalam merancang sistem dilakukan diawali dengan melakukan
+observasi pada SMK Harapan Bangsa yang beralamat di Jl. Komjen Pol. M. Jasin ( Akses UI )
+No. 89 Kelapa Dua Cimanggis, Depok, Jawa Barat 16951. Aktifatas yang dilakukan seperti
+menganalisa kondisi sistem saat ini, memahami dokumen masukan dan keluaran yang
+Hilman Nurdin Saputra II Penerapan Metode Prototype …
+
+115
+
+116
+
+ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online); 113-122
+
+disajikan pihak sekolah. Kedua, melakukan wawacara dengan melakukan tanya jawab kepada
+Guru Bimbingan Konseling, Guru dan Siswa. Ketiga, melakukan studi pustaka dengan
+memahami referensi terkait topik penelitian dari buku jurnal dan melakukan perbandingan
+sehingga menghasilkan research gate pada penelitian.
+Proses bisnis
+Pada fase ini diperoleh hasil observasi dan wawancara kepada user seperti Guru BK,
+wali kelas, siswa dan kepala sekolah. Hasil komunikasi tersebut menghasilkan kategorisasi
+poin pelanggaran dan proses bisnis. Hal tersebut menggambarkan alur tentang sistem
+berjalan pelanggaran siswa pada SMK Harapan.
+Tabel 1. Kategorisasi Poin Pelanggaran
+Poin
+≥ 300
+≥ 500
+≥ 700
+≥ 900
+1000
+
+Tindakan
+Wali kelas memanggil Orang Tua/Wali siswa menghadap Guru Bk
+Guru BK akan mengeluarkan surat perjanjian 1
+Guru BK akan mengeluarkan surat perjanjian 2
+Orang Tua/Wali Siswa di panggil Kepala Sekolah dan
+mengeluarkan surat perjanjian 3
+Orang Tua/Wali Siswa di panggil Kepala Sekolah
+
+Hukuman
+Skorsing 1 hari
+Skorsing 2 hari
+Skorsing 4 hari
+Skorsing 6 hari
+Dikeluarkan dari sekolah
+
+Sumber : Hasil penelitian (2021)
+
+Alur proses berjalan ditunjukkan pada gambar berikut:
+Siswa
+
+Wali Kelas
+
+Menindaklanjuti siswa
+
+Guru BK
+
+Kepala Sekolah
+
+mencatat pada buku kasus
+
+Siswa melakukan pelanggaran
+
+Poin pelanggaran 10 - 50
+
+Menerima Sanksi
+
+memberi sanksi sesuai
+
+Melakukan pelanggaran kembali
+
+Melakukan pelanggaran 300 poin
+
+Melakukan pelanggaran 500 poin
+Memanggil siswa
+
+Memanggil orang tua siswa
+
+Melakukan pelanggaran 700 poin
+
+Melakukan pelanggaran 900 poin
+
+Menerima surat teguran dan di skorsing
+
+Membuat surat perjanjian
+
+Melakukan pelanggaran kembali
+
+poin pelanggaran 1000
+
+Memanggil Orang tua siswa
+
+Melihat buku kasus
+
+Keluar dari sekolah
+
+Mengembalikan siswa ke orang tua
+
+Sumber : Hasil penelitian (2021)
+
+Gambar 1. Alur Sistem Berjalan
+Hilman Nurdin Saputra II Penerapan Metode Prototype…
+
+BINA INSANI ICT JOURNAL ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online);113-122
+Vol. 10, No. 1, Juni 2023
+
+Metode Pengembangan Sistem
+Metodologi pengembangan pada penelitian ini menggunakan pendekatan prototype
+sehingga peneliti terlebih dahulu memahami gambaran umum aplikasi yang akan dibangun
+melalui tahap pengembangan aplikasi prototype dan evaluasi pengguna.
+Metodologi pengembangan dan analisis menggunakan prototyping dengan menganalisis
+kebutuhan pengguna, membuat model, dan menguji model [12]. Berdasarkan penjelasan
+tahapan pengembangan terdapat beberapa tahapan pada prototype, secara keseluruhan
+tahapan menjelaskan proses membuat prototipe secepat mungkin dan meminta umpan balik
+pengguna untuk memungkinkan perbaikan cepat [13].
+
+Sumber : Prabowo (2020)
+
+Gambar 2. Metode Prototype
+Pada gambar 2 menunjukkan tahapan metode pengembangan dalam membantu
+merancang sistem informasi monitoring pelanggaran siswa. 1). Communication. Pada tahapan
+ini dilakukan pengumpulan data dengan cara pengamatan langsung dan wawancara ke objek
+penelitian, ini berguna untuk mendapatkan kendala yang dihadapi sekolah dalam pemantauan
+pelanggaran siswa. Data tersebut akan menjadi acuan untuk memenuhi kebutuhan sistem
+yang diinginkan sekaligus mendapatkan alur proses bisnis sistem berjalan sehingga nantinya
+dapat sesuai dengan seperti apa yang diinginkan 2). Quick Plan. Tahap ini dilakukan
+perancangan form dengan membuat form input dan form output aplikasi dimana akan
+memberikan gambaran awal terkait rancangan sistem yang berfokus pada pengguna. 3).
+Modelling Quick Design. Tahapan ini dilakukan desain yang sudah disepakati pada tahap
+sebelumnya seperti fokus membuat rancangan usecase, diagram aktifitas, squence diagram
+dan class diagram. 4). Construction of prototype. Pada tahap ini menerjemahkan hasil desain
+yang sudah dibuat ke bahasa pemrograman. Pada tahap ini programmer melakukan
+pengkodean (code generation) menggukan framework. Pada akhir pengerjaan, aplikasi di uji
+untuk meminimalkan kesalahan pengkodean . 5). Deployment, delivery dan feedback.
+Program yang dibuat pada fase ini diuji untuk menguji fungsionalitas dari sistem yang dibuat.
+Seperti tombol berfungsi semestinya, adanya validasi data dan verifikasi. Perangkat lunak
+atau aplikasi monitoring yang sudah selesai kemudian dapat disampaikam ke pengguna untuk
+mendapatkan umpan balik ke aplikasi yang sedang dievaluasi. Ini penting untuk dapat
+melakukan perbaikan atau bug/error yang ditemukan saat aplikasi selesai diimplementasikan.
+Feedback yang diberikan pengguna menggunakan kuesioner yang dibantu dengan aplikasi
+google form. Sejumlah pertanyaan dibuat untuk mewakili dari aplikasi.
+Hilman Nurdin Saputra II Penerapan Metode Prototype …
+
+117
+
+118
+
+ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online); 113-122
+
+3. Hasil dan Pembahasan
+Bagian ini membahas usescase, diagram, activity diagram dari hasil perancangan
+sistem usulan.
+Use case Diagram
+User yang menggunakan aplikasi pada sistem terdiri dari Petugas pencatat pelanggaran, Guru,
+Kepala sekolah dan Orang Tua/Wali murid. Interaksi yang dilakukan sistem ditunjukan pada
+gambar 3 sebagai berikut.
+System
+Login
+
+Mengelola Pelanggaran siswa
+
+Mengelola Bentuk Pelanggaran
+Kepala Sekolah
+
+Petugas
+Mengelola Kategori Pelanggaran
+
+Mengelola Sanksi Pelanggaran
+
+Mengelola Data Kelas
+Wali Murid
+Guru
+
+Mengelola Data Siswa
+
+Mengelola Data Pengguna
+
+Mengelola Profile
+
+Melihat Laporan
+
+Logout
+
+Sumber: Hasil Penelitian (2021)
+
+Gambar 3. Use Case Diagram
+Entity Relationship Diagram
+Terdapat entitas yang berhubungan beserta relasinya. Entitas tersebut yakni siswa, kelas,
+pelanggaran_siswa, guru dan bentuk pelanggaran yang disajikan pada gambar 4.
+
+Sumber: Hasil Penelitian (2021)
+
+Gambar 4. Hasil Rancangan ERD
+
+Hilman Nurdin Saputra II Penerapan Metode Prototype…
+
+BINA INSANI ICT JOURNAL ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online);113-122
+Vol. 10, No. 1, Juni 2023
+
+Construction of Prototype
+Aplikasi yang dibuat hasil akhirnya berupa aplikassi berbasis website. Hasil
+pengembangan menggunakan PHP versi 7.4 dibantu dengan framework Codeigniter 3.0 untuk
+mempercepat proses pengembangan, local server yang digunakan XAMPP versi 3.2.4 untuk
+database MySQL.
+Hasil implementasi aplikasi ditunjukan pada gambar 5, kelola Pelanggaran Siswa. User
+yang dapat mengakses halaman ini ada Petugas, Guru BK da Kepala sekolah. Ini digunakan
+untuk menampilkan pelanggaran-pelanggaran yang sudah dilanggar oleh siswa. Bentuk
+pelanggaran seperti berbahasa tidak sopan, melawan, menghina guru dan teman sejawat,
+dengan bobot 1000 poin dan kategori pelanggaran termasuk kejahatan dan sanksi pelanggaran
+diskorsing 1-5 hari. Berikut adalah form mengelola pelanggaran siswa.
+
+Sumber : Hasil Penelitian (2021)
+
+Gambar 5. Implementasi Kelola Pelanggaran Siswa
+Selanjutnya pada gambar 6. menunjukkan halaman pengelolaan laporan. User yang login disini
+adalah Kepala sekolah. halaman ini menunjukkan kepala sekolah dapat memantau dan melihat
+langsung laporan pelanggaran siswa pada SMK Harapan Bangsa.
+
+Sumber : Hasil Penelitian (2021)
+
+Gambar 6. Implementasi Kelola Data Siswa
+Hilman Nurdin Saputra II Penerapan Metode Prototype …
+
+119
+
+120
+
+ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online); 113-122
+
+Deployment, delivery dan feedback
+Fase ini dilakukan menguji fungsional dari aplikasi yang telah dirancang menggunakan
+blackbox testing. Hasil pengujian sebagai berikut.
+Pada tabel 2 menunjukkan hasil pengujian form login yang digunakan untuk menguji sejauh
+mana fungssionalitas dari form ini sehingga dapat meminimalisir kesalahan pada sistem yang
+akan diterapkan pada pelanggan, seperti dibawah ini adalah tabel hasil pengujian form login.
+Tabel 2. Testing Form Login
+No
+
+Skenario Pengujian
+
+1
+
+Username, password, dan level
+tidak diisi kemudian klik tombol
+masuk.
+2
+Mengetik
+username
+dan
+password, level tidak dipilih
+kemudian klik tombol masuk.
+3
+Mengetik username dan level
+dipilih, password tidak diisi
+kemudian klik tombol masuk.
+4
+Username tidak diisi dan
+mengetik
+password,
+level
+dipilih kemudian klik tombol
+masuk.
+5
+Mengetik
+Username,
+password,
+level
+dipilih
+kemudian klik tombol masuk.
+Sumber : Hasil Penelitian (2021)
+
+Hasil Yang diharapkan
+
+Hasil
+Pengujian
+
+Kesim
+Pulan
+
+Sistem akan menolak akses user
+dan
+menampilkan
+notifikasi
+“failed”.
+Sistem akan menolak akses user
+dan
+menampilkan
+notifikasi
+“failed”.
+Sistem akan menolak akses user
+dan
+menampilkan
+notifikasi
+“failed”.
+Sistem akan menolak akses user
+dan
+menampilkan
+notifikasi
+“failed”.
+
+Sesuai
+Harapan
+
+Valid
+
+Sesuai
+Harapan
+
+Valid
+
+Sesuai
+Harapan
+
+Valid
+
+Sesuai
+Harapan
+
+Valid
+
+Sistem akan menerima akses
+login user dan menampilkan
+halaman dashboard
+
+Sesuai
+Harapan
+
+Valid
+
+Tabel 3 menunjukkan pengujian formulir penanganan pelanggaran siswa dilakukan
+untuk mengurangi kesalahan atau kelalaian pada sistem yang diberikan, berikut adalah grafik
+pengujian Formulir Penanganan Pelanggaran Siswa.
+Tabel 3. Testing kelola pelanggaran siswa
+No
+
+Skenario Pengujian
+
+Hasil Yang diharapkan
+
+Hasil
+Pengujian
+
+Kesim
+Pulan
+
+1
+
+Menampilkan modal form tambah
+pelanggaran siswa
+Menampilkan notifikasi “data tidak
+boleh kosong” pada setiap kolom
+yang tidak diisi
+
+Sesuai
+Harapan
+Sesuai
+Harapan
+
+Valid
+
+Sistem
+sukses
+input
+data
+pelanggaran
+siswa
+dan
+menampilkan data yang telah
+ditambahkan
+Kembali ke tabel data pelanggaran
+siswa
+
+Sesuai
+Harapan
+
+Valid
+
+4
+
+Pengujian button tambah
+data
+Penginputan
+data
+form
+pelanggaran siswa yang
+tidak lengkap, kemudian klik
+button simpan
+Penginputan
+data
+form
+pelanggaran siswa yang
+sudah lengkap, kemudian
+klik button simpan
+Pengujian button back
+
+Sesuai
+Harapan
+
+Valid
+
+5
+
+Pengujian button ubah
+Mengubah
+data
+pelanggaran
+kemudian
+klik
+simpan
+
+Sesuai
+Harapan
+Sesuai
+Harapan
+
+Valid
+
+6
+
+Menampilkan modal form ubah
+data pelanggaran siswa
+Sistem sukses mengubah data
+pelanggaran
+siswa
+dan
+menampilkan data yang telah di
+ubah
+
+7
+
+Pengujian button hapus
+
+Menampilkan notifikasi “delete”
+jika yakin di hapus maka data
+akan terhapus
+
+Sesuai
+Harapan
+
+Valid
+
+2
+
+3
+
+form
+siswa,
+button
+
+Sumber : Hasil Penelitian (2021)
+
+Hilman Nurdin Saputra II Penerapan Metode Prototype…
+
+Valid
+
+Valid
+
+BINA INSANI ICT JOURNAL ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online);113-122
+Vol. 10, No. 1, Juni 2023
+
+Tabel 4. Menunjukkan hasil pengujian form laporan dilakukan untuk meminimalisir
+kesalahan atau kelalaian dari sistem yang diberikan, berikut adalah tabel pengujian form
+laporan.
+Tabel 4. Testing Laporan pelanggaran siswa
+No
+1
+
+Skenario Pengujian
+
+Pengujian tombol print
+pada form pelanggaran
+siswa
+Sumber : Hasil Penelitian (2021)
+
+Hasil Yang diharapkan
+
+Hasil
+Pengujian
+
+Kesim
+Pulan
+
+Menampilkan
+file
+catatan
+pelanggaran siswa pada halaman
+lain web browser
+
+Sesuai
+Harapan
+
+Valid
+
+4. Kesimpulan
+Berdasarkann hasil penelitian yang dilakukan pada SMK Harapan Bangsa Depok, maka
+dibuatlah sebuah aplikasi yang menawarkan cara untuk mengubah sistem pelanggaran siswa
+yang ditulis pada buku pelanggaran menjadi sistem komputerisasi berbasis website. Adapun
+kesimpulan hasil penelitian yang dilakukan menghasilkan sistem yang baru berbasis website
+membantu pihak sekolah dalam melakukan perhitungan pelanggaran siswa dan pemberian
+sanksi bagi siswa menjadi lebih mudah dan cepat dilakukan.
+Selain itu, hasil penerapan sistem informasi pelanggaran siswa pengelolaan informasi
+pelanggaran siswa menjadi lebih mudah dan tersimpan baik dalam database, sehingga
+apabila guru ingin melihat history dari siswa yang sudah pernah melakukan pelanggaran dan
+dilihat kembali serta dapat memantau pelanggaran yang dilakukan siswa. Hasil implementasi
+berikutnya menunjukkan, kepala sekolah dapat lebih mudah mendapat laporan pelanggaran
+siswa, karena dapat dengan mudah mengakses sekligus mengontrol siswa yang melakukan
+pelanggaran. Terkahir orang tua/wali siswa dapat mengetahui pelanggaran apa saja yang
+dilakukan anaknya selama belajar di sekolah sehingga peran orangtua/wali sangat penting
+dalam membantu meningkatkan kedisplinan siswa.
+Referensi
+[1]
+R. Hormati, S. Yusuf, dan M. Abdurahman, “Sistem informasi Data Poin Pelanggaran
+Siswa Menggunakan Metode Prototyping Berbasis Web Pada SMA Negeri 10 Kota,” J.
+Ilm. Ilk. - Ilmu Komput. Inform., vol. 4, no. 2, hal. 93–103, 2021, doi:
+10.47324/ilkominfo.v4i2.128.
+[2]
+A. Arifin, S. Sugerman, dan M. Amin, “Respon Guru Tentang Pelanggaran yang
+dilakukan Siswa (Studi Kasus di SDN 10 Pajo),” Ainara J. (Jurnal Penelit. dan PKM Bid.
+Ilmu Pendidikan), vol. 2, no. 3, hal. 193–205, 2021, doi: 10.54371/ainj.v2i3.81.
+[3]
+M. Rifki, “Analisa dan Perancangan Sistem Informasi Poin Pelanggaran (Studi Kasus:
+SMA Al-Kamal),” Juli, vol. 2, hal. 2655–7541, 2020, [Daring]. Tersedia pada:
+https://jurnal.ikhafi.or.id/index.php/jusibi/439.
+[4]
+H. Hidayati, S. Suhardi, D. Irfan, A. Ambiyar, dan R. Melyanti, “Sistem Informasi
+Pelanggaran Siswa Berbasis Web Menggunakan Rapid Application Development,”
+INTECOMS J. Inf. Technol. Comput. Sci., vol. 3, no. 2, hal. 234–242, 2020, doi:
+10.31539/intecoms.v3i2.1732.
+[5]
+M. Muslihudin dan Oktafianto, No ANalisis dan Perancangan Sistem Informasi
+Menggunakan Model Terstruktur dan UML. Andi Offset, 2016.
+[6]
+J. Hutahaean, Konsep Sistem Informasi. Deepublish, 2015.
+[7]
+S. Z. Friandi, V. Vellana, V. Vellony, dan Dkk, “Sistem Informasi Monitoring Pelanggaran
+Siswa (Simpesa) Smkn 2 Tangerang,” Semin. Nas. Has. Ris., no. Ciastech, hal. 629–
+638, 2020.
+[8]
+N. Nurdiana, “Sistem Monitoring Pelanggaran Siswa Berbasis Web ( Studi Kasus : Sma
+Islamic Centre Tangerang ),” hal. 1–18, 2016.
+[9]
+Muharto and A. Ambarita, Metode Penelitian Sistem Informasi: Mengatasi kesulitan
+Mahasiswa dalam Menyusun Proposal Penelitian. Deepublish, 2016.
+[10]
+M. Agung, “APLIKASI POINT PELANGGARAN DAN PRESTASI SISWA
+MENGGUNAKAN MOBILE (Study Kasus: SMK Taman Siswa),” J. Inform. dan
+Rekayasa Perangkat Lunak, vol. 1, no. 1, hal. 75–82, 2020, doi:
+10.33365/jatika.v1i1.226.
+Hilman Nurdin Saputra II Penerapan Metode Prototype …
+
+121
+
+122
+
+ISSN: 2355-3421 (Print) ISSN: 2527-9777 (Online); 113-122
+
+[11]
+
+[12]
+
+[13]
+
+A.- Abdussomad, M. Tabrani, dan R. Sopandi, “Penerapan Sistem Informasi Pada
+Monitoring Pelanggaran Siswa,” J. Khatulistiwa Inform., vol. 8, no. 2, 2020, doi:
+10.31294/jki.v8i2.8365.
+D. Gunawan, S. Alfarizi, N. Ichsan, H. Basri, dan A. R. Mulyawan, “Implementasi Metode
+Prototype Dalam Perancangan Sistem Informasi Upah Pasang Material Konstruksi,”
+Bina Insa. Ict J., vol. 9, no. 1, hal. 73, 2022, doi: 10.51211/biict.v9i1.1790.
+I. A. Prabowo, “SISTEM INFORMASI PENERIMAAN PESERTA DIDIK BARU SMA
+NEGERI 1 NGEMPLAK KABUPATEN BOYOLALI,” Jul 2015. Diakses: Jan 12, 2021.
+[Daring].
+Tersedia
+pada:
+https://p3m.sinus.ac.id/jurnal/index.php/ejurnal_SINUS/article/view/220.
+
+Hilman Nurdin Saputra II Penerapan Metode Prototype…
+
+

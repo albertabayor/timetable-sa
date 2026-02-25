@@ -1,0 +1,415 @@
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+
+Implementasi SDLC Prototyping Dalam Perancangan Website
+Profil Sekolah MIS Nahdhatul Islam
+Implementation of SDLC Prototyping in Designing School Profile Website at MIS Nahdhatul Islam
+Bagus Ageng Alfahri1, Nur Bainatun Nisa2*)
+1,2
+Program Studi Ilmu Komputer, Fakultas Sains dan Teknologi
+1,2
+Universitas Islam Negeri Sumatera Utara
+1
+E-mail: bagusageng073@gmail.com, 2nurbainatunnisa@gmail.com
+
+Abstrak
+Penelitian ini bertujuan untuk merancang dan mengimplementasikan sistem informasi profil sekolah berbasis
+website dengan pendekatan System Development Life Cycle (SDLC) menggunakan metode prototyping. Latar
+belakang penelitian ini adalah kebutuhan untuk meningkatkan aksesibilitas informasi sekolah yang
+sebelumnya disampaikan secara manual dan kurang efektif. Prototipe awal dikembangkan berdasarkan hasil
+survei kebutuhan pengguna, yang kemudian diuji untuk mendapatkan umpan balik. Evaluasi dari pengujian
+ini digunakan untuk merevisi dan menyempurnakan sistem sebelum implementasi akhir. Sistem yang
+dihasilkan tidak hanya informatif tetapi juga interaktif, memungkinkan pengguna mengakses informasi terkait
+sekolah dengan mudah dan cepat. Fitur-fitur yang disediakan dalam sistem mencakup profil sekolah, daftar
+guru, daftar ekstrakurikuler, berita terkini, dan kontak penting. Dengan adanya sistem ini, diharapkan pihak
+sekolah dapat memberikan informasi secara efisien dan masyarakat dapat mengakses informasi kapan saja
+tanpa harus menunggu sosialisasi langsung dari pihak sekolah. Penelitian ini menunjukkan pentingnya
+penggunaan teknologi dalam pendidikan untuk meningkatkan komunikasi, transparansi informasi, dan
+partisipasi aktif masyarakat dalam kegiatan sekolah.
+Kata kunci: profil sekolah; prototyping; SDLC; sistem informasi; website
+Abstract
+This study aims to design and implement a web-based school profile information system using the System
+Development Life Cycle (SDLC) approach with a prototyping method. The background of this research
+highlights the need to enhance the accessibility of school information, which was previously conveyed
+manually and ineffectively. An initial prototype was developed based on user needs obtained through surveys,
+which was then tested to gather feedback. The evaluation from this testing was used to revise and refine the
+system before the final implementation. The resulting system is not only informative but also interactive,
+allowing users to easily and quickly access information related to the school. The features provided in the
+system include the school profile, teacher lists, extracurricular activities, current news, and important
+contacts. With this system in place, it is expected that the school can deliver information efficiently, and the
+community can access information at any time without having to wait for direct communication from the
+school. This research underscores the importance of technology in education to enhance communication,
+transparency of information, and active community participation in school activities.
+Keywords: school profile; prototyping; SDLC; information system; website
+
+1 | Page
+
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+1. PENDAHULUAN
+Dengan semakin berkembangnya teknologi, lembaga pendidikan harus mampu menyesuaikan diri dan
+menyediakan data yang cepat dan akurat. Sistem informasi di lembaga pendidikan bertujuan untuk mendorong
+atau memberikan profil lembaga pendidikan yang relevan [1]. Penelitian ini bertujuan untuk merancang sistem
+informasi untuk profil sekolah berbasis website yang diharapkan dapat menjadi solusi bagi masalah
+penyampaian informasi yang sampai saat ini masih dilakukan secara manual seperti penyampaian dari mulut
+ke mulut, dari mading sekolah ataupun cara manual lainnya.
+Pentingnya sistem informasi dalam konteks pendidikan tidak hanya terletak pada kemudahan akses,
+tetapi juga pada peningkatan kualitas komunikasi antara sekolah dan masyarakat. Dengan sistem informasi
+yang terintegrasi, pihak sekolah dapat menyampaikan berita dan informasi terkini secara real-time kepada
+siswa, orang tua, dan masyarakat luas. Hal ini menciptakan transparansi yang lebih besar dan memungkinkan
+orang tua untuk lebih terlibat dalam proses pendidikan anak-anak mereka. Selain itu, sistem ini juga dapat
+digunakan untuk mengumpulkan umpan balik dari pengguna, sehingga pihak sekolah dapat terus
+meningkatkan layanan dan fasilitas yang ditawarkan.
+Selain itu, pengembangan sistem informasi berbasis website juga memberikan peluang bagi lembaga
+pendidikan untuk berinovasi dalam metode pembelajaran. Dengan menyediakan platform online, sekolah
+dapat menawarkan materi pembelajaran tambahan, forum diskusi, dan sumber daya pendidikan lainnya yang
+dapat diakses kapan saja oleh siswa. Ini tidak hanya memperkaya pengalaman belajar siswa tetapi juga
+membantu mereka untuk menjadi lebih mandiri dalam mengeksplorasi pengetahuan. Dengan demikian, sistem
+informasi tidak hanya berfungsi sebagai alat penyampaian informasi, tetapi juga sebagai sarana untuk
+mendukung proses pembelajaran yang lebih interaktif dan menarik.
+Sistem informasi profil sekolah yang dikembangkan mencakup berbagai fitur penting, seperti profil
+sekolah, daftar ekstrakurikuler, daftar guru, berita sekolah, serta informasi kontak. Fitur-fitur ini dirancang
+agar mudah diakses oleh pengguna, sehingga pengguna dapat mendapatkan informasi yang diperlukan secara
+cepat dan efisien. Dengan adanya sistem ini, diharapkan siswa dapat memperoleh informasi dengan mudah
+tanpa harus bertanya kepada staf sekolah. Implementasi sistem informasi berbasis website ini juga bertujuan
+untuk meningkatkan transparansi dan akuntabilitas lembaga pendidikan. Dengan menyediakan informasi
+secara online, pihak sekolah dapat menunjukkan komitmennya dalam memberikan pelayanan terbaik kepada
+siswa dan orang tua. Selain itu, sistem ini juga berfungsi sebagai media promosi untuk sekolah sebagai daya
+tarik minat calon siswa baru. Dalam konteks pendidikan, keberadaan sistem informasi seperti ini menjadi
+sangat relevan. Banyak orang tua saat ini mencari informasi mengenai sekolah sebelum memutuskan tempat
+pendidikan bagi anak-anak mereka. Oleh karena itu, penyediaan informasi yang lengkap dan mudah diakses
+melalui website akan sangat membantu orang tua dalam membuat keputusan yang tepat [2][3][4].
+Penelitian terdahulu oleh [5] mengembangkan sistem informasi profil sekolah berbasis website yang
+bertujuan untuk mempermudah akses informasi mengenai profil sekolah. Hasil dari penelitian ini menunjukan
+bahwa sistem yang dikembangkan dapat mengurangi ketergantungan pada metode manual dalam penyampaian
+informasi kepada masyarakat, sehingga meningkatkan keterlibatan dan kepuasan pengguna. Kajian terdahulu
+lainnya menunjukkan bahwa sistem informasi berbasis website telah menjadi sarana yang penting dalam
+meningkatkan efisiensi dan transparansi informasi di lembaga pendidikan.
+Penelitian sebelumnya telah memberikan kontribusi signifikan dalam pengembangan sistem informasi
+berbasis web untuk sekolah. Mereka menunjukkan bahwa penerapan teknologi ini tidak hanya meningkatkan
+aksesibilitas informasi, tetapi juga memperbaiki komunikasi antara sekolah dan masyarakat. Dengan adanya
+sistem ini, sekolah dapat menyampaikan informasi secara lebih cepat dan efisien, mengurangi kesalahan
+informasi yang sering terjadi pada metode manual, serta meningkatkan citra positif lembaga pendidikan di
+mata publik. Persamaan penelitian yang akan dilakukan dengan penelitian terdahulu dalam hal tujuan utama
+yaitu merancang dan mengimplementasikan sistem informasi profil sekolah berbasis website. Keduanya
+bertujuan untuk meningkatkan aksesibilitas dan transparansi informasi yang disampaikan kepada masyarakat.
+Selain itu, pendekatan yang digunakan dalam penelitian ini juga sejalan dengan penelitian sebelumnya, di
+2 | Page
+
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+mana metode prototyping diterapkan untuk memastikan bahwa sistem yang dikembangkan sesuai dengan
+kebutuhan pengguna.
+MIS Nahdhatul Islam sendiri merupakan sebuah sekolah jenjang Madrasah Ibtidaiyah yang berstatus
+swasta yang berada di wilayah Kec. Selesai, Kab. Langkat, Sumatera Utara. Dengan mengimplementasikan
+sistem informasi profil sekolah berbasis website, diharapkan sekolah ini dapat lebih efektif dalam
+menyampaikan informasi kepada masyarakat sekitar, serta meningkatkan partisipasi orang tua serta
+masyarakat di kegiatan pendidikan. Sistem ini juga akan membantu MIS Nahdhatul Islam dalam memperkuat
+reputasinya sebagai lembaga pendidikan yang transparan dan responsif terhadap kebutuhan siswa dan orang
+tua.
+2. METODE PENELITIAN
+Perancangan sistem informasi profil sekolah berbasis website ini memakai pendekatan System
+Development Life Cycle (SDLC) dengan metode prototyping. Gambar 1. di bawah ini menunjukkan tahapan
+SDLC dengan pendekatan prototyping, yang meliputi beberapa langkah utama.
+
+Gambar 1. Tahapan SDLC Prototype
+
+Metode ini dipilih karena memungkinkan pengembangan sistem yang lebih responsif terhadap
+kebutuhan pengguna. Prototipe awal dikembangkan berdasarkan hasil survei yang dilakukan untuk
+mengidentifikasi kebutuhan pengguna, sehingga dapat menghasilkan sistem yang sesuai dengan harapan
+mereka. Prototyping juga memberikan kesempatan bagi pengguna untuk terlibat dalam proses pengembangan,
+sehingga umpan balik yang diperoleh dapat digunakan untuk meningkatkan kualitas sistem [6].
+Setelah prototipe awal dikembangkan, langkah selanjutnya adalah melakukan pengujian dengan
+melibatkan pengguna. Pengujian ini bertujuan untuk mendapatkan umpan balik mengenai fungsionalitas dan
+antarmuka sistem. Hasil dari evaluasi ini sangat penting, karena akan digunakan untuk melakukan revisi dan
+penyempurnaan sistem sebelum tahap implementasi akhir. Dengan demikian, sistem informasi yang dihasilkan
+tidak hanya informatif tetapi juga interaktif, memberikan pengalaman pengguna yang lebih baik.
+Untuk tahapan yang lebih detail terkait System Development Life Cycle (SDLC) dengan metode
+prototyping diatas dijelaskan pada beberapa langkah yang saling terkait dibawah ini:
+2.1 Analisis Kebutuhan
+Tahapan pertama dalam System Development Life Cycle (SDLC) adalah analisis kebutuhan, di mana
+dilakukan identifikasi terhadap kebutuhan sistem yang akan dikembangkan. Pada tahap ini, pengembang
+melakukan pengumpulan informasi dari pihak sekolah untuk memahami fitur dan fungsionalitas yang
+diharapkan. Proses ini melibatkan wawancara, survei, dan diskusi dengan pemangku kepentingan, termasuk
+guru, siswa, dan orang tua. Dengan memahami kebutuhan secara mendalam, pengembang dapat merancang
+sistem yang tidak hanya memenuhi harapan tetapi juga meningkatkan efisiensi dan efektivitas dalam
+penyampaian informasi.
+2.2 Membuat Prototype
+Setelah kebutuhan sistem diidentifikasi secara jelas, langkah selanjutnya adalah membuat prototipe
+awal. Prototipe ini berfungsi sebagai model sementara dari sistem yang akan dikembangkan, dengan fokus
+3 | Page
+
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+pada alur program dan antarmuka pengguna. Tujuan dari pembuatan prototipe adalah untuk memberikan
+gambaran awal kepada pengguna tentang bagaimana sistem akan berfungsi dalam praktiknya. Prototipe ini
+memungkinkan pengguna untuk melihat dan merasakan aspek-aspek dasar dari sistem sebelum pengembangan
+lebih lanjut dilakukan, sehingga mereka dapat memberikan masukan yang berharga untuk perbaikan.
+2.3 Evaluasi Prototype
+Setelah prototipe dibuat, tahap berikutnya adalah evaluasi terhadap model tersebut. Pada tahap ini,
+umpan balik dari pengguna sangat penting untuk mengetahui apakah prototipe memenuhi harapan dan
+kebutuhan mereka. Pengguna diundang untuk mencoba prototipe dan memberikan pendapat mengenai
+fungsionalitas serta antarmuka yang ada. Umpan balik ini akan digunakan untuk melakukan penyesuaian dan
+perbaikan pada prototipe sebelum melanjutkan ke tahap berikutnya. Proses evaluasi ini menciptakan
+kolaborasi antara pengembang dan pengguna, sehingga hasil akhir lebih sesuai dengan ekspektasi pengguna.
+2.4 Pengkodean Sistem
+Jika prototipe disetujui oleh pengguna, maka tahapan selanjutnya adalah pengkodean sistem. Pada
+tahap ini, pengembang akan menerjemahkan desain prototipe ke dalam bahasa pemrograman yang sesuai untuk
+membangun aplikasi secara nyata. Pengkodean merupakan langkah krusial di mana semua elemen yang telah
+dirancang sebelumnya diimplementasikan ke dalam kode program. Selama proses ini, pengembang harus
+memperhatikan standar pemrograman dan praktik terbaik untuk memastikan bahwa kode yang ditulis bersih,
+terstruktur dengan baik, dan mudah dipelihara.
+2.5 Pengujian Sistem
+Setelah proses pengkodean selesai, perangkat lunak harus menjalani serangkaian pengujian untuk
+memastikan bahwa semua fungsionalitas berjalan dengan baik dan bebas dari bug. Dalam penelitian ini,
+metode Black Box Testing digunakan untuk melakukan pengujian. Black Box Testing adalah bagian penting
+dari proses pengujian sistem di mana fokus utamanya adalah pada input dan output tanpa mempertimbangkan
+bagaimana proses internal bekerja. Dengan cara ini, pengujian dapat dilakukan secara menyeluruh untuk
+memastikan bahwa semua fitur berfungsi sesuai dengan spesifikasi yang telah ditentukan [7].
+2.6 Evaluasi Sistem
+Setelah pengujian selesai dilakukan, pengguna kembali melakukan evaluasi untuk memastikan bahwa
+perangkat lunak telah memenuhi semua kriteria yang diharapkan. Pada tahap evaluasi ini, pengguna akan
+memeriksa apakah semua fungsionalitas berfungsi dengan baik dan apakah sistem dapat memenuhi kebutuhan
+mereka secara keseluruhan. Jika perangkat lunak sudah sesuai dengan harapan pengguna, maka dapat
+dilanjutkan ke tahap implementasi. Namun, jika ditemukan masalah atau ketidaksesuaian, proses pengkodean
+dan pengujian perlu diulang hingga sistem siap untuk digunakan secara efektif oleh semua pemangku
+kepentingan [8][9][10].
+
+3. HASIL DAN PEMBAHASAN
+3.1 Use Case Diagram
+Sistem informasi profil sekolah berbasis website ini memiliki dua jenis pengguna, yaitu User dan
+Admin. User berperan sebagai pengunjung yang dapat mengakses informasi terkait profil sekolah, visi dan
+misi, daftar guru, berita terbaru, kegiatan ekstrakurikuler, serta kontak sekolah. Sementara itu, Admin memiliki
+wewenang untuk mengelola data dengan menambahkan, melihat, mengubah, dan menghapus informasi
+mengenai daftar guru, berita, serta kegiatan ekstrakurikuler. Hal ini memastikan pengelolaan data berjalan
+secara optimal dan informasi yang disajikan selalu up-to-date. Gambar 2. di bawah ini menunjukkan Use Case
+Diagram yang menggambarkan interaksi antara User dan Admin dengan sistem informasi profil sekolah, serta
+fungsi-fungsi yang dapat diakses oleh masing-masing pengguna.
+4 | Page
+
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+
+Gambar 2. Use Case Diagram
+
+3.2 Activity Diagram
+Activity Diagram ini menjelaskan terkait User. Di sini, User membuka website sekolah, kemudian
+sistem menampilkan halaman utama yang berisi berbagai informasi yang tersedia. Selanjutnya, User dapat
+memilih salah satu menu yang disediakan, seperti profil sekolah, visi dan misi, daftar berita, daftar guru, daftar
+ekstrakurikuler, atau kontak sekolah. Setelah menerima permintaan dari User, sistem akan mengambil data
+yang sesuai dari database dan menampilkan halaman yang berisi informasi yang diminta. User kemudian dapat
+membaca informasi tersebut dan memiliki opsi untuk kembali ke halaman utama atau memilih menu lain sesuai
+kebutuhannya. Gambar 3. di bawah ini menunjukkan Activity Diagram untuk User, yang menggambarkan alur
+interaksi User dengan sistem.
+
+Gambar 3. Activity Diagram untuk User
+
+Sedangkan Activity Diagram yang ditunjukan pada Gambar 4. menjelaskan terkait Admin. Disini
+Admin mengakses halaman Admin, kemudian sistem menampilkan halaman login untuk melakukan
+autentikasi. Admin memasukkan kredensial login, dan jika berhasil, sistem akan mengarahkan ke halaman
+dashboard Admin. Namun, jika login gagal, Admin harus mencoba kembali hingga berhasil. Pada menu
+dashboard, Admin dapat melihat jumlah total berita, guru, dan ekstrakurikuler yang telah terdaftar. Selain itu,
+5 | Page
+
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+Admin memiliki akses untuk menambah, melihat, mengubah, dan menghapus data berita, guru, serta
+ekstrakurikuler melalui menu yang tersedia. Setelah melakukan suatu tindakan, sistem akan menampilkan hasil
+perubahan yang telah dilakukan. Jika terjadi kesalahan atau proses gagal, Admin harus mencoba kembali
+hingga berhasil. Gambar 4. di bawah ini menunjukkan Activity Diagram untuk Admin, yang menggambarkan
+alur interaksi Admin dengan sistem.
+
+Gambar 4. Activity Diagram untuk Admin
+
+3.3 Class Diagram
+Pada Class Diagram ini terdapat tabel User yang berisi name dan password yang berfungsi untuk
+login/ Class Diagram memuat beberapa tabel yang memiliki peran penting dalam sistem informasi profil
+sekolah. Tabel User berisi atribut name dan password yang berfungsi untuk proses login dan logout. Selain
+itu, terdapat tabel Berita yang menyimpan informasi berupa id, judul, konten, gambar, createdAt, dan
+username, yang digunakan untuk operasi create, read, update, dan delete. Tabel guru juga memiliki peran
+serupa dengan atribut id, name, jabatan, foto, dan createdAt yang mendukung fungsi create, read, update, dan
+delete.
+Selanjutnya, tabel ekstrakurikuler menyimpan data mengenai id, name, deskripsi, foto, dan createdAt
+dengan tujuan yang sama dalam hal pengelolaan data. Gambar 5. di bawah ini menunjukkan Class Diagram
+yang menggambarkan struktur tabel-tabel dalam sistem informasi profil sekolah ini beserta atribut-atributnya.
+Diagram ini memberikan gambaran yang jelas tentang bagaimana setiap tabel saling berinteraksi dan
+mendukung fungsionalitas sistem secara keseluruhan.
+
+6 | Page
+
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+
+Gambar 5. Class Diagram
+
+3.4 Implementasi Sistem
+3.4.1 Halaman Utama
+Tampilan utama User adalah halaman awal yang menampilkan informasi penting tentang sekolah. Di
+dalamnya terdapat menu navigasi untuk mengakses profil sekolah, visi dan misi, daftar berita, data guru,
+ekstrakurikuler, dan kontak sekolah. User dapat memilih menu yang diinginkan, dan sistem akan menampilkan
+informasi sesuai permintaan. Tampilan ini dirancang agar mudah diakses dan informatif bagi pengunjung.
+Gambar 6. di bawah ini menunjukkan Halaman Utama dari sistem yang dirancang.
+
+Gambar 6. Halaman Utama
+
+7 | Page
+
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+3.4.2 Menu Dashboard
+Sebelum masuk ke Menu Dashboard Admin, Admin harus melakukan proses login terlebih dahulu
+dengan menggunakan username dan password sebagai langkah autentikasi. Jika proses login gagal, sistem
+akan menampilkan pesan error yang meminta Admin untuk mencoba lagi. Hal ini memastikan bahwa hanya
+pengguna yang berwenang yang dapat mengakses informasi dan fitur di dalam sistem.
+Setelah berhasil login, Admin akan diarahkan ke Dashboard Admin. Gambar 8. di bawah ini
+menunjukkan tampilan Dashboard yang menampilkan ringkasan jumlah berita, guru, dan ekstrakurikuler.
+Selain itu, dashboard ini juga menyediakan navigasi yang memudahkan Admin dalam mengelola data secara
+efisien. Dengan fitur-fitur ini, Admin dapat dengan mudah mengawasi dan mengatur informasi yang relevan
+dalam sistem informasi profil sekolah.
+
+Gambar 7. Dashboard Admin
+
+3.4.3 Menu Daftar Berita
+Selain Menu Dashboard terdapat beberapa Menu lainnya seperti Menu Daftar Berita, Guru, dan
+Ekstrakurikuler yang menyediakan informasi penting yang dapat diakses oleh User dan dikelola oleh Admin.
+Menu Berita menampilkan daftar berita terbaru mengenai kegiatan, pengumuman, dan informasi penting
+sekolah. Menu Guru berisi daftar guru beserta nama, jabatan, dan informasi terkait. Sementara itu, Menu
+Ekstrakurikuler menampilkan berbagai kegiatan ekstrakurikuler yang tersedia di sekolah, lengkap dengan
+deskripsi dan foto. Admin memiliki wewenang untuk menambah, melihat, mengubah, dan menghapus data
+pada setiap menu guna memastikan informasi tetap akurat dan selalu diperbarui. Gambar 8. dibawah
+menunjukan Menu untuk Daftar Berita yang menampilkan berita terkait informasi sekolah.
+
+Gambar 8. Menu Daftar Berita
+
+8 | Page
+
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+3.4.4 Form Menambahkan Informasi
+Admin memiliki kemampuan untuk menambahkan informasi baru melalui Form Berita, Guru, dan
+Ekstrakurikuler. Form Berita dirancang dengan kolom-kolom yang memungkinkan Admin untuk memasukkan
+judul, konten, gambar, dan tanggal pembuatan berita. Dengan adanya form ini, proses penginputan informasi
+menjadi lebih terstruktur dan efisien.
+Setiap Form dilengkapi dengan fitur untuk menambah, mengubah, dan menghapus data. Hal ini
+memungkinkan Admin untuk memastikan bahwa informasi yang ada selalu diperbarui sesuai dengan
+kebutuhan terkini. Gambar 9. di bawah ini menunjukkan tampilan Form untuk menambahkan Daftar Berita
+baru, yang memberikan gambaran jelas tentang bagaimana Admin dapat mengelola konten berita dengan
+mudah dan efektif.
+
+Gambar 9. Form Menambahkan Berita Baru
+
+4. KESIMPULAN DAN SARAN
+Kesimpulan dari penelitian ini menunjukkan bahwa sistem informasi profil sekolah berbasis website
+yang telah dirancang dan diimplementasikan berhasil memenuhi tujuan utama, yaitu memberikan akses
+informasi yang cepat, akurat, dan interaktif kepada pengguna. Keberhasilan sistem ini sangat dipengaruhi oleh
+penerapan pendekatan System Development Life Cycle (SDLC) dengan metode prototyping, yang
+memungkinkan pengembangan sistem yang responsif terhadap kebutuhan pengguna. Dengan demikian,
+kelebihan dari sistem ini mencakup kemudahan akses informasi bagi siswa dan orang tua, serta peningkatan
+transparansi dan akuntabilitas lembaga pendidikan. Hal ini sangat penting dalam konteks pendidikan saat ini,
+di mana akses informasi yang cepat dan tepat menjadi salah satu kunci utama dalam mendukung proses belajar
+mengajar serta membangun kepercayaan antara sekolah dan masyarakat.
+Namun, penelitian ini juga mengidentifikasi beberapa kekurangan yang perlu diperhatikan, seperti
+kemungkinan keterbatasan dalam fitur interaktif yang dapat ditambahkan pada sistem dan kebutuhan untuk
+pembaruan konten secara berkala agar informasi yang disajikan tetap relevan dan bermanfaat bagi pengguna.
+Oleh karena itu, untuk pengembangan selanjutnya, disarankan agar penelitian lebih lanjut mengeksplorasi
+integrasi fitur tambahan seperti forum diskusi atau sistem pendaftaran online. Dengan adanya fitur-fitur
+tersebut, interaksi antara sekolah dan pengguna dapat ditingkatkan, sehingga menciptakan lingkungan belajar
+yang lebih dinamis dan responsif terhadap kebutuhan semua pihak yang terlibat. Melalui langkah-langkah
+perbaikan ini, diharapkan sistem informasi profil sekolah berbasis website dapat terus berkembang dan
+memberikan manfaat yang lebih besar bagi komunitas pendidikan.
+
+9 | Page
+
+Jurnal Teknologi Sistem Informasi
+E-ISSN: 2722-631X
+Volume 6, Nomor 1, April 2025, Page:1-10
+DOI: 10.35957/jtsi.v6i1.11146
+Submitted:02 March 2025 , Revised: 18 March 2025 , Accepted: 24 March 2025
+DAFTAR PUSTAKA
+[1]
+
+M. Utami, E. Dwika Putra, V. Handoyo, R. Arif Ma’ruf, F. Agnesa Putra, and Herianto, “Perancangan
+Sistem Informasi Profil Sekolah Berbasis Website Pada Sdn 4 Kota Bengkulu,” JPMTT (Jurnal
+Pengabdi. Masy. Teknol. Terbarukan), vol. 3, no. 1, pp. 1–5, 2023.
+
+[2]
+
+H. Saleh and A. Popoi, “Sistem Informasi Pendaftaran dan Profil Sekolah Berbasis Web pada SD
+Negeri 13 Tilamuta,” vol. 7, no. 4, pp. 526–536, 2024.
+
+[3]
+
+S. Sholikah, “Rancang Bangun Sistem Informasi Profil Sekolah Berbasis Web Ditujukan Kepada Sdn
+Menur Pumpungan Surabaya Kerja Praktik Program Studi S1 Sistem Informasi,” 2018.
+
+[4]
+
+A. Nurkholis et al., “Implementasi Sistem Informasi Profil Sekolah Berbasis Web pada SMK
+Minhadlul Ulum,” J. Eng. Inf. Technol. Community Serv., vol. 1, no. 2, pp. 50–57, 2022, doi:
+10.33365/jeit-cs.v1i2.135.
+
+[5]
+
+R. R. Muharto, “Perencanaan Sistem Informasi Profil Sekolah Berbasis Web,” IJIS-Indonesia J. Inf.
+Syst., vol. 4, no. April, pp. 69–76, 2019.
+
+[6]
+
+S. H. Bariah and D. Pradina, “Implementasi SDLC Model Prototype Pada Sistem Informasi Company
+Profile SMP PGRI Bungbulang Berbasis Website,” PETIK J. Pendidik. Teknol. Inf. dan Komun., vol.
+10, no. 1, pp. 85–97, 2024, doi: 10.31980/jpetik.v10i1.1030.
+
+[7]
+
+F. F. Nursaid, A. Hendra Brata, and A. P. Kharisma, “Pengembangan Sistem Informasi Pengelolaan
+Persediaan Barang Dengan ReactJS Dan React Native Menggunakan Prototype (Studi Kasus : Toko
+Uda Fajri),” J-Ptiik.Ub.Ac.Id, vol. 4, no. 1, pp. 46–55, 2020, [Online]. Available: http://j-ptiik.ub.ac.id
+
+[8]
+
+E. W. Fridayanthie, H. Haryanto, and T. Tsabitah, “Penerapan Metode Prototype Pada Perancangan
+Sistem Informasi Penggajian Karyawan (Persis Gawan) Berbasis Web,” Paradig. - J. Komput. dan
+Inform., vol. 23, no. 2, pp. 151–157, 2021, doi: 10.31294/p.v23i2.10998.
+
+[9]
+
+A. P. Henriyan, F. M. Ardi, H. L. Putra, and M. R. Ridlo, “Implementasi Manajemen Proyek Pada
+Pembuatan Website Profil Perusahaan Percetakan.,” Semin. Nas. Inform. Sist. Inf. Dan Keamanan
+Siber, pp. 94–101, 2018.
+
+[10]
+
+S. Sandi, “Pengembangan Model Sistem Informasi Akademik Pada Sekolah Menengah Pertama
+Menggunakan Metode SDLC,” Jutisi J. Ilm. Tek. Inform. dan Sist. Inf., vol. 9, no. 2, p. 41, 2020, doi:
+10.35889/jutisi.v9i2.514.
+
+10 | Page
+
+

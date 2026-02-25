@@ -1,0 +1,949 @@
+MATHEMATICS OF OPERATIONS RESEARCH
+Vol. 13. No. 2. May 19118
+Printed m U.S.A.
+
+COOLING SCHEDULES FOR OPTIMAL ANNEALING*^
+BRUCE HAJEK
+University of Illinois at Champaign-Urbarui
+A Monte Carlo c^timization technique called "simulated annealing" is a descent algorithm
+modified by random ascent moves in order to escape local minima which are not global
+minima. Tlie levd of randomization is determined by a control parameter T, called temperature, which tends to zero according to a deterministic "cooling schedule". We give a simple
+necessary and suffident conditicm on the cooling sdiedule for the algorithm state to converge
+in probability to the set of globally minimiim cost states. In the spedal case that the cooling
+schedule has parameuic form r({) » c/log(l + /), the condition for convergence is that c be
+greater than or equal to the depth, suitably defined, of the deepest local minimum which is not
+a global minimum state.
+
+1. Introductioii. Suppose that a function V defined on some finite set 5^ is to be
+minimized. We assume that for each state x in y that there is a set N{x), with
+N{x) c y , whidi we call the set of neighbors of x. Typically the sets N{x) are small
+subsets of £^. In addition, we suppose that there is a transition probability matrix R
+such that R(x, ;') > 0 if and only if 7 e N{x).
+Let 7\, T2,... be a sequence of strictly positive numbers such that
+(1.1)
+
+T^>T2> ...
+
+(1.2)
+
+and
+
+lim r^ = 0.
+*r-»oo
+
+Consider the following sequential algorithm for constructing a sequence of states
+XQ, Xi,... .An initial state XQ is chosen. Given that A'^ = x, a potential next state Y^
+is chosen from N{x) with probability distribution P[Yi^ = y\X^ = xj = R(x, y). Then
+we set
+]t with probability p^,
+t
+
+^i.
+•
+otherwise.
+
+where
+
+This specifies how the sequence X^, X2,... is chosen. Let S^* denote the set of
+states in y at which V attains its minimum value. We are interested in determining
+•Recdved Mardi 13,1985; revised Decen*er 19,1986.
+AMS1980 sidgect classification. Primary: 65C05; Seamdary: 60J27.
+JAOR 1973 stOgect datsificatian. Main: Prt^sdnlistic Programming; Cross RefereiKes: Emulation.
+OR/MS Index 1978 subject dassifauttim. Primary: 663 Stodiastic methods of c^timizaticHi; Secondary: 761
+Key words. Emulated annealing, Randcanized c^timizatitn, Monte Carlo methods of c^timization.
+f l h i s w<Hk was siqqxwted by the Office of Naval Researdi under Contract N00&-14-82-K-0359 and tbt
+Nationd Sdoice F«iadMi<m under contract NSF-ECS-83-52030.
+311
+0364-765X/88/1302/0311$01.25
+01W8, Tbe IsstiHite of Mmagnnenl Sdenccg/Operatiom Reaeaidi Sodety of America
+
+312
+
+BRUCE HAJEK
+
+whether
+(1.3)
+
+lim
+k
+
+The random process X = {X/^: k-^ 0) produced by the algorithm is a discrete time
+Markov chain. The one-step transition probability matfix at step k is
+
+0
+
+a y € N{x) said y ¥= X,
+
+R{x, >')exp(- [K(>') - V(x)] V r J
+
+if ^ e Nix) and y-^ x.
+
+We will motivate the choice of transition probabilities in the algorithm^ by briefiy
+considering the algorithm under three simplifying assumptions. A state y is reachable
+from state x if x = yot'd there is a sequence of stat^ x = XQ, Xj^,...,Xp= y lor some
+p > 1 such that Xjt+i e N{x^) for 0 ^ k < p. The first assumption is that (y> N) is
+irreducible, by which we mean that given any two states x and y, y is reachable frcan
+X. The second assumption is that T,^ is equal to T, for some constant T > 0. Hie third
+assumption is that R is reversible, which, by definition, means that there is a
+probability distribution a on y , necessarily the »}uilibrium distribution for R, such
+that a(x)R(x, y) = a{y)R{y, x) for all x, >> in y . A simple example for which the
+third assumption is valid is the case that
+
+0
+
+otherwise,
+
+and the neighbor system is symmetric in the sense that x ^ N(y) if and only if
+y e N{x) for each pair of states x, y.
+By the assumption that Ti^=^ T for all A:, the Markov chain X has a stationary
+one-stq) transition probability matrix P, P = P,^ for ikll k. It then easily follows from
+the reversibility assumption on R that, if we define a probability distribution Vj. on S^
+by
+
+(^)/
+
+where Z^ = Ea(
+
+then P is re\^rsible with equilibrium lUsbibution my.
+By the assumption that ( y , iV) is irreducible (and the fact that P is aperiodic if
+S^* i' £/' since P(i, i) > 0 for some i in that case), the, Maikov ergodic convergence
+theorem [6] impUes that
+(1.4)
+
+UmP[Jft€y»]=
+
+Ys ""TKX).
+
+Examinatiffli of m^ so(m yields ttiat ^ right-hand »de of (1.4) can be made artntrarily
+close to one by chocMsing T small. Thus,
+
+Bmf Um
+T—fi\k-*ai,T^»
+
+1.
+
+COOLING SCHEDtJLES FOR OFIIMAL ANNEALING
+
+313
+
+The idea of the simulated annealing algorithm is to try to achieve (1.3) by letting T^
+tend to zero as k (time) tends to infinity.
+We now return to the original case that the sequence {T,^) is nonincreasing and has
+Umit zero. We will not require that R be reversible. Instead, a much weaker assumption will be made with the help of the following definition. We say that state y is
+reachable at height E from state x if x = j ' and F(x) < E, or if there is a sequence of
+states X = XQ, Xi,..., Xp = X for some /? > 1 such that x^^^.^ e N{x^) for 0 < fe < />
+and K(Xt) < £ for 0 < fe < ;». We will assume that {&", V, N) has the following
+property.
+Property WR {Weak reversibility): For any real number E and any two states x and
+y, X is reachable at height E from y if and only if j ; is reachable at height E from x.
+State X is said to be a local minimum if no state y with V{y) < V(x) is reachable
+from X at height V{x). We define the depth of a local minimum x to be plus infinity if
+X is a global minimum. Otherwise, the depth of x is the smaUest number E, E > 0,
+such that some state y with V{y) < V(x) can be reached from x at height V(x) + E.
+These definitions are illustrated in Figure 1.1.
+We define a ctq) for (£^, V, iV) to be a set C of states such that for some number E,
+the following is true: For every x ^ C, C = {y: y can be reached at height E from
+X }. For example, by Property WR, if £ > V{x) then the set of states reachable from x
+at height £ is a cup. Given a cup C, define F(C) = min{F(x): x e C} and
+V{C) = adn{Viy): >- « C and ^^ G N{X) for some x in C}. The set defining K(C) is
+empty if and only if C = y , and we set V{6^) = + oo. We call the subset B of C
+defined by i? = {x e C: V(x) = V(C)} the bottom of the cup, and we call the number
+d(C) defined by d(C) = K(C) - F(C) the depth of the cup. These definitions are
+
+12
+
+TO
+
+Fiotflue 1.1. The gr^di pictuied stises bom a triplet (y, V, N). Nodes conapoad to elements in y.
+y{x) for X in ^ is indkated by ibt scale at left Arcs in tt^ grqdi reprej^t ordered pairs of sutes (x, y)
+aidi Htst X s N(y). Property fVR is satisfied fax Ae exanqiie ^lown.
+States Xi, Xj and X3 sse gjobd minimum States X4, x^ and Xj are locd minima of depdts 5.0,6.0, and
+2.0, it^>e(^ively. State xs is «)t a bxal minuman. State Xj is t^iAMt at hdg^t 1.0 fnnn x^ and states x,
+is fNdaUe at b e ^ 12.0 £R8B X,.
+
+314
+
+BRUCE HAJEK
+
+12
+
+10
+
+FIGURE 1.2. AcapC is endosed with dashed lines. K(C) = 5, V(C) - 12, d{C) - 7 and the bottom B
+of C contains two states.
+
+illustrated in Figure 1.2. Note that a local minimum of depth J is an element of the
+bottom of some cup of depth d.
+THEOREM 1. Assume that (S^, V, N) is irreducible and satisfies WR, and that (1.1)
+and (1.2) hold.
+(a) For any state x that is not a local minimum, hmi^_^^P{X^ = x] = 0.
+(b) Suppose that the set of states B is the bottom of a cup of depth d and that the states
+in B are local minima of depth d. Then hm,^_,^P[Xi^ e fi] = 0 if and only if
+
+(c) (Consequence of (a) and (b)) Let d* be the maximum of the depths of all states
+which are local but not global minima. Let S^* denote the set of global minima. Then
+(1.5)
+
+Um
+
+= 1
+
+A:—»oo
+
+if and only if
+(1.6)
+
+REMARKS.
+
+(1.7)
+
+(1) If r^ assume the parametric f<»in
+
++ 1)
+
+c(»idition (1.6X and hence aiso cca^don (1.5), is true if and only 'd c> d*. liiis
+
+COOUNG SCHEDULES FOR OFTIMAL ANNEALING
+
+315
+
+result is consistent with the work of Geman and Geman (2). TTiey cmisidered a modd
+which is nearly a special case of the model used here, and they proved that conditicm
+(1.5) holds if (r^) satisfies equation (1.7) for a sufficiently large constant c. They gave a
+value of c which is sufficient for convergence and which is substantially larger than d*.
+Gidas [4] also addressed the convergence properties of the annealing algorithm. The
+Markov chains that he considered are more general than those that we consider. He
+required little more than the condition that the one-step transition probability matrices
+P,^ converge as k tends to infinity. In the special case of annealing processes, he gave a
+value of c (actually, c here corresponds to I / C Q in Gidas' notatitm) which he
+conjectured is the smallest such that Equation (1.7) leads to Equation (1.5). His
+constant is different from the constant d* defined here. Gidas also considered
+interesting convergence questions for functionals of the Markov chains.
+Geman and Hwang [3] showed that in the analogous case of nonstationary diffusion
+processes that a schedule of the form (1.7) is sufficient for convergence to the global
+minima if c is no smaller than the difference between the maximum and minimum
+value of V. We conjecture that the smallest constant is given by the obvious analogue
+of the constant d* that we defined here, although the proof that we give here does not
+readily carry over to the diffusion case.
+(2) Some information on how quickly convergence occurs in Equation (1.5) can be
+gleaned from Theorems 3 and 4 in §§3 and 4 respectively, and from the proofs in [2-4].
+(3) It would be interesting to know the behavior of min„^^K(J^„) rather than the
+behavior of V{X^).
+(4) It would be interesting to study convergence properties when the schedule (r^) is
+randonf and depends on the algorithm states.
+(5) If X is a local minimum of depth d and no other local minimum y with
+V^^y) = K(x) can be reached from x at height V(x) + d, then there is a cup of depth
+d such that x is the only state in the bottom of the cup. Thus, under the conditions of
+Theorem 1, lim^_«PIA]t = x] = 0 if and only if (1.6) is true. We conjecture that this
+last statement is true for any local minimum of depth d.
+EXAMPLES. (1) The examples in Figure 1.1 and Figure 1.2, d* = 6 and d* = 7,
+respectively.
+(2) Cemy [1] and Kirkpatrick et al. [7] independently introduced simulated annealing. They and, by now, many others have applied the simulated annealing algorithm to
+difficult combinatorial problems. We will briefiy consider the maximum matching
+problem, even though this problem is easy in the sense that efficient polynomial-time
+algorithms are known for solving it.
+Consider an undirected graph. A matching M is a subset of edges of the graph such
+that no two edg« in M have a node in common. We take the state space 5^ in the
+annealing setup to be the Mt of all matchii^, and we let V(M)be negative one times
+the number of edges in M. The maximum matching problem is then to find Af in 5^ to
+e V(M).
+Suppose
+that the state of the annealing algorithm at the b^inning of
+()
+pp
+h chosen
+h
+d
+i h all
+ll
+the i^th iteration is M. Sui^>ose an edge of the graph is then
+at random,
+with
+edges bemg equally likely. If the edge is not in M and can be added to M, then the
+n ^ t state is obtained by adding the edge to M. If the edge is in Af, then die next state
+is obtained by rraiowng the e d ^ from M with probability exp(-l/3jt). OUierwise,
+the next state is at/ain M. Tbis correspcHids to RiM, M') - 1/L if A/' can be obtained
+from M by addii^ an ed^ to ca sub&actii^ an e d ^ &CBn M, whoe L is the numboof edges of the grj^h; and RiM, M') - 0 for other M' distinct from M.
+It is wdl known tlmt if a matdung M does not have maximum cardinality then
+edges ean be altema^y subtracted and added until' two can be added at once.
+d* is at msA one (it is ZHO for srane graphs), no matter how large the
+
+316
+
+BRUCE HAJEK
+
+(a)
+
+(b)
+
+1 FIGURE 1.3.
+
+Diagram (a) arises ftom a triple {y, V, N) and diagram (b) is obtained by "fllling-in" the
+
+(3) Consider (y, V, N) giving rise to Figure 1.3. Note that d* = 3. Now suppose
+that (Tfc) satisfies (1.1), (1.2),
+(1.8)
+
++00, and
+
+(1.9)
+k-l
+
+Since ^4 is reachable at height V(xj^) + 2 and since (1.8) is assumed, one might
+(correctly) guess that if the process starts at x^ then it will eventually reach x^ with
+probability one. By similar reasoning, one might then (incorrectly) guess that the
+process must eventaally reach Xy. However, by Tiieoron 1 and (1.9), lim^t-oo-^I-** ~
+X7] ^ 1. What happens is that if ^ is l a i ^ so that Tj^ is small and if the process is in
+state X4 at time k, then it is much more likely that As process hits state x^ before it
+hits (if eves') state x^. We think of the cup consisting of state X4 alone as being
+"filled-in" (see Figure 1.3), so that to get from x^ to x^, Uie process has to climb up
+three levds. Roughly q>eaking, the small dq>ression in K at X4 does not allow the
+process to always make it up three levels by going up two at a time and "resting" in
+between. l U s would not be mie if condition WR were violated by, for example, setting
+the probability of jumping frcan X4 to X3 to zoo.
+Tbis papa is (vganized as follows. In §2 we state Hieorem 2, which is a generalizatioa of TiMCHian 1. TIM rest of the {uqper is devoted to proving Theorran 2. The theorem
+will first be proved under the as^impticm that {y,V,N)has^e
+"continuous inoease"
+ptopaty, ^f/bkk is formulated in §2. In §§3 and 4 we state and prove Thec»«ms 3 and
+4, whi(^ (tesoflje how ibs proems exits from a aip. Tbt proof of Theorem 2, induding
+how to ronove tbe oontinuom moease a^umptkm, is presented in §5. There is an
+inteiplay in §5 between the tmsesWLy and aifficieacy of condition (1.6).
+2. f^aienMsaiaieA4i'nmoaml.
+It mil be M p M to goiasAze nieOTom 1 befcve
+proving it. We as^nietiir<Hig^outthe paper Um (S^, F, .Af) is medadhhe and has the
+pF^>aty WR ^kfii^ in §1. Tfarcnigboat die r^aaindo^ of the pap& (X,: / > 0) wiU ht
+assumed to satisfy 0 < A, < 1, A, is mminci^Kiang in t, and iim4_.^A, <« 0. Soppc^e
+
+COOUNG SCHEDULES FOR OPTIMAL ANNEALING
+
+317
+
+that (X,: t>O)is defined by X, = Y^ for {4 < r < [4+1 where (({4, Y^): A: > 0) is a
+homogeneous Markov random process with state space [0, + 00) x .5^ and one-step
+transition probabilities
+
+where for some strictly positive constants D, a, Cj and C2:
+A.I 0(-,5, x) is a probability distribution function with $(5 - , 5, x) = 0,
+fo'i^ ~ s)<^{dt, s, x) < D, and £[min{A:: Uk> t + a}\Uo=' t, YQ = x] < I/a for all
+f > 0, X G y .
+A.2 For r > 0 and 0 < A < 1, g(-, •, r. A) is a probability transition matrix with
+*'<-»'< Q{x, y,t,\)^
+
+C2A<''(^>-•'(-»* if ;; G N(X)
+
+Q{x,y,t,\) = O ]iy^N{x)\J{x}.
+Note that 7^+i is conditionally independent of (t^o, l o ' - ' ^ * - i . ^*-i'^t) given
+(4+1 n
+For example, if (3"^: /t > 0) and /? are as in §1 and "/^" denotes the indicator
+variable of a set A, we can let A, = exp(-l/r(,j), $(r, ,s, x) =/(,^^+i} and
+e ( x , ;;, ^ A) = R(x, y)\;(ny)-'nx)r for ^ ¥=;;. Then (X,: f > 0) sampled at integer
+times has the same transition probabilities as{X^: k> 0) does in §1. When A, $ and
+Q are chosen as in this example. Theorem 2 below reduces to Theorem 1.
+If instead we let <^{t,s,x) = I^,^^^{l- exp( -{t - s))), then Jf is a continuous-time
+analogue of the process in §1.
+THEOREM 2.
+
+(a) For any state x that is not a local minimum, lim, _ ^P[ A', = x] = 0.
+(b) Suppose that B is the bottom of a cup C of depth d and that the states in B are local
+minima of depth d. Then ]im,_^P[X, eB] = O if and only if j^\'',dt = +oo.
+(c) (Consequence of (a) and (b)). Let d* be the maximum of the depths of all states
+which are local but not global minima. Let S^* denote the set of global minima. Then
+y * ] = 1 if and only if f^K' dt = + oo.
+Let £"0, El,..., Eg denote the possible values of V(x) as x varies over £^, ordered
+so that EQ < El < • • • < E^. We will first prove Theorem 2 under the assumption
+that {6^,V,N) has the following property:
+Continuous Increase Property. Given any two states x and y, if V{x) = £, and
+V(y) = EJ and y > / + 2, then >< « N{x).
+The (5*", V, N) in Figure 1.1 does not have the continuous increase property, while
+the one in Figure 1.2 does.
+3. How aqis r « m ^ ov«r.
+3.1. Theorem statement and initial steps of proof. Suppose that C is a cup, and let
+m and ^ be the int^eis such that £„ is the minimum and £^ is the maximum value
+of V{x), for X in C. We assume that k<q (otherwise C is all of S^), so that
+0 ^ m < k < q. Let F =" {y: y ^ C and y e N(x) for some x e C}. By the continuous increase property, V(x) = E^+i for all x e F. Define u and g by u = £^+1 - £4
+and g°* Ef^- £„. TTien d-u-¥ g, where d is the depth of C. Let © =
+{Sf, V, N, D, a, Ci, C2) where D, a, Cj and Cj are the constants appearing in
+tions A.1 and A.2.
+
+318
+
+BRUCE HAJEK
+
+THEOREM 3. There exist « > 0 and A > 0 depending only on © and C so that for
+every time tg > 0, every x^ e C, every y^^ F arid every (A,: t>G) such that A,^ < A
+and
+"^ ds = +oo the following conditions hold:
+
+(a)
+where T ( C ) == U^^ and W = imn{k
+(b)
+The theorem will be proved by induction once we establish it for a cup C with the
+aid of the following hypothesis.
+Induction Hypothesis: If C is any cup such that the depth of C is strictly smaller
+than the dqjth of C, then Theorem 3 is true for C .
+In the remainder of this subsection, we briefiy exploit the induction hypothesis. The
+two properties in Theorem 3, (a) and (b), that we need to establish for C are then
+proven in the next two subsections, respectively. The set of states C can be partitioned
+into (disjoint) sets A,Ci,...,Cp such that Q,...,C^ are cs^s, A = {x e C: K(x) =
+£4} and max{F(x): x e C,} = £/fc.-i. This is illustrated in Figure 3.1. In the special
+case that m = A:, the partition consists of the single set .4. In general, two elements x
+and ^ of C with K(x) < E^ and V(y) < £4 are in the same partition set C, if and
+only if X can be reached from y at height £t_i.
+Tlie depth of C, for each i is at most g, which is smaller than the depth, d, of C.
+Therefore, we can apply the induction hypothesis to C, for each /. We thus get e, and
+A, for each i, and by tsldng the smallest of these we get c and A dq>ending only on ©
+V
+
+FlOintE 3.1. The pvtitkm of a ciq> C intoa tq) teyer A wad caps &i»n
+tte tc^ layer can be
+diieetly leadied. A state S ia >1 k iadkaited fn«t «^icfa Fcsa be dunrdy readied.
+
+COOLING SCHEDULES FOR OPTIMAL ANNEALING
+
+319
+
+and C such that if A, < A and x^ e C, for some / then
+
+and for every y such that y & A n N(x) for some x G C,
+P[hit y upon first jump out of C,|(t/o, l^o) = ('<,. ^«)] > «•
+3.2. Proof of Theorem 3, Part a. In this subsection we prove part a of Theorem 3
+under the induction hypothesis and its consequences described in §3.1. Let /1° =
+{xeA:
+Af(x)nf # 0}.
+LEMMA 3.2.1. Let K = {rsan{k > 0: Y,^^ A°} A W)-¥ \. There is a constant D^
+depending only on © and C such that for every x^ e C and every /„ > 0 with X, < A,
+
+(3.1)
+
+E^j^'Kl^,^^^^
+
+dt\{U^, Fo) = (?„, x j
+
+PROOF. Let JJ, = 0, let / + i = niin{)t > /,: 7^ G y4} A FF for / > 0 and consider
+the discrete-time random process f = (7^) where Y^= Yj. The induction hypothesis
+described in §3.1 and the fact that Y first visits a state in A upon exiting any of the C,,
+implies that 7 has the following properties:
+• Any state in v4 is reachable from any other state in A (not necessarily in one step).
+• There exists e > 0 depending only on © and C so that, for x and y in A such that
+a direct transition of 7 is possible, /'[f^+j = y\^k\ > « on the event {7^ = x}, where
+^1^ is the o-algebra generated by {U,: 0 < / < 7^ + 1) and {Y,: 0 < / < 7^).
+• There exists a constant Dj depending only on © and C such that
+
+Let A f = m i n { y > 0 : YjG^ A°KJ F). The first two properties stated imply that
+£[Af Kt/o, YQ) = (?„, x^)] < DJ for some constant Dj depending only on © and C. The
+third property implies that
+
+is a submartingale, so that the A:th term has nonnegative expectation for each k.
+Letting k tend to infinity and using the fact Af = /jf + 1, this yields
+t^, 7o = x
+
+Since Af > A,/^"^ for s > t^, this implies Equation (3.1) for D^ = DjD^. •
+Let c, = C2max(|Ar(x) n /"I: x G ^ } , /:„ = 0,
+fe>iS:,:7.G^°}
+
+A J F ] + 1 for/>l,
+
+and
+
+320
+LEMMA 3.2.2.
+
+BRUCE HAJEK
+For 1 ^ i <j < + co
+
+PROOF. We prove the Lemma by backwards induction on i. Inequality (3.2) is true
+if / = j . Suppose for some /, j with 1 < / < 7 < +00 that (3.2) is true with / + 1 in
+place of i. Then Lemma 3.2.1 and the fact that ^(Kf, Kj) =
+<&(A:,+I, KJ) imply that (writing p(k) for X\)
+
+Then using the fact that $(*r;, Kj) = 0 unless W > Kg, or equivalently, unless Yf^ G C,
+and Assumption A.2, we find
+
+which completes the proof of the lemma. •
+We now complete the proof of Theorem 3, part a. By the monotone convergence
+theorem we obtain by letting / = 0 and letting j tend to infinity in (3.2) that
+
+EmKi,W)\U^^,Y^^_i]
+(t^, xJ] < Di. Thus
+
+^ Di/c, and by Lemma 3.2.1, E^O, KMU^, Y^) =
+
+£[*(0, W)\{Uo, Yo) = {tg, Xg)] < Diil + c,)/c,
+which implies part a of Theorem 3.
+3.3. Proof of Theorem 3, Part b. We prove Theorem 3, (b) under the induction
+hypothesis stated in §3.1, thereby completing the inductive proof of Theorem 3. We
+will continue to refer to {/4, Q , . . . , C^} and F, which were defined in the first two
+subsections.
+Fix tg^ 0, Xg^ C aad yg G F. Choose a state x G ^ so that >>„ G N{x). TTiroughout
+this subsection we will assume that {UQ, Y^) = (tg, Xg) and A, < A. Let (/^, 7^, ^i)/t > 0
+be defined as in the proof of Lemma 3.2.1. Then let
+L* = m i n { / > 0 : 7 , G F } ,
+
+LQ = 0
+
+and
+
+L,+i = nun{/ > L,: 7, = x ) A L* for i > 0.
+Note that 7^.. = IF and 7^, = 7^.. Define events (F,: / > 0) and (G: i > 1) by
+^0 = {JL. = ^h G, = {IF = JL, + 1}, and //, = (/^ + 1 < »F = 4 J for / > 1.
+LEMMA 3.3.2. The following inequalities hold for some positive constants Aj ond D^
+depending only on © and C
+
+(3.3)
+
+^
+
+(3.4)
+
+P[Hi] ^ P[Gi]Ds f o r i > l .
+
+COOLING SCHEDULES FOR OPTIMAL ANNEAUNG
+PROOF.
+
+321
+
+Let Z^ = I^Y^eF)• Assumption A.1 implies that (writing v(n) for A'J;):
+Z,-
+
+is a supermartingale. Since Z^^ is equal to /{j^_^j, Hj is true if and only if
+Z^^^j — Z^ .^1 = 1. Using this fact, the optional sampling theorem for supermartingales and the fact that A is nonincreasing, we obtain
+
+Now (Lj^.1 - L, - 1)"^ is the number of times 7 visits states in A - {x} before
+visiting {x} U F. By the argument in Lemma 3.2.1, we thus conclude that £[(L,+i L, - 1)"^|^£, ] < D^, where Dj depends only on © and C. Hence,
+(3.5)
+If i = 0, this implies that P[Ho] < CjDgAi. For / > 1, Assumption A.2 implies that
+(3.6)
+Since P[Hi\^i^ ] = 0 off the event {7^ = x}, we deduce from (3.5) and (3.6) that
+P{Hi\^L} < D'SPIGI\^L,] for ^5 = Ac3Ai> which yields />[tf,] < fisPIG,]. Lemma
+3.3.2 is proved. •
+Now
+
+which by (3.3) impUes that P[7i._i = x] > (1 - D^X^yil
+yo\^f-i = x]^ C1A3 we thus infer that
+
++ D^). Since
+
+which impUes part b of Theorem 3. The proof of Theorem 3 by induction is complete.
+
+4. Upper bound on ciq> exit iwobability. We continue to assume that irreducibility,
+WR, A.1, A.2 and the continuous increase assumption hold.
+THEOREM 4. TTiere exist A^ > 0 and F > 0 depending only on © such that the
+following is true. If C is a cup with depth d and bottom B, A, < A^, x^ G .B and r ^ t
+then
+
+P[X, ^Cfort^s^
+
+r|(l/o, Y^) = {t, xJ]
+
+there are cmly finitely many cups, it suffices to prove die theorem for a
+particular ciq) C. Let F, m and it be as d ^ n « l in the b^inning of §3. We can assume
+t h ^ k < q, max othowise d^ Ht^otem is trivial, and for ease of notation we assume
+that m == 0. Hence d = £^4^1 - £0.
+
+322
+
+BRUCE HAJEK
+
+FIGURE 4.1. A cup C and the set F of states directly above C ate shown. The cup is partitioned into a
+set of smaller cups, each of which is e&drded with dashed lines, and a set 7. Hie set / is itself partitioned
+into subsets, each of which is enclosed by a rectangle and consists of states in / with a common value of V.
+
+Given x in C, let h{x) denote the smallest height at which a state in B can be
+reached from x. There is a partition {/,Q,...,C;v} of C such that J ~ [x^ C:
+h{x) = F(x)} and each C, is a cup. In fact, if x G C and h{x) > F(x), then x G q
+for some ; and C, is the set of all states that can be reached from x at height strictly
+less than h{x). This is illustrated in Figure 4.1. The partition has the property that 7
+cannot jump direcdy from one of the cups of the partition to another without visiting a
+state in / . Define L^^.! by L^+i = £ and let Ay = £,+i - Ej for 0 <7 < k.
+LEMMA 4.1.
+
+is true. Let 1
+
+There is a constant c depending only on © and C such that the following
+j ^ k, x & Lj, t > 0 and
+min{ m:
+
+Then
+= {t,x)\
+PROOF OF L£MMA 4.1. TTiere exist x e Lj and ^ e Lo U • • • ULy_i such that
+y G N{x), and sudi that starting hwa. x, 7can reach x without altering Lj^i. Hence,
+the expected cardinality of {n: 1 < n < ^ aiul I4 ^ ^j) ^ bounded by a ccnstant
+d^>aidii% atiy cm. 6 and C Heoee, thetormoa<a& be dediu^ fr<Hn Assunqjtion A2
+and a maitingate aipin^it similar to ^ t osed in tte proofs of Looanias. 3.2.1 and
+3.2.2. •
+
+COOLING SCHEDULES FOR OPTIMAL ANNEALING
+
+323
+
+Define A = min( A,|0 < / < / ( : } and choose A^ with 0 < A^ < 1 so small that cA^ <
+0.5, where c is given by Lemma 4.1.
+LEMMA 4.2. Consider a discrete time Markov chain Z with state space { 0 , 1 , . . . ,
+k + l} and one-step transition probabilities
+
+Pi.j = ( 1 - cA^'
+
+ifj = / - H ,
+//; = / - 1,
+otherwise,
+
+for 0 < i ^ k. Then, for A < A^
+
+(4.1)
+
+P[Zhitsk
+
+PROOF.
+
++ 1 beforeithits 0|Zo = 1] < (2c)*A^*-'-^'.
+
+Define x, for 1 < / < A: + 1 by
+X, = P[Z hits A: + 1 before it hits / - l|Zo = / ] .
+
+The left-hand side of (4.1), which we wish to bound, is Xj. Now, considering the case
+ZQ = / and conditioning on the value of Zj, we obtain the relation
+or
+Because cA^ < 0.5, the denominator on the right-hand side is at least 0.5, so that
+X, < 2cA'^'x,+i, 1 < /• < it. Since x^+i = 1, this implies the lemma. •
+LEMMA 4.3.
+
+Suppose A, < A^ and x G LJ. Then
+
+P[Yvisits Fbefore visiting B\iYo,Uo) = (/,x)] < (2c)*Af'*'-^'.
+PROOF.
+
+Define Ro = t and
+
+Rj^i = min{n > Ry. 7« G J and V{Y„) *
+
+V{YJ,)].
+
+Lemma 4.1 implies that the process (F(7« ))y>o is stochastically bounded [5] above by
+the Markov chain E^, and thus has a smaller chance of hitting £<.+i before hitting £o
+than does £z. The lemma is thus a consequence of Lemma 4.2. •
+PROOF OF THEOREM 4. We will assume
+(f/o. 5o) = ('. Xg), where Xg G 5 , A, < A^, >F= min{y:
+So = 0,
+
+S,+i = min{y > Sr.YjGB)
+
+AfV
+
+A-Q* = 0,
+
+A'*+i = min{/ > K*: f/^ > t/^. + a}
+
+Y^^F),
+
+for / ^0, N* = min{/: 7s G f }
+for n > 0.
+
+Let 9?. denote die a-dgebra generatal by {Uy. 0 <y =C S, + 1) and Yy 0 < j < S,).
+TTien by Lemma 4.3 and Assumpdon A.2
+P[N* = I + 1|^J < cX% +1 for / > 0,
+
+324
+
+BRUCE HAJEK
+
+Hence
+
+I
+J'O
+
+'
+
+J,>o
+
+is a submartingale.
+Since (1) {N* > K*) ^ 9^., (2) the process in (4.2) is a submartingale and A is
+nonincreasing, (3) Assumption A.1 implies that E\K*^.i ~ A^/I^j^,] < I / a , and (4)
+{^K: > ^ + «fl} on the event {N* > K*}, we have
+P[N* > K*.^i\^
+
+Taking expectations, we get P[N* > K*^i]> (1 - cX'',+„^/a)P[N* > K*], so by
+induction on n.
+
+n
+
+j-O
+
+Thus, since {X, e C for t ^ s < r) a {N* > K^^^_,y^^^.i], if we suppose that A, is
+so small that cA^/a < x, where x is the positive solution to 1 - x = exp(—2x), then
+(
+j-o
+
+This implies Theorem 4.
+5.
+
+,
+
+)
+
+-(2c/a)
+\
+
+•
+
+Pmoi (rf Theorem 2.
+
+5.1. Towards sufficiency ofthe integral condition. Let £ > 0 and let
+Wg= {x|x is a local minimum of dq>th stricdy larger than £ } ,
+/?£ = {x|x is reachable from y at height V{y) + £ for some y B W^}.
+We remind the reader that condition WR is in effect. The purpose of this subsection is
+to prove the following lemma, which will be used in the next section.
+LEMMA 5.1.
+
+(5.1)
+
+//
+
+rAf
+JQ
+
+then
+
+(5.2)
+
+t—aa
+
+Hie imx>f mil be pr^eated afta* Om fcAcnmng tennoa is proved. Tl» tenma is
+illustrated in Figure 5.1.
+
+COOLING SCHEDULES FOR OPTIMAL ANNEALING
+
+325
+
+V
+
+FP-8834
+
+FIGURE 5.1. The partition of a set 5^ into a subset J and a set of cups, corresponding to £ = 3. The
+caps are enclosed by dashed lines, and all other states are in / . States in the subset Rg of / are hatched.
+
+LEMMA 5.2. There is a partition {J,Ci,...,C^}
+of y such that
+(1) / = {x G y\WE is reachable from x at height F(x)},
+(2) Ci,...,Cff are cups of depth at most E,
+(3) 7 cannot jump directly from one ofthe cups to another without visiting a state in J.
+PROOF. For x G ^ define a cup C, by C^ ={>»!>' is reachable from x at height
+F(x)}. Fix X such that C^r\J * 0 . Then for y&C^r\J,y'is
+reachable from x at
+height F(x), and W^ is reachable from y at height V{y). Tbe first of diese facts
+implies that V{y) < F(x). Then the two facts together imply that W^ is reachable
+from X at hei^t F(x), which is to say that x G / . We have shown that if Q n 7 is
+nonempty, thsi x G 7. Equivalraidy, we have shown that C^dJ^
+0 ifx«£/.
+Suppose that the depth of a cup Q exceeds £. Let >> be a state in the bottom of the
+cup. Then ^^ is a local minimum of dq)th greater than £, so that y G JF^, and hence,
+>> e 7. Therefore, c^r\J * 0 , so that x G / . We have just shown that if the depth of
+a cup C^ exceeds £, then x G 7. Equivalendy, the dq)th of Q is at most £ for any
+x^J.'
+Givrai any x and y, eidier C, c C^, C, c C, or C, n C^ = 0 . Tlius, the set of
+maximal sets from die collecdon «"= {Q: x€J} together widi die set J forms a
+partition of 9' with the desired properties (1) and (2).
+Choose X so that C, is a maximal set in «", and let >' be a state not in C, that can be
+readied in one step ttom a state in Q . Since V{y) is larpr than die maximum of V
+over C, (whic* h^)pais to be F(x)), some state in C, is readiable from y at lewl
+V(y). fh«ef<Me C, n C^ is nonempty, so that C, is a propfs subset of C^. Since C, is
+d in tte cdlection f, it follows that C^ is not in «', «*idi means that ye^J.
+partition thus has propaty (3) as vttXL. u
+
+326
+
+BRUCE HAJEK
+
+PROOF OF LEMMA 5.1.
+
+Set A^ = 0, A,^_i = min{A: > A/. U^^J)
+
+for i > 0, a =
+
+nun{ J: 7^ G J F ^ } and /3 = min{/ > a: 7^ ^ RE)- Since there are only finitely many
+cups, we can choose A > 0 in l^eorem 3 to dq)end only on ©, and we also suppose
+that A < A^ where A^ appears in Theorem 4. By Theorem 3, part a and properties (2)
+and (3) in Lemma 5.2, there is a constant D , depending only on © such that if A, < A
+then
+
+on the event { i ^ > / ( , } . By Theorem 3, part b and property (1) in Lemma 5.2, there
+exists e > 0 dep)ending only on © such that: for any state x G / there is a sequence of
+distinct states x = Xo,...,x^ such that F(xo) > F(Xi) > ••• > F(Xp), x^ G W^
+and P[Y^,^^ = ^y+i|7^^ = Xj, t/^ = /] > c for 0 < y < p and t > tg. This implies that
+there exists a constant Dg depending only on © such that £[o|f/o = tg, YQ = Xg] < Z)g
+for Xg^9'
+and t > tg. Hence
+, = tg, ro = X,
+
+so that
+(5.3)
+Note that 7^ must be in the bottom of a cup of depth at least £ -i- y, where
+y = min{J(C) — £: C is a cup with d{C) > E). Hence, by Theorem 4, and the fact
+(A,) is nonincreasing, there exists a constant F depending only on © such that for
+
+(5.4)
+
+„ 1^0 = Xg\ > expl •
+
+Since X^G R^it
+
+f/< < r < U^^, we can combine (5.3) and (5.4) to yield
+
+(5.5)
+
+In view of condition (5.1), pvoi any c > 0, if r is sufficiendy l a i ^ thai there exists a
+large interval of time [ti, t2] with /j < r such that the right-lumd side of (5.5) is at least
+1 - € if f^ G [tl, /j]. Giwn the process (U^, 7^: k > 0) with UQ = 0, we let p = min{ifc:
+f4 > M- We can choose r, and hence fj - ti, so large that P[Up < /j] > 1 ~ «• By
+conditioning on (t/^, 7^), we then obtain that P[X^ G ^ ^ m = 0, 7o = x] > (1 - e)^
+for all X G .5^. Lenuna 5.1 is proved. •
+5.2.
+
+Proof of Theorem 2 under the continvmts increase assimqttitm.
+
+In this l
+
+tion we wiU prove Tlieoran 2 under the additional assunqjtiaa that the continuous
+iiM3rea% pr(q>aty holds. The proof of Theo^m 2 without this assumpti(Mi is outlined in
+the next ^b^ction.
+When £ — 0, /{^ is d » set of local nuniraa and the i n t ^ a l ccmdition (5.1) is
+true. Lemma 5.1 thus impUK part (a) of Tbeoam 2.
+
+COOLING SCHEDULES FOR OPTIMAL ANNEAUNG
+
+327
+
+We will next prove the "if" half of part (b) of Theorem 2. Let B denote the bottom
+of a cup C of depth £ and suppose that the states in £ are local minima of depth £.
+We must show that P[X, G S] has limit zero as t tends to infinity if the integral of A^
+is infinite. In view of Lemma 5.1 it is sufficient to prove that B and i?^ are disjoint.
+For the sake of contradiction, suppose that x e B n R^;. Then there is a state y so
+that the following three statements are true:
+(i) X is a local minimum of depth £.
+(ii) / is a local minimum of depth stricdy greater than £.
+(iii) X is reachable from y (and vice-versa) at height F(>') -I- £.
+We consider two cases. First consider the case that F(x) < F(>'). By (i), there is a
+state 2 with V(z) < F(x) that can be reached from x at height F(x) + £ (and hence
+at height V(y) + £). In view of (iii), this implies that the state z can also be reached
+from y at height V{y) + £. Since V(z) < vly), this contradicts (ii).
+Now consider the case that F(x) > V(y). By (iii), y can be reached from x at
+height V(y) + £, and this height is strictly smaller than F(x) + £. This contradicts
+(i)We obtain a contradiction in either case, so we have proved that B and R^ are
+disjoint. This completes the proof of the "if" half of part (b) of Theorem 2 under the
+continuous increase assumption. To prove the "only if" half of part (b) we again let B
+denote the bottom of a cup C of depth £, we suppose that the states in B are local
+minima of ^ p t h £, and we assume that A is ^ven such that /o"Af dt < +00. We want
+to prove that P[X, G B] does not converge to zero as t tends to infinity.
+Let F be the unique nonnegadve number such that the integral of A"^ is infinite if
+0 < r < f and the integral is finite if r > F. Then F < £, and we define a cup C as
+foUows. If F < £ we choose a state y in B and let C = {x: x is reachable from y at
+hei^t V(y) -I- F} (in which case depth (C) > F) and if F = £ we let C = C. We let
+B' denote the bottom of C and then the following three facts are easy to verify: (1) If
+d denotes the depth of C then the integral of A** is finite; (2) any state inC - B' is
+either not a local minimum or is a local minimum of depth stricdy smaller than F, and
+(3) B' is a subset of B.
+By the first of these facts and Theorem 4,
+(5.6)
+
+Uminfi>[Jir,G C ] > 0 .
+/-•ao
+
+By the second of these facts, part (a) of Theorem 2 and the "if" half of part (b) of
+Theorem 2,
+(5.7)
+
+lim P[;if, - x] = 0 for X G C - B'.
+/-•oo
+
+From (5.6) and (5.7) we conclude that hm'mf,^^P[X, G B'] > 0, and from die third
+fact, this inequality is true widi B' rq}laced by B. This completes the "only if" half of
+part (b) of 'Dieorem 2, and hence the theorem itself, under the continuous increase
+assun^Jtion.
+5.3. Proof of Tiieorem 2 in general. Suppose the conditions of Theorem 2 are
+satisfied, but that the continuous increase property is violated. We will construct a new
+system {^, Q, V, 4 ) sadsfying the conditions of Tlieorem 2 and (1) the continuous
+mciatse pw^jerty holds so diat, by what we proved so far, Tiieorem 2 applies to the
+iww i^ton, (2) ^ c £^, (3) if X G y , then x is a local minimum of d ^ t h d for the
+original ^ ^ m if and only if it is a local minimum of dqpth d for the new ^stem, and
+(4) if the oripoal and new syston start in the san^ state, dien tl» process (X,: t >0)
+
+328
+
+BRUCE HAJEK
+, ,V
+
+FIGURE 5.2. Example of (S^, V, N) which violates the continuous increase assumption, and the new
+system.
+
+has the same distribution for the two systems. The idea of the construcdon is to add
+new states so that the process can visit a state in each intermediate level when moving
+upward, and the holding tim^ of the new states are zero. We now give the construcdon. An example is shown in Figure 5.2.
+Let £0 < £1 < • • • < £ , denote the values of F(x) as x ranges over S. For each x
+in S, define ^ ( x ) so diat H(x) = i if F(x) = £,. Define U(x) = Ef,^^y^i if F(x) < £,,
+and t/(x) = + 00 if F(x) = £,. In the following, x and y always denote states in y
+with y G N(x), and s,t> 0. Set
+
+^== U
+
+U {(x, I, y): y G N{X), V{y) > U(x),
+F(x)=F(x),
+
+F((x,O)) = F(x),
+
+y(x, /, A) = fl +
+[
+
+</<
+
+F((x,/,
+
+Q(x, y, t,
+y: y(y)> U{x)
+
+- 1)1,
+J
+
+J
+
+e(x,(x,O),/,A) = l,
+e((x,O), (x, 1, y), t. A) = {Q{x, y, t, A)A^W-''W)/y(x, t, X) if V{y) > U(x),
+fi((x,O), y, t, X) - e(x, y, t, A)/y(x, t. A) if V{y) < U(x),
+, i, y), (x, i + 1, y), t, X) = A^'--^' if ^ ( x ) < / < Hiy) - 1,
+, /, y), y, t. A) = A^O')-^' if H{x) < i = H{y) - 1,
+,i,y),y,t,X)^l-X^'*^-^' itHix)<i<H{y).
+of ^ skot q>edficd are zoo. T^e iua^boibood structure for die new syistem can
+now be spe<a&d by y & Niz) fw >», z G y if and only if Qiz, y, t,X)>Q fw sonw
+(cquivateatly for all) I, A wiA i 3 s O m d O < A < L I t e a n b e i^sctod
+timy(x,t,X)h
+a » expected nuadto^ (tf ^t& tt» wew proems mdces to state (x,0) befiw; readui^ a
+
+COOLING SCHEDULES FOR OPTIMAL ANNEALING
+
+329
+
+state in y, given the process starts in state x. Verificadon that the construcdon has the
+desired properdes (l)-(4) is elementary and is left to the reader. The following is also
+easy to check: (5) if, for the original system, B is the bottom of a cup of depth d and
+the states in B are local minima of depth d, then the same is true oi B = B U {(x,0):
+X G B} for the new system. Theorem 2 is immediately implied by properdes (l)-(5) of
+the construcdon.
+Adcnowlef^eiiients. The author is grateful for the comments and encouragement of
+the referees, assodate editor and editor.
+References
+[1] Cemy, V. (1985). A Thermodynamical Approach to the Travelling Salesman Problem: An Efficient
+Simulation Algorithm. J. Optim. Theory Appl. 45 41-51.
+[2] Geman, S. and Geman, D, (1984). Stochastic Relaxation, Gibbs Distribution, and the Bayesian
+Restoration of Images. IEEE Trans. Pattern Analysis and Machine Imeltigence, 6 721-741.
+[3] Hwang, C.-R. (1984). Diffusions for Global Optimization, Preprint, Div. of AppUed Math., Brown
+University.
+[4] Gidas, B. (1985), Non-Stationary Markov Chains and Convergence of the Annealing Algorithm. J.
+Statist. Phys. 39 73-131,
+[5] Kamae, T., Krengel, V. and O'Brien, G. L. (1977). Stochastic Inequalities on PartiaUy Ordered Spaces.
+Ann. Proh. 5 899-912.
+[6] Kemeny, J, and Snell, J. L. (1960). Finite State Markov Chains. D. Van Nostrand Company.
+[7] Kirkpatrick, S,, Gelatt, C. D. and Vecchi, M. P. (1983), Optimization by Simulated Annealing, Science
+220 621-680.
+DEPARTMENT OF ELECTRICAL ENGINEERING AND THE COORDINATED SCIENCE
+LABORATORY, UNIVERSITY OF ILLINOIS, UOI W. SPRINGFIELD AVENUE, URBANA,
+ILLINOIS 61801
+
+

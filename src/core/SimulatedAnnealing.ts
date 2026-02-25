@@ -38,6 +38,8 @@ export class SimulatedAnnealing<TState> {
     enableIntensification: boolean;
     intensificationIterations: number;
     maxIntensificationAttempts: number;
+    intensificationStagnationLimit?: number;
+    getStateSignature?: (state: TState) => string;
     logging: Required<NonNullable<SAConfig<TState>['logging']>>;
   };
   // Operator statistics
@@ -46,12 +48,125 @@ export class SimulatedAnnealing<TState> {
   // Tabu list: stores move signatures with the iteration they were added
   private tabuList: Map<string, number> = new Map();
 
+  /**
+   * Validates all constructor inputs to ensure they meet requirements
+   */
+  private validateInputs(
+    initialState: TState,
+    constraints: Constraint<TState>[],
+    moveGenerators: MoveGenerator<TState>[],
+    config: SAConfig<TState>
+  ): void {
+    // Validate initial state
+    if (initialState === null || initialState === undefined) {
+      throw new Error('Initial state cannot be null or undefined');
+    }
+
+    // Validate constraints
+    if (!Array.isArray(constraints)) {
+      throw new Error('Constraints must be an array');
+    }
+
+    for (const constraint of constraints) {
+      if (!constraint.name || typeof constraint.name !== 'string') {
+        throw new Error('All constraints must have a name property');
+      }
+      if (!constraint.type || !['hard', 'soft'].includes(constraint.type)) {
+        throw new Error(`Constraint "${constraint.name}" must have type 'hard' or 'soft'`);
+      }
+      if (typeof constraint.evaluate !== 'function') {
+        throw new Error(`Constraint "${constraint.name}" must have an evaluate function`);
+      }
+    }
+
+    // Validate move generators
+    if (!Array.isArray(moveGenerators)) {
+      throw new Error('Move generators must be an array');
+    }
+
+    // Note: Empty move generators are allowed and handled gracefully at runtime
+    // The algorithm will simply return the initial state unchanged
+
+    for (const generator of moveGenerators) {
+      if (!generator.name || typeof generator.name !== 'string') {
+        throw new Error('All move generators must have a name property');
+      }
+      if (typeof generator.generate !== 'function') {
+        throw new Error(`Move generator "${generator.name}" must have a generate function`);
+      }
+      if (typeof generator.canApply !== 'function') {
+        throw new Error(`Move generator "${generator.name}" must have a canApply function`);
+      }
+    }
+
+    // Validate config
+    if (config.initialTemperature <= 0) {
+      throw new Error(`initialTemperature must be positive, got ${config.initialTemperature}`);
+    }
+
+    if (config.minTemperature <= 0) {
+      throw new Error(`minTemperature must be positive, got ${config.minTemperature}`);
+    }
+
+    if (config.coolingRate <= 0 || config.coolingRate >= 1) {
+      throw new Error(`coolingRate must be between 0 and 1 (exclusive), got ${config.coolingRate}`);
+    }
+
+    if (config.maxIterations <= 0) {
+      throw new Error(`maxIterations must be positive, got ${config.maxIterations}`);
+    }
+
+    if (typeof config.hardConstraintWeight !== 'number' || config.hardConstraintWeight <= 0) {
+      throw new Error(`hardConstraintWeight must be a positive number, got ${config.hardConstraintWeight}`);
+    }
+
+    if (typeof config.cloneState !== 'function') {
+      throw new Error('cloneState must be a function');
+    }
+
+    // Validate optional config values if provided
+    if (config.reheatingThreshold !== undefined && config.reheatingThreshold <= 0) {
+      throw new Error(`reheatingThreshold must be positive if provided, got ${config.reheatingThreshold}`);
+    }
+
+    if (config.maxReheats !== undefined && config.maxReheats < 0) {
+      throw new Error(`maxReheats must be non-negative if provided, got ${config.maxReheats}`);
+    }
+
+    if (config.reheatingFactor !== undefined && config.reheatingFactor <= 1) {
+      throw new Error(`reheatingFactor must be greater than 1 if provided, got ${config.reheatingFactor}`);
+    }
+
+    if (config.tabuTenure !== undefined && config.tabuTenure <= 0) {
+      throw new Error(`tabuTenure must be positive if provided, got ${config.tabuTenure}`);
+    }
+
+    if (config.maxTabuListSize !== undefined && config.maxTabuListSize <= 0) {
+      throw new Error(`maxTabuListSize must be positive if provided, got ${config.maxTabuListSize}`);
+    }
+
+    if (config.intensificationIterations !== undefined && config.intensificationIterations <= 0) {
+      throw new Error(`intensificationIterations must be positive if provided, got ${config.intensificationIterations}`);
+    }
+
+    if (config.maxIntensificationAttempts !== undefined && config.maxIntensificationAttempts <= 0) {
+      throw new Error(`maxIntensificationAttempts must be positive if provided, got ${config.maxIntensificationAttempts}`);
+    }
+
+    if (config.intensificationStagnationLimit !== undefined && config.intensificationStagnationLimit <= 0) {
+      throw new Error(`intensificationStagnationLimit must be positive if provided, got ${config.intensificationStagnationLimit}`);
+    }
+  }
+
   constructor(
     initialState: TState,
     constraints: Constraint<TState>[],
     moveGenerators: MoveGenerator<TState>[],
     config: SAConfig<TState>
   ) {
+    // Input validation
+    this.validateInputs(initialState, constraints, moveGenerators, config);
+
     this.initialState = initialState;
     this.constraints = constraints;
     this.moveGenerators = moveGenerators;
@@ -133,6 +248,97 @@ export class SimulatedAnnealing<TState> {
     });
 
     // Phase 1: Eliminate hard constraints
+    const phase1Result = this.runPhase1(
+      currentState,
+      bestState,
+      currentFitness,
+      bestFitness,
+      currentHardViolations,
+      bestHardViolations,
+      temperature,
+      iteration,
+      iterationsWithoutImprovement,
+      reheats
+    );
+
+    currentState = phase1Result.currentState;
+    bestState = phase1Result.bestState;
+    currentFitness = phase1Result.currentFitness;
+    bestFitness = phase1Result.bestFitness;
+    currentHardViolations = phase1Result.currentHardViolations;
+    bestHardViolations = phase1Result.bestHardViolations;
+    temperature = phase1Result.temperature;
+    iteration = phase1Result.iteration;
+    iterationsWithoutImprovement = phase1Result.iterationsWithoutImprovement;
+    reheats = phase1Result.reheats;
+
+    this.log('info', `Phase 1 complete: Hard violations = ${bestHardViolations}`);
+
+    // Phase 1.5: Intensification
+    if (bestHardViolations > 0 && this.config.enableIntensification) {
+      const intensificationResult = this.runIntensification(
+        bestState,
+        bestFitness,
+        bestHardViolations,
+        iteration
+      );
+
+      bestState = intensificationResult.bestState;
+      bestFitness = intensificationResult.bestFitness;
+      bestHardViolations = intensificationResult.bestHardViolations;
+      iteration = intensificationResult.iteration;
+    }
+
+    // Phase 2: Optimize soft constraints
+    const phase2Result = this.runPhase2(
+      bestState,
+      bestFitness,
+      bestHardViolations,
+      temperature,
+      iteration,
+      iterationsWithoutImprovement,
+      reheats
+    );
+
+    bestState = phase2Result.bestState;
+    bestFitness = phase2Result.bestFitness;
+    bestHardViolations = phase2Result.bestHardViolations;
+    temperature = phase2Result.temperature;
+    iteration = phase2Result.iteration;
+    reheats = phase2Result.reheats;
+
+    return this.createSolution(bestState, bestFitness, bestHardViolations, temperature, iteration, reheats);
+  }
+
+  /**
+   * Phase 1: Eliminate hard constraint violations
+   * 
+   * Focuses on reducing hard violations using tabu search and reheating.
+   * Runs for 60% of maxIterations or until all hard violations are eliminated.
+   */
+  private runPhase1(
+    currentState: TState,
+    bestState: TState,
+    currentFitness: number,
+    bestFitness: number,
+    currentHardViolations: number,
+    bestHardViolations: number,
+    temperature: number,
+    iteration: number,
+    iterationsWithoutImprovement: number,
+    reheats: number
+  ): {
+    currentState: TState;
+    bestState: TState;
+    currentFitness: number;
+    bestFitness: number;
+    currentHardViolations: number;
+    bestHardViolations: number;
+    temperature: number;
+    iteration: number;
+    iterationsWithoutImprovement: number;
+    reheats: number;
+  } {
     const phase1MaxIterations = Math.floor(this.config.maxIterations * 0.6);
     let phase1Iteration = 0;
 
@@ -144,20 +350,18 @@ export class SimulatedAnnealing<TState> {
       const { newState, operatorName } = this.generateNeighbor(currentState, temperature);
 
       if (!newState) {
-        // No applicable move generators
         break;
       }
 
-       // Tabu Search: Check if this state was recently visited (with aspiration criteria)
-       if (this.config.tabuSearchEnabled) {
-         const newSignature = this.getStateSignature(newState);
-         if (this.shouldSkipTabu(newSignature, iteration, currentFitness, bestFitness)) {
-           // Skip tabu states (unless aspiration criteria met)
-           phase1Iteration++;
-           iteration++;
-           continue;
-         }
-       }
+      // Tabu Search: Check if this state was recently visited (with aspiration criteria)
+      if (this.config.tabuSearchEnabled) {
+        const newSignature = this.getStateSignature(newState);
+        if (this.shouldSkipTabu(newSignature, iteration, currentFitness, bestFitness)) {
+          phase1Iteration++;
+          iteration++;
+          continue;
+        }
+      }
 
       this.operatorStats[operatorName]!.attempts++;
 
@@ -233,158 +437,193 @@ export class SimulatedAnnealing<TState> {
       }
     }
 
-    this.log('info', `Phase 1 complete: Hard violations = ${bestHardViolations}`);
+    return {
+      currentState,
+      bestState,
+      currentFitness,
+      bestFitness,
+      currentHardViolations,
+      bestHardViolations,
+      temperature,
+      iteration,
+      iterationsWithoutImprovement,
+      reheats,
+    };
+  }
 
-  // ============================================
-  // PHASE 1.5: INTENSIFICATION
-  // ============================================
-  // If hard violations remain and intensification is enabled,
-  // aggressively target remaining violations with multiple restart attempts.
-  //
-  // Intensification features:
-  // - Focused operator selection (70% targeted: fix/swap/change, 30% random)
-  // - Aggressive acceptance logic for reducing hard violations
-  // - Multiple restart attempts with temperature reset
-  // - Reheating when stagnation detected (300 iterations without improvement)
-  // - Early exit when all hard violations eliminated
-    
-    if (bestHardViolations > 0 && this.config.enableIntensification) {
-      this.log('info', 'Phase 1.5: Intensification - targeting remaining hard violations');
-      
-      let intensificationAttempt = 0;
-      
-      while (bestHardViolations > 0 && intensificationAttempt < this.config.maxIntensificationAttempts) {
-        intensificationAttempt++;
-        this.log('info', `[Intensification] Attempt ${intensificationAttempt}/${this.config.maxIntensificationAttempts}`);
-        
-        // Reset temperature for fresh exploration
-        let intensificationTemp = this.config.initialTemperature;
-        let intensificationIterations = 0;
-        let stagnationCounter = 0;
-        const stagnationLimit = 300;
-        
-        // Start from best known state
-        currentState = this.config.cloneState(bestState);
-        currentFitness = bestFitness;
-        currentHardViolations = bestHardViolations;
-        
-        while (intensificationIterations < this.config.intensificationIterations && bestHardViolations > 0) {
-          // Include ALL operators during intensification, but weight targeted ones higher
-          // This fixes the bug where ChangeTimeSlotAndRoom (12.8% success rate) was excluded
-          const allGenerators = this.moveGenerators.filter((gen) => gen.canApply(currentState));
-          const targetedGenerators = allGenerators.filter((gen) => {
-            const name = gen.name.toLowerCase();
-            // Include 'change' to capture ChangeTimeSlotAndRoom which is highly effective
-            return name.includes('fix') || name.includes('swap') || name.includes('change');
-          });
-          
-          // Use targeted operators 70% of time, all operators 30% (more exploration)
-          const generators = targetedGenerators.length > 0 && Math.random() < 0.7
-            ? targetedGenerators
-            : allGenerators;
-          
-          if (generators.length === 0) {
-            break;
-          }
-          
-          // Random selection during intensification (more exploration)
-          const selectedGenerator = generators[Math.floor(Math.random() * generators.length)]!;
-          const clonedState = this.config.cloneState(currentState);
-          const newState = selectedGenerator.generate(clonedState, intensificationTemp);
-          
-          if (!newState) {
-            intensificationIterations++;
-            continue;
-          }
-          
-          this.operatorStats[selectedGenerator.name]!.attempts++;
-          
-          const { fitness: newFitness, hardViolations: newHardViolations } = this.calculateFitnessAndViolations(newState);
-          
-          // Intensification acceptance: heavily favor reducing hard violations
-          let accept = false;
-          
-          if (newHardViolations < currentHardViolations) {
-            // Always accept if hard violations decrease
+  /**
+   * Phase 1.5: Intensification
+   * 
+   * Aggressively targets remaining hard violations with multiple restart attempts.
+   * Uses focused operator selection and reheating when stagnation is detected.
+   */
+  private runIntensification(
+    bestState: TState,
+    bestFitness: number,
+    bestHardViolations: number,
+    iteration: number
+  ): {
+    bestState: TState;
+    bestFitness: number;
+    bestHardViolations: number;
+    iteration: number;
+  } {
+    this.log('info', 'Phase 1.5: Intensification - targeting remaining hard violations');
+
+    let currentState = this.config.cloneState(bestState);
+    let currentFitness = bestFitness;
+    let currentHardViolations = bestHardViolations;
+    let intensificationAttempt = 0;
+
+    while (bestHardViolations > 0 && intensificationAttempt < this.config.maxIntensificationAttempts) {
+      intensificationAttempt++;
+      this.log('info', `[Intensification] Attempt ${intensificationAttempt}/${this.config.maxIntensificationAttempts}`);
+
+      // Reset temperature for fresh exploration
+      let intensificationTemp = this.config.initialTemperature;
+      let intensificationIterations = 0;
+      let stagnationCounter = 0;
+      const stagnationLimit = this.config.intensificationStagnationLimit!;
+
+      // Start from best known state
+      currentState = this.config.cloneState(bestState);
+      currentFitness = bestFitness;
+      currentHardViolations = bestHardViolations;
+
+      while (intensificationIterations < this.config.intensificationIterations && bestHardViolations > 0) {
+        // Include ALL operators during intensification, but weight targeted ones higher
+        const allGenerators = this.moveGenerators.filter((gen) => gen.canApply(currentState));
+        const targetedGenerators = allGenerators.filter((gen) => {
+          const name = gen.name.toLowerCase();
+          return name.includes('fix') || name.includes('swap') || name.includes('change');
+        });
+
+        // Use targeted operators 70% of time, all operators 30% (more exploration)
+        const generators = targetedGenerators.length > 0 && Math.random() < 0.7
+          ? targetedGenerators
+          : allGenerators;
+
+        if (generators.length === 0) {
+          break;
+        }
+
+        // Random selection during intensification (more exploration)
+        const selectedGenerator = generators[Math.floor(Math.random() * generators.length)]!;
+        const clonedState = this.config.cloneState(currentState);
+        const newState = selectedGenerator.generate(clonedState, intensificationTemp);
+
+        if (!newState) {
+          intensificationIterations++;
+          continue;
+        }
+
+        this.operatorStats[selectedGenerator.name]!.attempts++;
+
+        const { fitness: newFitness, hardViolations: newHardViolations } = this.calculateFitnessAndViolations(newState);
+
+        // Intensification acceptance: heavily favor reducing hard violations
+        let accept = false;
+
+        if (newHardViolations < currentHardViolations) {
+          accept = true;
+          this.operatorStats[selectedGenerator.name]!.improvements++;
+          stagnationCounter = 0;
+        } else if (newHardViolations === currentHardViolations) {
+          if (newFitness < currentFitness) {
             accept = true;
             this.operatorStats[selectedGenerator.name]!.improvements++;
             stagnationCounter = 0;
-          } else if (newHardViolations === currentHardViolations) {
-            // Accept with moderate probability if hard violations same
-            if (newFitness < currentFitness) {
-              accept = true;
-              this.operatorStats[selectedGenerator.name]!.improvements++;
-              stagnationCounter = 0;
-            } else {
-              // Accept worse with probability based on temperature
-              const acceptProb = Math.exp((currentFitness - newFitness) / intensificationTemp);
-              accept = Math.random() < acceptProb;
-              stagnationCounter++;
-            }
           } else {
-            // Occasionally accept worse moves to escape local minima (simulated annealing style)
-            // This helps break out of deadlock situations
-            // Reduced from 5% to 2% to prevent destabilization (saw 1→20 violations in trials)
-            const worsenProb = Math.exp(-1 / (intensificationTemp / 10000));
-            if (Math.random() < worsenProb * 0.02) {
-              accept = true;
-              this.log('debug', '[Intensification] Accepting worsening move to escape local minimum');
-            }
+            const acceptProb = Math.exp((currentFitness - newFitness) / intensificationTemp);
+            accept = Math.random() < acceptProb;
             stagnationCounter++;
           }
-          
-          if (accept) {
-            this.operatorStats[selectedGenerator.name]!.accepted++;
-            currentState = newState;
-            currentFitness = newFitness;
-            currentHardViolations = newHardViolations;
-            
-            // Update best if improved
-            if (newHardViolations < bestHardViolations || 
-                (newHardViolations === bestHardViolations && newFitness < bestFitness)) {
-              bestState = this.config.cloneState(currentState);
-              bestFitness = newFitness;
-              bestHardViolations = newHardViolations;
-              
-              this.log('debug', `[Intensification] New best: Hard violations = ${bestHardViolations}, Fitness = ${bestFitness.toFixed(2)}`);
-            }
+        } else {
+          const worsenProb = Math.exp(-1 / (intensificationTemp / 10000));
+          if (Math.random() < worsenProb * 0.02) {
+            accept = true;
+            this.log('debug', '[Intensification] Accepting worsening move to escape local minimum');
           }
-          
-          // Reheat if stagnating
-          if (stagnationCounter >= stagnationLimit) {
-            intensificationTemp = this.config.initialTemperature * 0.5;
-            stagnationCounter = 0;
-            this.log('debug', '[Intensification] Stagnation detected, reheating');
-          }
-          
-          // Cool down (slower than normal)
-          intensificationTemp *= 0.999;
-          intensificationIterations++;
-          iteration++;
-          
-          // Log progress
-          if (intensificationIterations % 500 === 0) {
-            this.log('info', `[Intensification] Iter ${intensificationIterations}: Hard violations = ${currentHardViolations}, Best = ${bestHardViolations}`);
+          stagnationCounter++;
+        }
+
+        if (accept) {
+          this.operatorStats[selectedGenerator.name]!.accepted++;
+          currentState = newState;
+          currentFitness = newFitness;
+          currentHardViolations = newHardViolations;
+
+          // Update best if improved
+          if (newHardViolations < bestHardViolations ||
+              (newHardViolations === bestHardViolations && newFitness < bestFitness)) {
+            bestState = this.config.cloneState(currentState);
+            bestFitness = newFitness;
+            bestHardViolations = newHardViolations;
+
+            this.log('debug', `[Intensification] New best: Hard violations = ${bestHardViolations}, Fitness = ${bestFitness.toFixed(2)}`);
           }
         }
-        
-        // If this attempt succeeded, break early
-        if (bestHardViolations === 0) {
-          this.log('info', `[Intensification] SUCCESS! All hard violations eliminated in attempt ${intensificationAttempt}`);
-          break;
+
+        // Reheat if stagnating
+        if (stagnationCounter >= stagnationLimit) {
+          intensificationTemp = this.config.initialTemperature * 0.5;
+          stagnationCounter = 0;
+          this.log('debug', '[Intensification] Stagnation detected, reheating');
+        }
+
+        intensificationTemp *= 0.999;
+        intensificationIterations++;
+        iteration++;
+
+        if (intensificationIterations % 500 === 0) {
+          this.log('info', `[Intensification] Iter ${intensificationIterations}: Hard violations = ${currentHardViolations}, Best = ${bestHardViolations}`);
         }
       }
-      
-      if (bestHardViolations > 0) {
-        this.log('warn', `[Intensification] Could not eliminate all hard violations. Remaining: ${bestHardViolations}`);
+
+      if (bestHardViolations === 0) {
+        this.log('info', `[Intensification] SUCCESS! All hard violations eliminated in attempt ${intensificationAttempt}`);
+        break;
       }
     }
 
-    // Phase 2: Optimize soft constraints
+    if (bestHardViolations > 0) {
+      this.log('warn', `[Intensification] Could not eliminate all hard violations. Remaining: ${bestHardViolations}`);
+    }
+
+    return {
+      bestState,
+      bestFitness,
+      bestHardViolations,
+      iteration,
+    };
+  }
+
+  /**
+   * Phase 2: Optimize soft constraints
+   * 
+   * Maintains hard constraint satisfaction while optimizing soft constraints.
+   * Uses tabu search and reheating to escape local minima.
+   */
+  private runPhase2(
+    bestState: TState,
+    bestFitness: number,
+    bestHardViolations: number,
+    temperature: number,
+    iteration: number,
+    iterationsWithoutImprovement: number,
+    reheats: number
+  ): {
+    bestState: TState;
+    bestFitness: number;
+    bestHardViolations: number;
+    temperature: number;
+    iteration: number;
+    reheats: number;
+  } {
     this.log('info', 'Phase 2: Optimizing soft constraints');
 
-    currentState = this.config.cloneState(bestState);
-    currentFitness = bestFitness;
+    let currentState = this.config.cloneState(bestState);
+    let currentFitness = bestFitness;
     iterationsWithoutImprovement = 0;
 
     while (temperature > this.config.minTemperature && iteration < this.config.maxIterations) {
@@ -394,15 +633,14 @@ export class SimulatedAnnealing<TState> {
         break;
       }
 
-       // Tabu Search: Check if this state was recently visited (with aspiration criteria)
-       if (this.config.tabuSearchEnabled) {
-         const newSignature = this.getStateSignature(newState);
-         if (this.shouldSkipTabu(newSignature, iteration, currentFitness, bestFitness)) {
-           // Skip tabu states (unless aspiration criteria met)
-           iteration++;
-           continue;
-         }
-       }
+      // Tabu Search: Check if this state was recently visited (with aspiration criteria)
+      if (this.config.tabuSearchEnabled) {
+        const newSignature = this.getStateSignature(newState);
+        if (this.shouldSkipTabu(newSignature, iteration, currentFitness, bestFitness)) {
+          iteration++;
+          continue;
+        }
+      }
 
       this.operatorStats[operatorName]!.attempts++;
 
@@ -471,12 +709,33 @@ export class SimulatedAnnealing<TState> {
       temperature *= this.config.coolingRate;
       iteration++;
 
-      const logInterval2 = this.config.logging.logInterval ?? 1000;
-      if (iteration % logInterval2 === 0) {
+      const logInterval = this.config.logging.logInterval ?? 1000;
+      if (iteration % logInterval === 0) {
         this.log('info', `[Phase 2] Iteration ${iteration}: Temp = ${temperature.toFixed(2)}, Current = ${currentFitness.toFixed(2)}, Best = ${bestFitness.toFixed(2)}`);
       }
     }
 
+    return {
+      bestState,
+      bestFitness,
+      bestHardViolations,
+      temperature,
+      iteration,
+      reheats,
+    };
+  }
+
+  /**
+   * Create the final solution object with all statistics
+   */
+  private createSolution(
+    bestState: TState,
+    bestFitness: number,
+    bestHardViolations: number,
+    finalTemperature: number,
+    iteration: number,
+    reheats: number
+  ): Solution<TState> {
     // Calculate final statistics
     this.updateOperatorStats();
 
@@ -487,7 +746,7 @@ export class SimulatedAnnealing<TState> {
     this.log('info', 'Optimization complete', {
       iterations: iteration,
       reheats: reheats,
-      finalTemperature: temperature.toFixed(4),
+      finalTemperature: finalTemperature.toFixed(4),
       fitness: bestFitness.toFixed(2),
       hardViolations: hardViolations,
       softViolations: softViolations,
@@ -502,7 +761,7 @@ export class SimulatedAnnealing<TState> {
       softViolations: softViolations,
       iterations: iteration,
       reheats: reheats,
-      finalTemperature: temperature,
+      finalTemperature: finalTemperature,
       violations: violations,
       operatorStats: this.operatorStats,
     };
@@ -548,7 +807,8 @@ export class SimulatedAnnealing<TState> {
         } else {
           // Fallback: infer count from score
           // Many constraints use: score = 1 / (1 + violationCount)
-          const inferredCount = Math.round((1 / score) - 1);
+          // Guard against division by zero
+          const inferredCount = score > 0 ? Math.round((1 / score) - 1) : 1;
           hardViolationCount += Math.max(1, inferredCount);
         }
       }
@@ -714,10 +974,27 @@ export class SimulatedAnnealing<TState> {
    * Sorted for consistency so same assignments produce same signature
    */
   private getStateSignature(state: TState): string {
-    // Get schedule from state (generic approach)
+    // Use custom signature function if provided
+    if (this.config.getStateSignature) {
+      try {
+        return this.config.getStateSignature(state);
+      } catch (error) {
+        this.log('warn', 'Custom getStateSignature failed, falling back to default', { error });
+      }
+    }
+
+    // Default implementation: Try to get schedule from state (for timetabling problems)
     const schedule = (state as any).schedule;
     if (!schedule || !Array.isArray(schedule)) {
-      return Math.random().toString(36); // Fallback for non-timetable states
+      // For non-timetable states, use JSON serialization as fallback
+      // This provides a consistent signature for any state type
+      try {
+        return JSON.stringify(state);
+      } catch {
+        // If state can't be serialized, use random as last resort
+        // This effectively disables tabu search for such states
+        return Math.random().toString(36);
+      }
     }
 
     // Create a signature based on class assignments (classId -> day+time+room)
@@ -793,14 +1070,16 @@ export class SimulatedAnnealing<TState> {
    * Add a state signature to the tabu list
    */
   private addToTabuList(signature: string, iteration: number): void {
-    if (!this.config.tabuSearchEnabled) {
-      return;
-    }
-
     this.tabuList.set(signature, iteration);
 
     // Cleanup if list is too large
     if (this.tabuList.size > this.config.maxTabuListSize) {
+      this.cleanupTabuList(iteration);
+    }
+
+    // Proactive cleanup: Remove expired entries periodically to prevent memory bloat
+    // Cleanup every 100 iterations to maintain performance
+    if (iteration % 100 === 0) {
       this.cleanupTabuList(iteration);
     }
   }
@@ -1000,6 +1279,8 @@ export class SimulatedAnnealing<TState> {
     enableIntensification: boolean;
     intensificationIterations: number;
     maxIntensificationAttempts: number;
+    intensificationStagnationLimit: number;
+    getStateSignature?: (state: TState) => string;
     logging: Required<NonNullable<SAConfig<TState>['logging']>>;
   } {
     return {
@@ -1015,6 +1296,8 @@ export class SimulatedAnnealing<TState> {
       enableIntensification: config.enableIntensification ?? true,
       intensificationIterations: config.intensificationIterations ?? 2000,
       maxIntensificationAttempts: config.maxIntensificationAttempts ?? 3,
+      intensificationStagnationLimit: config.intensificationStagnationLimit ?? 300,
+      ...(config.getStateSignature && { getStateSignature: config.getStateSignature }),
       logging: {
         enabled: config.logging?.enabled ?? true,
         level: config.logging?.level ?? 'info',

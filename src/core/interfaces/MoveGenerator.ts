@@ -41,18 +41,22 @@ export interface MoveGenerator<TState> {
   /**
    * Generate a new neighbor state from the current state.
    *
-   * The implementation should:
-   * 1. Clone the current state (do not modify the input)
-   * 2. Apply modifications to create a neighbor
-   * 3. Return the new state
+   * The SA engine already clones the state before passing it to this method,
+   * so you can safely modify the passed state directly.
    *
-   * @param state - Current state (should NOT be modified)
+   * The implementation should:
+   * 1. Modify the passed state directly (it's already a clone)
+   * 2. Return the modified state
+   *
+   * @param state - Current state (ALREADY CLONED by the SA engine, safe to modify)
    * @param temperature - Current temperature in the SA algorithm
    *   Can be used to adjust move intensity (larger moves at high temp, smaller at low temp)
-   * @returns New state with modifications applied
+   * @returns Modified state with changes applied
    *
    * @remarks
-   * - **IMPORTANT**: Do not modify the input `state`. Always create a new state.
+   * - **IMPORTANT**: The SA engine clones the state before calling this method at
+   *   {@link SimulatedAnnealing.generateNeighbor}. You can safely modify the passed state.
+   * - No need to clone again - doing so would waste performance.
    * - The `temperature` parameter can be used for temperature-dependent moves:
    *   - High temperature: Explore broadly (larger, more random moves)
    *   - Low temperature: Refine locally (smaller, more focused moves)
@@ -60,16 +64,15 @@ export interface MoveGenerator<TState> {
    * @example
    * ```typescript
    * generate(state: MyState, temperature: number): MyState {
-   *   // Clone state to avoid modifying input
-   *   const newState = JSON.parse(JSON.stringify(state));
+   *   // State is already cloned by the engine, modify directly
    *
    *   // Temperature-dependent move size
    *   const moveSize = temperature > 100 ? 'large' : 'small';
    *
-   *   // Apply modification
-   *   modifyState(newState, moveSize);
+   *   // Apply modification directly to the cloned state
+   *   modifyState(state, moveSize);
    *
-   *   return newState;
+   *   return state;
    * }
    * ```
    */

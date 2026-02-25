@@ -328,25 +328,79 @@ const config: SAConfig<MyState> = {
 ### Configuration Examples
 
 ```typescript
-// Moderate tabu search (recommended for most problems)
-{
-  tabuSearchEnabled: true,
-  tabuTenure: 50,              // Remember for 50 iterations
-  maxTabuListSize: 1000,       // Keep up to 1000 entries
-}
-
-// Aggressive tabu search (very diverse)
-{
-  tabuSearchEnabled: true,
-  tabuTenure: 100,             // Remember for 100 iterations
-  maxTabuListSize: 2000,       // Keep up to 2000 entries
-}
-
 // Conservative tabu search (minimal cycling prevention)
 {
   tabuSearchEnabled: true,
   tabuTenure: 30,              // Remember for 30 iterations
   maxTabuListSize: 500,        // Keep up to 500 entries
+}
+```
+
+### Custom State Signatures
+
+By default, the algorithm uses a built-in signature generator that works well for timetabling problems. For non-timetabling problems or custom state structures, you can provide your own signature function.
+
+**Why custom signatures matter:**
+- Tabu Search needs to uniquely identify states
+- Default signature may not work correctly for your domain
+- Custom signatures can improve performance and accuracy
+
+```typescript
+// For timetabling problems (uses schedule property)
+const config: SAConfig<TimetableState> = {
+  // ... other config
+  tabuSearchEnabled: true,
+  // Uses default: extracts classId, day, time, room from schedule array
+};
+
+// For custom problems (provide your own signature)
+const config: SAConfig<JobSchedulingState> = {
+  // ... other config
+  tabuSearchEnabled: true,
+  getStateSignature: (state) => {
+    // Create unique signature based on job assignments
+    return state.jobs
+      .map(job => `${job.id}:${job.machine}:${job.startTime}`)
+      .sort()
+      .join('|');
+  },
+};
+
+// For simple states (JSON serialization)
+const config: SAConfig<SimpleState> = {
+  // ... other config
+  tabuSearchEnabled: true,
+  getStateSignature: (state) => JSON.stringify(state),
+};
+```
+
+**Signature Requirements:**
+- Must return a **string**
+- Same state must produce **same signature**
+- Different states should produce **different signatures**
+- Should be **deterministic** (no random values)
+- Should be **fast** to compute (called every iteration)
+
+**Performance Tips:**
+- Avoid expensive operations in signature function
+- Sort arrays for consistency
+- Use simple string concatenation
+- For large states, hash only the essential properties
+
+```typescript
+// Good: Fast and deterministic
+getStateSignature: (state) => {
+  return state.items
+    .map(item => `${item.id}:${item.value}`)
+    .sort()
+    .join(',');
+}
+
+// Avoid: Slow and non-deterministic
+getStateSignature: (state) => {
+  // Don't use JSON.stringify for large objects
+  // Don't include timestamps or random values
+  return JSON.stringify({ ...state, timestamp: Date.now() });
 }
 ```
 
@@ -384,6 +438,26 @@ const config: SAConfig<MyState> = {
 - Each attempt resets temperature and focuses on remaining violations
 - Default: 3
 - Typical range: 2 - 5
+
+**intensificationStagnationLimit** (v2.2.0+)
+- Number of iterations without improvement before triggering reheating
+- Reheating increases temperature to escape local minima
+- Default: 300
+- Typical range: 100 - 500
+
+```typescript
+const config: SAConfig<MyState> = {
+  // ... other config
+  enableIntensification: true,
+  intensificationIterations: 2000,
+  maxIntensificationAttempts: 3,
+  intensificationStagnationLimit: 300,  // Reheat after 300 iterations without improvement
+};
+```
+
+**When to adjust:**
+- **Lower (100-200)**: More aggressive reheating, faster exploration
+- **Higher (400-500)**: More patient search, better for complex constraint landscapes
 
 ### How Intensification Works
 

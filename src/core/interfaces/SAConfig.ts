@@ -313,6 +313,49 @@ export interface SAConfig<TState> {
   maxIntensificationAttempts?: number;
 
   /**
+   * Number of iterations without improvement before triggering reheating
+   * during intensification phase.
+   *
+   * When the algorithm doesn't find improvement for this many iterations
+   * during intensification, it will reheat (increase temperature) to escape
+   * local minima.
+   *
+   * @default 300
+   *
+   * @remarks
+   * - Lower values: More aggressive reheating, faster exploration
+   * - Higher values: More patient search, may get stuck longer
+   * - Typical values: 100 to 500
+   */
+  intensificationStagnationLimit?: number;
+
+  /**
+   * Custom function to generate a unique signature for a state.
+   *
+   * Used by Tabu Search to track visited states. If not provided,
+   * the algorithm uses a default implementation that may not work
+   * correctly for all problem domains.
+   *
+   * @param state - The current state
+   * @returns A unique string signature for the state
+   *
+   * @example
+   * ```typescript
+   * // For timetabling problems
+   * getStateSignature: (state) => {
+   *   return state.schedule
+   *     .map(s => `${s.classId}:${s.day}:${s.time}:${s.room}`)
+   *     .sort()
+   *     .join('|');
+   * }
+   *
+   * // For simple problems
+   * getStateSignature: (state) => JSON.stringify(state)
+   * ```
+   */
+  getStateSignature?: (state: TState) => string;
+
+  /**
    * Operator selection mode
    *
    * - 'hybrid': 30% random + 70% weighted by success rate (default, more robust)

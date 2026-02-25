@@ -121,4 +121,49 @@ export class PreferredTime implements Constraint<TimetableState> {
   describe(): string {
     return 'Classes not scheduled in lecturer\'s preferred time slots';
   }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule, lecturers } = state;
+    const violations: string[] = [];
+
+    // Reuse lecturer map if lecturers haven't changed
+    if (!this.cachedLecturerMap || this.cachedLecturersLength !== lecturers.length) {
+      this.cachedLecturerMap = new Map(lecturers.map(l => [l.Code, l]));
+      this.cachedLecturersLength = lecturers.length;
+    }
+    const lecturerMap = this.cachedLecturerMap;
+
+    for (const entry of schedule) {
+      const entryDay = entry.timeSlot.day.toLowerCase();
+      const [entryHour, entryMinute] = entry.timeSlot.startTime.split(':').map(Number);
+      const entryTimeInMinutes = entryHour! * 60 + entryMinute!;
+
+      for (const lecturerCode of entry.lecturers) {
+        const lecturer = lecturerMap.get(lecturerCode);
+        if (!lecturer || !lecturer.Prefered_Time) continue;
+
+        // Use cached parsed time ranges
+        const ranges = parsePreferredTime(lecturer.Prefered_Time);
+
+        // Check if entry matches any preferred range
+        let matches = false;
+        for (const range of ranges) {
+          if (range.day === entryDay &&
+              entryTimeInMinutes >= range.startMinutes &&
+              entryTimeInMinutes < range.endMinutes) {
+            matches = true;
+            break;
+          }
+        }
+
+        if (!matches) {
+          violations.push(
+            `Lecturer ${lecturerCode} (${entry.classId}) scheduled at ${entry.timeSlot.day} ${entry.timeSlot.startTime} instead of preferred time: ${lecturer.Prefered_Time}`
+          );
+        }
+      }
+    }
+
+    return violations;
+  }
 }

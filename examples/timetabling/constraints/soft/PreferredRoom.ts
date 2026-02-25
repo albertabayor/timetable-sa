@@ -40,4 +40,25 @@ export class PreferredRoom implements Constraint<TimetableState> {
   describe(): string {
     return 'Classes not assigned to lecturer\'s preferred room';
   }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule, lecturers } = state;
+    const violations: string[] = [];
+    const lecturerMap = new Map(lecturers.map(l => [l.Code, l]));
+
+    for (const entry of schedule) {
+      for (const lecturerCode of entry.lecturers) {
+        const lecturer = lecturerMap.get(lecturerCode);
+        if (!lecturer || !lecturer.Prefered_Room) continue;
+
+        if (lecturer.Prefered_Room !== entry.room) {
+          violations.push(
+            `Lecturer ${lecturerCode} (${entry.classId}) assigned to room ${entry.room} instead of preferred room ${lecturer.Prefered_Room}`
+          );
+        }
+      }
+    }
+
+    return violations;
+  }
 }

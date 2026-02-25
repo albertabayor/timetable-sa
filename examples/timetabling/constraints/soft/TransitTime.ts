@@ -75,4 +75,58 @@ export class TransitTime implements Constraint<TimetableState> {
   describe(): string {
     return 'Insufficient transit time between consecutive classes for lecturers';
   }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule, lecturers } = state;
+    const violations: string[] = [];
+
+    // Group schedule by day
+    const scheduleByDay = new Map<string, typeof schedule>();
+    for (const entry of schedule) {
+      const day = entry.timeSlot.day;
+      if (!scheduleByDay.has(day)) {
+        scheduleByDay.set(day, []);
+      }
+      scheduleByDay.get(day)!.push(entry);
+    }
+
+    // Sort each day's schedule by start time
+    for (const [day, daySchedule] of scheduleByDay) {
+      daySchedule.sort((a, b) => {
+        return timeToMinutes(a.timeSlot.startTime) - timeToMinutes(b.timeSlot.startTime);
+      });
+
+      // Check transit time for each lecturer
+      for (const lecturer of lecturers) {
+        if (!lecturer.Transit_Time) continue;
+
+        const lecturerClasses = daySchedule.filter(entry =>
+          entry.lecturers.includes(lecturer.Code)
+        );
+
+        for (let i = 0; i < lecturerClasses.length - 1; i++) {
+          const current = lecturerClasses[i];
+          const next = lecturerClasses[i + 1];
+
+          const currentEnd = calculateEndTime(
+            current.timeSlot.startTime,
+            current.sks,
+            current.timeSlot.day
+          );
+          const currentEndMins = timeToMinutes(currentEnd.endTime);
+          const nextStartMins = timeToMinutes(next.timeSlot.startTime);
+
+          const gapMinutes = nextStartMins - currentEndMins;
+
+          if (gapMinutes < lecturer.Transit_Time) {
+            violations.push(
+              `Lecturer ${lecturer.Code}: Insufficient transit time (${gapMinutes} min) between ${current.classId} (${current.timeSlot.startTime}) and ${next.classId} (${next.timeSlot.startTime}) on ${day}, required: ${lecturer.Transit_Time} min`
+            );
+          }
+        }
+      }
+    }
+
+    return violations;
+  }
 }

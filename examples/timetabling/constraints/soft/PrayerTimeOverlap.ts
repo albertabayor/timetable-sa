@@ -64,4 +64,46 @@ export class PrayerTimeOverlap implements Constraint<TimetableState> {
   describe(): string {
     return 'Classes overlapping with prayer times (especially Friday 12:00-13:00)';
   }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule } = state;
+    const violations: string[] = [];
+
+    for (const entry of schedule) {
+      const prayerTime = getPrayerTimeOverlap(
+        entry.timeSlot.startTime,
+        entry.sks,
+        entry.timeSlot.day
+      );
+
+      if (prayerTime > 0) {
+        const endTime = calculateEndTime(
+          entry.timeSlot.startTime,
+          entry.sks,
+          entry.timeSlot.day
+        );
+
+        // Extra penalty for Friday prayer (12:00-13:00)
+        if (entry.timeSlot.day === 'Friday') {
+          const startMinutes = timeToMinutes(entry.timeSlot.startTime);
+          const endMinutes = timeToMinutes(endTime.endTime);
+          const fridayPrayerStart = 12 * 60;
+          const fridayPrayerEnd = 13 * 60;
+
+          if (startMinutes < fridayPrayerEnd && endMinutes > fridayPrayerStart) {
+            violations.push(
+              `Class ${entry.classId} (${entry.timeSlot.startTime}-${endTime.endTime}) overlaps with Friday prayer time (12:00-13:00)`
+            );
+            continue;
+          }
+        }
+
+        violations.push(
+          `Class ${entry.classId} (${entry.timeSlot.startTime}-${endTime.endTime} on ${entry.timeSlot.day}) overlaps with prayer time (${prayerTime} minutes overlap)`
+        );
+      }
+    }
+
+    return violations;
+  }
 }

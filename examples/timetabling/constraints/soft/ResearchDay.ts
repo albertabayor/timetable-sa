@@ -48,4 +48,31 @@ export class ResearchDay implements Constraint<TimetableState> {
   describe(): string {
     return 'Classes scheduled on lecturer\'s designated research day';
   }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule, lecturers } = state;
+    const violations: string[] = [];
+    const lecturerMap = new Map(lecturers.map(l => [l.Code, l]));
+
+    for (const entry of schedule) {
+      for (const lecturerCode of entry.lecturers) {
+        const lecturer = lecturerMap.get(lecturerCode);
+        if (!lecturer || !lecturer.Research_Day) continue;
+
+        const researchDay = lecturer.Research_Day.trim();
+
+        // Check if class is on research day
+        if (researchDay && (
+          entry.timeSlot.day === researchDay ||
+          researchDay.includes(entry.timeSlot.day)
+        )) {
+          violations.push(
+            `Class ${entry.classId} scheduled on ${entry.timeSlot.day} which is research day for lecturer ${lecturerCode}`
+          );
+        }
+      }
+    }
+
+    return violations;
+  }
 }

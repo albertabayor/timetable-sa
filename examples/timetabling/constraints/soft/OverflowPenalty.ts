@@ -53,4 +53,36 @@ export class OverflowPenalty implements Constraint<TimetableState> {
   describe(): string {
     return 'Lab/room type mismatch (non-lab class in lab room, or lab class not in lab)';
   }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule, rooms } = state;
+    const violations: string[] = [];
+    const roomMap = new Map(rooms.map(r => [r.Code, r]));
+
+    for (const entry of schedule) {
+      const room = roomMap.get(entry.room);
+      const isLabRoom = room && (
+        room.Type.toLowerCase().includes('lab') ||
+        LAB_ROOMS.includes(room.Code)
+      );
+
+      if (entry.needsLab) {
+        // Lab class should be in lab room
+        if (!isLabRoom) {
+          violations.push(
+            `Lab class ${entry.classId} is not assigned to a lab room (currently in ${entry.room})`
+          );
+        }
+      } else {
+        // Non-lab class
+        if (entry.isOverflowToLab || isLabRoom) {
+          violations.push(
+            `Non-lab class ${entry.classId} is using lab room ${entry.room} unnecessarily`
+          );
+        }
+      }
+    }
+
+    return violations;
+  }
 }

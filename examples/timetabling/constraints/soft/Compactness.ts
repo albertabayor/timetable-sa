@@ -75,4 +75,55 @@ export class Compactness implements Constraint<TimetableState> {
   describe(): string {
     return 'Large gaps (>60 min) between consecutive classes for same prodi';
   }
+
+  getViolations(state: TimetableState): string[] {
+    const { schedule } = state;
+    const violations: string[] = [];
+
+    // Group by prodi and day
+    const scheduleByProdiDay = new Map<string, typeof schedule>();
+
+    for (const entry of schedule) {
+      const key = `${entry.prodi}-${entry.timeSlot.day}`;
+      if (!scheduleByProdiDay.has(key)) {
+        scheduleByProdiDay.set(key, []);
+      }
+      scheduleByProdiDay.get(key)!.push(entry);
+    }
+
+    for (const [key, daySchedule] of scheduleByProdiDay) {
+      if (daySchedule.length < 2) continue;
+
+      // Sort by start time
+      daySchedule.sort((a, b) =>
+        timeToMinutes(a.timeSlot.startTime) - timeToMinutes(b.timeSlot.startTime)
+      );
+
+      // Calculate gaps between consecutive classes
+      for (let i = 0; i < daySchedule.length - 1; i++) {
+        const current = daySchedule[i];
+        const next = daySchedule[i + 1];
+
+        const currentEnd = calculateEndTime(
+          current.timeSlot.startTime,
+          current.sks,
+          current.timeSlot.day
+        );
+        const currentEndMins = timeToMinutes(currentEnd.endTime);
+        const nextStartMins = timeToMinutes(next.timeSlot.startTime);
+
+        const gap = nextStartMins - currentEndMins;
+
+        // Report gaps > 60 minutes
+        if (gap > 60) {
+          const [prodi, day] = key.split('-');
+          violations.push(
+            `${prodi}: Large gap of ${gap} minutes between ${current.classId} (${current.timeSlot.startTime}) and ${next.classId} (${next.timeSlot.startTime}) on ${day}`
+          );
+        }
+      }
+    }
+
+    return violations;
+  }
 }

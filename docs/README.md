@@ -10,7 +10,7 @@ Welcome to the **timetable-sa** documentation! This library provides a generic, 
 
 ### Configuration & Tuning
 - **[Configuration Guide](./configuration.md)** - Detailed parameter tuning
-- **[Advanced Features](./advanced-features.md)** - Two-phase optimization, reheating, adaptive operators
+- **[Advanced Features](./advanced-features.md)** - Multi-phase optimization, reheating, adaptive operators, progress tracking
 
 ### Reference
 - **[API Reference](./api-reference.md)** - Complete API documentation
@@ -18,6 +18,15 @@ Welcome to the **timetable-sa** documentation! This library provides a generic, 
 
 ### Migration
 - **[Migration Guide](./migration-guide.md)** - Migrating from v1.x to v2.0
+
+## What's New in v2.3.0
+
+**Real-Time Progress Tracking** - Track optimization progress in real-time with the `onProgress` callback:
+- Monitor iterations, cost, temperature, and violations live
+- Support for async callbacks (WebSocket, database, etc.)
+- Full TypeScript support with comprehensive `ProgressStats`
+
+See the [Advanced Features](./advanced-features.md#real-time-progress-tracking) guide for details.
 
 ## What is timetable-sa?
 
@@ -99,12 +108,15 @@ const solver = new SimulatedAnnealing(
   }
 );
 
-const solution = solver.solve();
+const solution = await solver.solve();
 ```
 
 ## Key Features
 
-- **Two-Phase Optimization**: First satisfies hard constraints, then optimizes soft constraints
+- **Real-Time Progress Tracking**: `onProgress` callback for live monitoring via WebSocket, database, or UI updates
+- **Multi-Phase Optimization**: First satisfies hard constraints, then optimizes soft constraints
+- **Tabu Search**: Prevents cycling and escapes local minima
+- **Intensification**: Aggressively targets stubborn hard violations
 - **Adaptive Operator Selection**: Learns which move operators are most effective
 - **Reheating**: Escapes local minima by temporarily increasing temperature
 - **Type-Safe**: Full TypeScript support with generics

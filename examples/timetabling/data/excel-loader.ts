@@ -2,7 +2,7 @@
  * Excel file parser for timetabling data
  */
 
-import XLSX from "xlsx";
+import * as XLSX from "xlsx";
 import type { Room, Lecturer, ClassRequirement, TimetableInput } from "../types/index.js";
 
 /**

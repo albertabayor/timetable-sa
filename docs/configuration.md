@@ -13,6 +13,7 @@ This guide helps you configure the Simulated Annealing algorithm for optimal res
 - [Tabu Search](#tabu-search)
 - [Intensification](#intensification)
 - [Logging](#logging)
+- [Progress Tracking](#progress-tracking)
 - [Operator Selection](#operator-selection)
 - [Tuning Guide](#tuning-guide)
 
@@ -650,6 +651,185 @@ logging: { logInterval: 5000 }
 
 ```typescript
 logging: { enabled: false }
+```
+
+## Progress Tracking
+
+Monitor optimization progress in real-time using the `onProgress` callback. This is useful for:
+
+- **Web Applications**: Update progress bars in the frontend
+- **APIs**: Send progress updates to clients via WebSocket
+- **Monitoring**: Log progress to databases or metrics systems
+- **Debugging**: Track optimization behavior
+
+### Basic Usage
+
+```typescript
+const config: SAConfig<MyState> = {
+  // ... other config
+  logInterval: 500,  // Callback frequency (iterations)
+  
+  onProgress: (iteration, cost, temp, state, stats) => {
+    console.log(`[${stats.phase}] Iter ${iteration}: Cost=${cost.toFixed(2)}`);
+  },
+};
+
+const solver = new SimulatedAnnealing(state, constraints, moves, config);
+const solution = await solver.solve();
+```
+
+### Progress Stats
+
+The `stats` parameter provides comprehensive optimization metrics:
+
+```typescript
+onProgress: (iteration, cost, temp, state, stats) => {
+  console.log({
+    iteration: stats.iteration,
+    progress: `${stats.progressPercent.toFixed(1)}%`,
+    phase: stats.phase,
+    cost: stats.currentCost,
+    bestCost: stats.bestCost,
+    temperature: stats.temperature,
+    hardViolations: stats.hardViolations,
+    softViolations: stats.softViolations,
+    tabuHits: stats.tabuHits,
+    reheatingCount: stats.reheatingCount,
+    acceptedMoves: stats.acceptedMoves,
+    rejectedMoves: stats.rejectedMoves,
+    stagnationCount: stats.stagnationCount,
+    timestamp: new Date(stats.timestamp).toISOString(),
+  });
+}
+```
+
+### Async Callbacks
+
+The callback can be async, perfect for database writes or API calls:
+
+```typescript
+onProgress: async (iteration, cost, temp, state, stats) => {
+  // Save to database
+  await db.optimizationProgress.create({
+    data: {
+      runId: 'run-001',
+      iteration,
+      cost,
+      temperature: temp,
+      hardViolations: stats.hardViolations,
+      progress: stats.progressPercent,
+    },
+  });
+  
+  // Send to monitoring service
+  await metrics.send('optimization.progress', {
+    iteration,
+    cost,
+    violations: stats.hardViolations,
+  });
+}
+```
+
+### WebSocket Example
+
+Update frontend in real-time:
+
+```typescript
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:3000');
+const optimizationId = 'opt-123';
+
+const config: SAConfig<MyState> = {
+  maxIterations: 20000,
+  logInterval: 500,
+  
+  onProgress: (iteration, cost, temp, state, stats) => {
+    socket.emit('optimization-progress', {
+      optimizationId,
+      data: {
+        iteration,
+        progress: stats.progressPercent,
+        currentCost: cost,
+        bestCost: stats.bestCost,
+        temperature: temp,
+        hardViolations: stats.hardViolations,
+        softViolations: stats.softViolations,
+        tabuHits: stats.tabuHits,
+        phase: stats.phase,
+      },
+    });
+  },
+};
+```
+
+### CLI Progress Bar
+
+```typescript
+import { SingleBar, Presets } from 'cli-progress';
+
+const progressBar = new SingleBar({
+  format: 'Progress |{bar}| {percentage}% | Cost: {cost} | Temp: {temp}',
+}, Presets.shades_classic);
+
+progressBar.start(100, 0);
+
+const config: SAConfig<MyState> = {
+  maxIterations: 10000,
+  logInterval: 100,
+  
+  onProgress: (iteration, cost, temp, state, stats) => {
+    progressBar.update(stats.progressPercent, {
+      cost: cost.toFixed(2),
+      temp: temp.toFixed(0),
+    });
+  },
+};
+
+const solver = new SimulatedAnnealing(state, constraints, moves, config);
+const solution = await solver.solve();
+
+progressBar.stop();
+console.log(`Optimization complete! Best cost: ${solution.fitness}`);
+```
+
+### When Callback is Triggered
+
+The `onProgress` callback is called at:
+
+1. **Iteration 0**: Initial state before optimization starts
+2. **Every `logInterval` iterations**: Regular progress updates
+3. **Phase transitions**: When moving between phase1 → phase1.5 → phase2
+4. **Reheating events**: When temperature is increased to escape local minima
+
+### Error Handling
+
+Errors in the callback don't break optimization:
+
+```typescript
+onProgress: (iteration, cost, temp, state, stats) => {
+  // This error will be caught and logged, but optimization continues
+  if (iteration === 100) {
+    throw new Error('Test error');
+  }
+  
+  console.log(`Progress: ${stats.progressPercent}%`);
+}
+```
+
+### Performance Considerations
+
+- Callback frequency is controlled by `logInterval`
+- Lower `logInterval` = more frequent updates but higher overhead
+- For async callbacks, optimization waits for callback to complete
+- State parameter is always `null` for performance (avoid expensive cloning)
+
+```typescript
+// High frequency updates (more overhead)
+logInterval: 100  // Called every 100 iterations
+
+// Low frequency updates (less overhead)
+logInterval: 5000 // Called every 5000 iterations
 ```
 
 ## Operator Selection

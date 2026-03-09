@@ -1,4 +1,4 @@
-# timetable-sa v2.1.1
+# timetable-sa v2.3.0
 
 **Generic, Unopinionated Simulated Annealing Library for Constraint Satisfaction Problems**
 
@@ -6,6 +6,35 @@ A powerful TypeScript library that solves ANY constraint-satisfaction and optimi
 
 [![npm version](https://img.shields.io/npm/v/timetable-sa.svg)](https://www.npmjs.com/package/timetable-sa)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## What's New in v2.3.0
+
+**Real-Time Progress Tracking with onProgress Callback**
+
+- **onProgress Callback**: Real-time progress updates during optimization
+  - Track iterations, cost, temperature, and violations in real-time
+  - Support for async callbacks (WebSocket, database logging, etc.)
+  - Triggers at iteration 0, every `logInterval`, phase transitions, and reheating events
+  - Full TypeScript support with `ProgressStats` interface
+  - Error handling - callback errors don't break optimization
+  - Perfect for web applications, progress bars, and monitoring systems
+
+- **Async solve()**: `solve()` now returns a `Promise<Solution<TState>>` to support async progress callbacks
+
+**Example Usage:**
+```typescript
+const config: SAConfig<MyState> = {
+  maxIterations: 20000,
+  logInterval: 500,
+  onProgress: async (iteration, cost, temp, state, stats) => {
+    console.log(`[${stats.phase}] ${stats.progressPercent.toFixed(1)}%`);
+    // Send to WebSocket, save to DB, update UI, etc.
+  }
+};
+
+const solver = new SimulatedAnnealing(state, constraints, moves, config);
+const solution = await solver.solve();
+```
 
 ## What's New in v2.1.1
 
@@ -34,6 +63,7 @@ v2.0 is a complete rewrite that transforms `timetable-sa` from a university-spec
 
 ## Features
 
+- **Real-Time Progress Tracking**: `onProgress` callback for live optimization monitoring
 - **Multi-Phase Optimization**: Phase 1 (hard constraints), Phase 1.5 (intensification), Phase 2 (soft constraints)
 - **Tabu Search**: Prevents cycling and escapes local minima by tracking visited states
 - **Adaptive Operator Selection**: Learns which operators work best and uses them more frequently (hybrid or roulette-wheel mode)
@@ -143,7 +173,7 @@ const config: SAConfig<MyState> = {
 };
 
 const solver = new SimulatedAnnealing(initialState, constraints, moveGenerators, config);
-const solution = solver.solve();
+const solution = await solver.solve();
 
 console.log('Solution found!');
 console.log(`Fitness: ${solution.fitness}`);
@@ -243,7 +273,7 @@ class SimulatedAnnealing<TState> {
     config: SAConfig<TState>
   );
 
-  solve(): Solution<TState>;
+  solve(): Promise<Solution<TState>>;
   getStats(): OperatorStats;
 }
 ```
@@ -286,8 +316,40 @@ interface SAConfig<TState> {
     filePath?: string;
   };
 
+  // Optional: Progress Tracking
+  onProgress?: (
+    iteration: number,
+    currentCost: number,
+    temperature: number,
+    state: TState | null,
+    stats: ProgressStats
+  ) => void | Promise<void>;
+
   // Optional: Operator Selection Mode
   operatorSelectionMode?: 'hybrid' | 'roulette-wheel';  // Default: 'hybrid'
+}
+
+### ProgressStats Interface
+
+When using the `onProgress` callback, you receive a `ProgressStats` object with comprehensive optimization metrics:
+
+```typescript
+interface ProgressStats {
+  iteration: number;              // Current iteration
+  currentCost: number;            // Current cost/fitness
+  bestCost: number;               // Best cost found so far
+  temperature: number;            // Current temperature
+  hardViolations: number;         // Number of hard constraint violations
+  softViolations: number;         // Number of soft constraint violations
+  tabuHits: number;               // Number of tabu hits (if Tabu Search enabled)
+  phase: 'phase1' | 'phase15' | 'phase2' | 'initial';  // Current phase
+  reheatingCount: number;         // Number of reheating events
+  acceptedMoves: number;          // Total accepted moves
+  rejectedMoves: number;          // Total rejected moves
+  stagnationCount: number;        // Iterations without improvement
+  bestCostIteration: number;      // Iteration where best cost was found
+  progressPercent: number;        // Progress percentage (0-100)
+  timestamp: number;              // Timestamp (Date.now())
 }
 ```
 
@@ -342,6 +404,26 @@ Run the example:
 ```bash
 npm run example:timetabling
 ```
+
+### Build Standalone Binary (NEW!)
+
+Compile the timetabling example to a standalone executable using Bun:
+
+```bash
+# Build for current platform
+npm run build:binary
+
+# Build for all platforms (Linux, macOS, Windows)
+npm run build:binary:all
+
+# Or specific platforms
+npm run build:binary:linux
+npm run build:binary:macos
+npm run build:binary:windows
+```
+
+See [`docs/BUILD_BINARY.md`](./docs/BUILD_BINARY.md) for detailed instructions.
+
 
 ## Migration from v1.x
 

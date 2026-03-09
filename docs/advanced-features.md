@@ -8,6 +8,7 @@ This guide covers advanced features and techniques for using **timetable-sa** ef
   - [Phase 1: Hard Constraint Satisfaction](#phase-1-hard-constraint-satisfaction)
   - [Phase 1.5: Intensification](#phase-15-intensification)
   - [Phase 2: Soft Constraint Optimization](#phase-2-soft-constraint-optimization)
+- [Real-Time Progress Tracking](#real-time-progress-tracking)
 - [Tabu Search](#tabu-search)
 - [Adaptive Operator Selection](#adaptive-operator-selection)
 - [Reheating Mechanism](#reheating-mechanism)
@@ -123,6 +124,263 @@ if (newHardViolations > bestHardViolations) {
   reject(); // NEVER accept hard violations
 } else {
   acceptWithProbability(temperature); // Standard SA for soft
+}
+```
+
+## Real-Time Progress Tracking
+
+Monitor optimization progress in real-time using the `onProgress` callback. This feature is essential for:
+
+- **Web Applications**: Display live progress bars and statistics
+- **APIs**: Send progress updates to clients via WebSocket or Server-Sent Events
+- **Monitoring**: Track optimization metrics in real-time
+- **Debugging**: Understand how the algorithm is behaving
+
+### How It Works
+
+The `onProgress` callback is invoked at key points during optimization:
+
+1. **Iteration 0**: Initial state before optimization begins
+2. **Every `logInterval` iterations**: Regular progress updates
+3. **Phase transitions**: When moving between phases (phase1 → phase1.5 → phase2)
+4. **Reheating events**: When temperature is increased to escape local minima
+
+### Basic Example
+
+```typescript
+const config: SAConfig<MyState> = {
+  maxIterations: 20000,
+  logInterval: 500,  // Update every 500 iterations
+  
+  onProgress: (iteration, cost, temp, state, stats) => {
+    console.log(
+      `[${stats.phase}] ${stats.progressPercent.toFixed(1)}% | ` +
+      `Cost: ${cost.toFixed(2)} | Temp: ${temp.toFixed(0)} | ` +
+      `Hard: ${stats.hardViolations} | Soft: ${stats.softViolations}`
+    );
+  },
+};
+
+const solver = new SimulatedAnnealing(state, constraints, moves, config);
+const solution = await solver.solve();
+```
+
+### Progress Stats
+
+The callback receives comprehensive statistics:
+
+```typescript
+onProgress: (iteration, cost, temp, state, stats) => {
+  // Basic info
+  console.log(`Iteration: ${stats.iteration}`);
+  console.log(`Progress: ${stats.progressPercent}%`);
+  console.log(`Phase: ${stats.phase}`); // 'phase1', 'phase15', 'phase2', 'initial'
+  
+  // Cost information
+  console.log(`Current Cost: ${stats.currentCost}`);
+  console.log(`Best Cost: ${stats.bestCost}`);
+  console.log(`Best found at iteration: ${stats.bestCostIteration}`);
+  
+  // Constraints
+  console.log(`Hard Violations: ${stats.hardViolations}`);
+  console.log(`Soft Violations: ${stats.softViolations}`);
+  
+  // Algorithm state
+  console.log(`Temperature: ${stats.temperature}`);
+  console.log(`Reheats: ${stats.reheatingCount}`);
+  console.log(`Tabu Hits: ${stats.tabuHits}`);
+  
+  // Move statistics
+  console.log(`Accepted Moves: ${stats.acceptedMoves}`);
+  console.log(`Rejected Moves: ${stats.rejectedMoves}`);
+  console.log(`Stagnation: ${stats.stagnationCount}`);
+  
+  // Timestamp
+  console.log(`Time: ${new Date(stats.timestamp).toISOString()}`);
+}
+```
+
+### Web Application Example
+
+Update a React component in real-time:
+
+```typescript
+import { useState, useEffect } from 'react';
+
+function OptimizationPanel() {
+  const [progress, setProgress] = useState(0);
+  const [stats, setStats] = useState<ProgressStats | null>(null);
+  const [isRunning, setIsRunning] = useState(false);
+  
+  const startOptimization = async () => {
+    setIsRunning(true);
+    
+    const config: SAConfig<MyState> = {
+      maxIterations: 20000,
+      logInterval: 100,
+      
+      onProgress: (iteration, cost, temp, state, progressStats) => {
+        // Update React state (triggers re-render)
+        setProgress(progressStats.progressPercent);
+        setStats(progressStats);
+      },
+    };
+    
+    const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
+    const solution = await solver.solve();
+    
+    setIsRunning(false);
+    console.log('Optimization complete!', solution);
+  };
+  
+  return (
+    <div>
+      <div className="progress-bar">
+        <div 
+          className="progress-fill" 
+          style={{ width: `${progress}%` }}
+        />
+        <span>{progress.toFixed(1)}%</span>
+      </div>
+      
+      {stats && (
+        <div className="stats">
+          <p>Phase: {stats.phase}</p>
+          <p>Cost: {stats.currentCost.toFixed(2)}</p>
+          <p>Best: {stats.bestCost.toFixed(2)}</p>
+          <p>Hard Violations: {stats.hardViolations}</p>
+          <p>Temperature: {stats.temperature.toFixed(0)}</p>
+        </div>
+      )}
+      
+      <button onClick={startOptimization} disabled={isRunning}>
+        {isRunning ? 'Optimizing...' : 'Start'}
+      </button>
+    </div>
+  );
+}
+```
+
+### WebSocket / Server Example
+
+Send progress updates to connected clients:
+
+```typescript
+import { Server } from 'socket.io';
+
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+  socket.on('start-optimization', async (data) => {
+    const { optimizationId, initialState } = data;
+    
+    const config: SAConfig<MyState> = {
+      maxIterations: 20000,
+      logInterval: 500,
+      
+      onProgress: async (iteration, cost, temp, state, stats) => {
+        // Broadcast to all clients watching this optimization
+        io.to(optimizationId).emit('progress', {
+          optimizationId,
+          iteration,
+          progress: stats.progressPercent,
+          cost,
+          temperature: temp,
+          hardViolations: stats.hardViolations,
+          softViolations: stats.softViolations,
+          phase: stats.phase,
+          timestamp: stats.timestamp,
+        });
+        
+        // Optionally save to database
+        await db.progress.create({
+          optimizationId,
+          iteration,
+          stats,
+        });
+      },
+    };
+    
+    const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
+    const solution = await solver.solve();
+    
+    // Notify clients of completion
+    io.to(optimizationId).emit('complete', {
+      optimizationId,
+      solution: {
+        fitness: solution.fitness,
+        hardViolations: solution.hardViolations,
+        softViolations: solution.softViolations,
+        iterations: solution.iterations,
+      },
+    });
+  });
+});
+```
+
+### Async Support
+
+The callback can be async, allowing you to perform I/O operations:
+
+```typescript
+onProgress: async (iteration, cost, temp, state, stats) => {
+  // Write to database
+  await db.progress.create({
+    iteration,
+    cost,
+    stats,
+  });
+  
+  // Send metrics to monitoring service
+  await metrics.gauge('optimization.cost', cost);
+  await metrics.gauge('optimization.progress', stats.progressPercent);
+  
+  // Check if we should stop early
+  if (stats.hardViolations === 0 && stats.progressPercent > 50) {
+    // Could implement early stopping logic here
+  }
+}
+```
+
+### Error Handling
+
+Errors in the callback don't break optimization:
+
+```typescript
+onProgress: (iteration, cost, temp, state, stats) => {
+  // This error will be caught and logged
+  // Optimization continues normally
+  if (Math.random() < 0.01) {
+    throw new Error('Random callback error');
+  }
+  
+  console.log(`Progress: ${stats.progressPercent}%`);
+}
+```
+
+### Performance Considerations
+
+1. **Callback Frequency**: Use `logInterval` to control frequency
+   - Lower = more updates but higher overhead
+   - Higher = fewer updates but less overhead
+
+2. **Async Callbacks**: Optimization waits for async callbacks to complete
+   - Keep async operations fast
+   - Consider batching database writes
+
+3. **State Parameter**: Always `null` for performance
+   - Don't try to access `state` - it's always null
+   - Use `stats` object for all information
+
+```typescript
+// Good: Use stats object
+onProgress: (iteration, cost, temp, state, stats) => {
+  console.log(stats.currentCost);  // ✓ Correct
+}
+
+// Bad: Trying to access state
+onProgress: (iteration, cost, temp, state, stats) => {
+  console.log(state.someProperty);  // ✗ Always null
 }
 ```
 

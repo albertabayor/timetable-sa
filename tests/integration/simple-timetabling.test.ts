@@ -310,34 +310,34 @@ function createConfig(overrides?: Partial<SAConfig<TimetableState>>): SAConfig<T
 
 describe('Simple Timetabling Integration Tests', () => {
   describe('Feasible Problem Solving', () => {
-    it('should solve a simple timetabling problem with conflicts', () => {
+    it('should solve a simple timetabling problem with conflicts', async () => {
       const initialState = createSimpleTimetable(true); // With conflicts
       const constraints = [new NoRoomConflict(), new NoLecturerConflict()];
       const moves = [new ChangeTimeSlot(), new ChangeRoom()];
       const config = createConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Should find a feasible solution
       expect(solution.hardViolations).toBe(0);
       expect(solution.state.assignments.length).toBe(3);
     });
 
-    it('should maintain solution quality for already-feasible timetable', () => {
+    it('should maintain solution quality for already-feasible timetable', async () => {
       const initialState = createSimpleTimetable(false); // No conflicts
       const constraints = [new NoRoomConflict(), new NoLecturerConflict()];
       const moves = [new ChangeTimeSlot(), new ChangeRoom()];
       const config = createConfig({ maxIterations: 100 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Should maintain feasibility
       expect(solution.hardViolations).toBe(0);
     });
 
-    it('should optimize soft constraints after satisfying hard constraints', () => {
+    it('should optimize soft constraints after satisfying hard constraints', async () => {
       const initialState = createSimpleTimetable(true);
 
       // Start with Friday afternoon classes
@@ -355,7 +355,7 @@ describe('Simple Timetabling Integration Tests', () => {
       const config = createConfig({ maxIterations: 1000 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Should satisfy hard constraints
       expect(solution.hardViolations).toBe(0);
@@ -367,7 +367,7 @@ describe('Simple Timetabling Integration Tests', () => {
   });
 
   describe('Operator Effectiveness', () => {
-    it('should use all move operators during search', () => {
+    it('should use all move operators during search', async () => {
       const initialState = createSimpleTimetable(true);
       const constraints = [new NoRoomConflict(), new NoLecturerConflict()];
       const moves = [
@@ -378,7 +378,7 @@ describe('Simple Timetabling Integration Tests', () => {
       const config = createConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      solver.solve();
+      await solver.solve();
 
       const stats = solver.getStats();
 
@@ -388,14 +388,14 @@ describe('Simple Timetabling Integration Tests', () => {
       expect(stats['Swap Time Slots'].attempts).toBeGreaterThan(0);
     });
 
-    it('should track operator success rates', () => {
+    it('should track operator success rates', async () => {
       const initialState = createSimpleTimetable(true);
       const constraints = [new NoRoomConflict(), new NoLecturerConflict()];
       const moves = [new ChangeTimeSlot(), new ChangeRoom()];
       const config = createConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      solver.solve();
+      await solver.solve();
 
       const stats = solver.getStats();
 
@@ -414,14 +414,14 @@ describe('Simple Timetabling Integration Tests', () => {
   });
 
   describe('Constraint Satisfaction', () => {
-    it('should eliminate all room conflicts', () => {
+    it('should eliminate all room conflicts', async () => {
       const initialState = createSimpleTimetable(true);
       const constraints = [new NoRoomConflict()];
       const moves = [new ChangeTimeSlot(), new ChangeRoom()];
       const config = createConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Verify no room conflicts manually
       const { assignments } = solution.state;
@@ -440,14 +440,14 @@ describe('Simple Timetabling Integration Tests', () => {
       }
     });
 
-    it('should eliminate all lecturer conflicts', () => {
+    it('should eliminate all lecturer conflicts', async () => {
       const initialState = createSimpleTimetable(true);
       const constraints = [new NoLecturerConflict()];
       const moves = [new ChangeTimeSlot()];
       const config = createConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Verify no lecturer conflicts manually
       const { assignments } = solution.state;
@@ -466,14 +466,14 @@ describe('Simple Timetabling Integration Tests', () => {
       }
     });
 
-    it('should respect both room AND lecturer constraints simultaneously', () => {
+    it('should respect both room AND lecturer constraints simultaneously', async () => {
       const initialState = createSimpleTimetable(true);
       const constraints = [new NoRoomConflict(), new NoLecturerConflict()];
       const moves = [new ChangeTimeSlot(), new ChangeRoom()];
       const config = createConfig({ maxIterations: 1000 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       expect(solution.hardViolations).toBe(0);
 
@@ -499,7 +499,7 @@ describe('Simple Timetabling Integration Tests', () => {
   });
 
   describe('Performance Characteristics', () => {
-    it('should converge faster with better initial state', () => {
+    it('should converge faster with better initial state', async () => {
       const goodState = createSimpleTimetable(false); // No conflicts
       const badState = createSimpleTimetable(true); // With conflicts
 
@@ -519,7 +519,7 @@ describe('Simple Timetabling Integration Tests', () => {
       expect(solutionBad.hardViolations).toBe(0);
     });
 
-    it('should produce consistent results with same seed (deterministic cloning)', () => {
+    it('should produce consistent results with same seed (deterministic cloning)', async () => {
       const initialState = createSimpleTimetable(true);
       const constraints = [new NoRoomConflict(), new NoLecturerConflict()];
       const moves = [new ChangeTimeSlot()];
@@ -539,7 +539,7 @@ describe('Simple Timetabling Integration Tests', () => {
   });
 
   describe('Scalability', () => {
-    it('should handle larger timetabling problems', () => {
+    it('should handle larger timetabling problems', async () => {
       const rooms = ['R101', 'R102', 'R103', 'R104', 'R105'];
       const lecturers = [
         'Dr. Smith',
@@ -582,7 +582,7 @@ describe('Simple Timetabling Integration Tests', () => {
       const config = createConfig({ maxIterations: 2000 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Should solve larger problem
       expect(solution.hardViolations).toBe(0);

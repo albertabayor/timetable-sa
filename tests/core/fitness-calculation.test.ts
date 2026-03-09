@@ -115,7 +115,7 @@ function createConfig(overrides?: Partial<SAConfig<FitnessTestState>>): SAConfig
 
 describe('Fitness Calculation', () => {
   describe('Basic Fitness Calculation', () => {
-    it('should calculate 0 fitness for fully satisfied constraints', () => {
+    it('should calculate 0 fitness for fully satisfied constraints', async () => {
       const state: FitnessTestState = { hardScore: 1, softScore: 1 };
       const constraints = [
         new HardConstraintFixed(1), // Fully satisfied
@@ -125,7 +125,7 @@ describe('Fitness Calculation', () => {
       const config = createConfig({ maxIterations: 5 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Fitness should be 0 (no penalties)
       expect(solution.fitness).toBe(0);
@@ -133,7 +133,7 @@ describe('Fitness Calculation', () => {
       expect(solution.softViolations).toBe(0);
     });
 
-    it('should calculate high fitness for violated hard constraints', () => {
+    it('should calculate high fitness for violated hard constraints', async () => {
       const state: FitnessTestState = { hardScore: 0, softScore: 1 };
       const constraints = [
         new HardConstraintFixed(0), // Completely violated
@@ -146,7 +146,7 @@ describe('Fitness Calculation', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Fitness should be very high due to hard constraint weight
       // Hard penalty = (1 - 0) * 10000 = 10000
@@ -154,7 +154,7 @@ describe('Fitness Calculation', () => {
       expect(solution.hardViolations).toBeGreaterThan(0);
     });
 
-    it('should calculate fitness with soft constraint penalties', () => {
+    it('should calculate fitness with soft constraint penalties', async () => {
       const state: FitnessTestState = { hardScore: 1, softScore: 0 };
       const constraints = [
         new HardConstraintFixed(1), // Satisfied
@@ -164,7 +164,7 @@ describe('Fitness Calculation', () => {
       const config = createConfig({ maxIterations: 5 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Fitness should be soft penalty only
       // Soft penalty = (1 - 0) * 10 = 10
@@ -175,7 +175,7 @@ describe('Fitness Calculation', () => {
   });
 
   describe('Constraint Weighting', () => {
-    it('should weight hard constraints much higher than soft', () => {
+    it('should weight hard constraints much higher than soft', async () => {
       const stateHard: FitnessTestState = { hardScore: 0, softScore: 1 };
       const stateSoft: FitnessTestState = { hardScore: 1, softScore: 0 };
 
@@ -204,7 +204,7 @@ describe('Fitness Calculation', () => {
       expect(solutionHard.fitness).toBeGreaterThan(solutionSoft.fitness * 100);
     });
 
-    it('should apply custom soft constraint weights correctly', () => {
+    it('should apply custom soft constraint weights correctly', async () => {
       const state: FitnessTestState = { hardScore: 1, softScore: 0 };
 
       // Two identical violations with different weights
@@ -225,14 +225,14 @@ describe('Fitness Calculation', () => {
       expect(solution20.fitness).toBe(solution5.fitness * 4);
     });
 
-    it('should use default weight of 10 for soft constraints without explicit weight', () => {
+    it('should use default weight of 10 for soft constraints without explicit weight', async () => {
       const state: FitnessTestState = { hardScore: 1, softScore: 0 };
       const constraints = [new SoftConstraintFixed(0)]; // No weight specified, should default to 10
 
       const config = createConfig({ maxIterations: 5 });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Penalty should be (1 - 0) * 10 = 10
       expect(solution.fitness).toBe(10);
@@ -240,7 +240,7 @@ describe('Fitness Calculation', () => {
   });
 
   describe('Partial Satisfaction', () => {
-    it('should handle partial constraint satisfaction (score = 0.5)', () => {
+    it('should handle partial constraint satisfaction (score = 0.5)', async () => {
       const state: FitnessTestState = { hardScore: 0.5, softScore: 0.5 };
 
       const constraints = [
@@ -254,7 +254,7 @@ describe('Fitness Calculation', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Hard penalty = (1 - 0.5) * 10000 = 5000
       // Soft penalty = (1 - 0.5) * 10 = 5
@@ -262,7 +262,7 @@ describe('Fitness Calculation', () => {
       expect(solution.fitness).toBe(5005);
     });
 
-    it('should calculate fitness correctly for gradual improvements', () => {
+    it('should calculate fitness correctly for gradual improvements', async () => {
       const configs = [
         { hardScore: 0.0, softScore: 1 },
         { hardScore: 0.25, softScore: 1 },
@@ -282,7 +282,7 @@ describe('Fitness Calculation', () => {
         });
 
         const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-        const solution = solver.solve();
+        const solution = await solver.solve();
 
         fitnesses.push(solution.fitness);
       }
@@ -298,7 +298,7 @@ describe('Fitness Calculation', () => {
   });
 
   describe('Multiple Constraints', () => {
-    it('should sum penalties from multiple hard constraints', () => {
+    it('should sum penalties from multiple hard constraints', async () => {
       const state: FitnessTestState = { hardScore: 0, softScore: 1 };
 
       const constraints = [
@@ -313,13 +313,13 @@ describe('Fitness Calculation', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Total penalty = 10000 + 5000 + 3000 = 18000
       expect(solution.fitness).toBe(18000);
     });
 
-    it('should sum penalties from multiple soft constraints', () => {
+    it('should sum penalties from multiple soft constraints', async () => {
       const state: FitnessTestState = { hardScore: 1, softScore: 0 };
 
       const constraints = [
@@ -331,13 +331,13 @@ describe('Fitness Calculation', () => {
       const config = createConfig({ maxIterations: 5 });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Total penalty = 10 + 2.5 + 4 = 16.5
       expect(solution.fitness).toBe(16.5);
     });
 
-    it('should combine hard and soft penalties correctly', () => {
+    it('should combine hard and soft penalties correctly', async () => {
       const state: FitnessTestState = { hardScore: 0, softScore: 0 };
 
       const constraints = [
@@ -352,7 +352,7 @@ describe('Fitness Calculation', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Total = 5000 + 10 + 10 = 5020
       expect(solution.fitness).toBe(5020);
@@ -360,7 +360,7 @@ describe('Fitness Calculation', () => {
   });
 
   describe('Violation Counting', () => {
-    it('should count hard violations correctly using getViolations()', () => {
+    it('should count hard violations correctly using getViolations()', async () => {
       const state: FitnessTestState = { hardScore: 0, softScore: 1 };
 
       const constraints = [
@@ -370,13 +370,13 @@ describe('Fitness Calculation', () => {
       const config = createConfig({ maxIterations: 5 });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // hardScore = 0 means violated
       expect(solution.hardViolations).toBeGreaterThan(0);
     });
 
-    it('should count multiple violations from single constraint', () => {
+    it('should count multiple violations from single constraint', async () => {
       // This is tested implicitly through getViolations() implementation
       // The SimulatedAnnealing class uses getViolations() to count actual violations
       const state: FitnessTestState = { hardScore: 0, softScore: 1 };
@@ -385,12 +385,12 @@ describe('Fitness Calculation', () => {
       const config = createConfig({ maxIterations: 5 });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       expect(solution.violations.length).toBeGreaterThan(0);
     });
 
-    it('should provide violation details', () => {
+    it('should provide violation details', async () => {
       const state: FitnessTestState = { hardScore: 0, softScore: 0 };
 
       const constraints = [
@@ -401,7 +401,7 @@ describe('Fitness Calculation', () => {
       const config = createConfig({ maxIterations: 5 });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       expect(solution.violations).toBeDefined();
       expect(Array.isArray(solution.violations)).toBe(true);
@@ -415,7 +415,7 @@ describe('Fitness Calculation', () => {
   });
 
   describe('Edge Cases', () => {
-    it('should handle constraint score = 0 (complete violation)', () => {
+    it('should handle constraint score = 0 (complete violation)', async () => {
       const state: FitnessTestState = { hardScore: 0, softScore: 0 };
       const constraints = [new HardConstraintFixed(0)];
       const config = createConfig({
@@ -424,31 +424,31 @@ describe('Fitness Calculation', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Penalty = (1 - 0) * 10000 = 10000
       expect(solution.fitness).toBe(10000);
     });
 
-    it('should handle constraint score = 1 (complete satisfaction)', () => {
+    it('should handle constraint score = 1 (complete satisfaction)', async () => {
       const state: FitnessTestState = { hardScore: 1, softScore: 1 };
       const constraints = [new HardConstraintFixed(1), new SoftConstraintFixed(1, 10)];
       const config = createConfig({ maxIterations: 5 });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // No penalties
       expect(solution.fitness).toBe(0);
     });
 
-    it('should handle no constraints', () => {
+    it('should handle no constraints', async () => {
       const state: FitnessTestState = { hardScore: 1, softScore: 1 };
       const constraints: Constraint<FitnessTestState>[] = [];
       const config = createConfig({ maxIterations: 5 });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // No constraints = 0 fitness
       expect(solution.fitness).toBe(0);
@@ -456,7 +456,7 @@ describe('Fitness Calculation', () => {
       expect(solution.softViolations).toBe(0);
     });
 
-    it('should handle very large penalty values', () => {
+    it('should handle very large penalty values', async () => {
       const state: FitnessTestState = { hardScore: 0, softScore: 0 };
       const constraints = [new HardConstraintFixed(0)];
       const config = createConfig({
@@ -465,13 +465,13 @@ describe('Fitness Calculation', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       expect(solution.fitness).toBe(1000000);
       expect(isFinite(solution.fitness)).toBe(true);
     });
 
-    it('should handle fractional scores correctly', () => {
+    it('should handle fractional scores correctly', async () => {
       const state: FitnessTestState = { hardScore: 0.333, softScore: 0.667 };
       const constraints = [
         new HardConstraintFixed(0.333),
@@ -484,7 +484,7 @@ describe('Fitness Calculation', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, [new NoOpMove()], config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Hard: (1 - 0.333) * 10000 = 6670
       // Soft: (1 - 0.667) * 15 = 4.995

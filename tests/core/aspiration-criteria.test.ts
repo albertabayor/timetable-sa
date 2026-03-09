@@ -47,7 +47,7 @@ const createMockMoveGenerator = (name: string, increment: number): MoveGenerator
 
 describe('Aspiration Criteria', () => {
   describe('shouldSkipTabu method', () => {
-    it('should return false when tabu search is disabled', () => {
+    it('should return false when tabu search is disabled', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -71,7 +71,7 @@ describe('Aspiration Criteria', () => {
       expect(result).toBe(false);
     });
 
-    it('should return false when state is not in tabu list', () => {
+    it('should return false when state is not in tabu list', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -94,7 +94,7 @@ describe('Aspiration Criteria', () => {
       expect(result).toBe(false);
     });
 
-    it('should return false (accept) when tabu but fitness < globalBest (aspiration met)', () => {
+    it('should return false (accept) when tabu but fitness < globalBest (aspiration met)', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -121,7 +121,7 @@ describe('Aspiration Criteria', () => {
       expect(result).toBe(false); // Should NOT skip (aspiration met!)
     });
 
-    it('should return true (skip) when tabu and fitness >= globalBest (aspiration NOT met)', () => {
+    it('should return true (skip) when tabu and fitness >= globalBest (aspiration NOT met)', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -148,7 +148,7 @@ describe('Aspiration Criteria', () => {
       expect(result).toBe(true); // Should skip (tabu + no aspiration)
     });
 
-    it('should return true (skip) when aspiration is disabled even if fitness < globalBest', () => {
+    it('should return true (skip) when aspiration is disabled even if fitness < globalBest', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -175,7 +175,7 @@ describe('Aspiration Criteria', () => {
       expect(result).toBe(true); // Should skip (aspiration disabled)
     });
 
-    it('should return false when tabu tenure has expired', () => {
+    it('should return false when tabu tenure has expired', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -201,7 +201,7 @@ describe('Aspiration Criteria', () => {
       expect(result).toBe(false); // Should NOT skip (tabu expired)
     });
 
-    it('should return false when fitness equals globalBest (not strictly less)', () => {
+    it('should return false when fitness equals globalBest (not strictly less)', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -230,7 +230,7 @@ describe('Aspiration Criteria', () => {
   });
 
   describe('Integration: Tabu Search with Aspiration Criteria', () => {
-    it('should accept breakthrough solution in optimization', () => {
+    it('should accept breakthrough solution in optimization', async () => {
       let aspirationCalled = false;
 
       const solver = new SimulatedAnnealing<TestState>(
@@ -262,14 +262,14 @@ describe('Aspiration Criteria', () => {
       // Manually add a "breakthrough" state to tabu
       // But this state would have fitness 0.1 which is better than global best 1.0
 
-      const result = solver.solve();
+      const result = await solver.solve();
 
       // The solver should complete without error
       expect(result).toBeDefined();
       expect(result.iterations).toBeGreaterThan(0);
     });
 
-    it('should respect tabu when solution is not better than global best', () => {
+    it('should respect tabu when solution is not better than global best', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -296,7 +296,7 @@ describe('Aspiration Criteria', () => {
         }
       );
 
-      const result = solver.solve();
+      const result = await solver.solve();
 
       // Should complete with tabu search working
       expect(result).toBeDefined();
@@ -305,7 +305,7 @@ describe('Aspiration Criteria', () => {
   });
 
    describe('Config: Default aspirationEnabled value', () => {
-    it('should default to true when not specified', () => {
+    it('should default to true when not specified', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -326,7 +326,7 @@ describe('Aspiration Criteria', () => {
       expect(config.aspirationEnabled).toBe(true);
     });
 
-    it('should respect explicit false setting', () => {
+    it('should respect explicit false setting', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -346,7 +346,7 @@ describe('Aspiration Criteria', () => {
       expect(config.aspirationEnabled).toBe(false);
     });
 
-    it('should respect explicit true setting', () => {
+    it('should respect explicit true setting', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -368,7 +368,7 @@ describe('Aspiration Criteria', () => {
   });
 
   describe('Edge cases', () => {
-    it('should handle negative fitness values correctly', () => {
+    it('should handle negative fitness values correctly', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],
@@ -394,7 +394,7 @@ describe('Aspiration Criteria', () => {
       expect(result).toBe(false); // Should accept (aspiration met)
     });
 
-    it('should handle very large global best values', () => {
+    it('should handle very large global best values', async () => {
       const solver = new SimulatedAnnealing<TestState>(
         { value: 0, items: [] },
         [createMockConstraint()],

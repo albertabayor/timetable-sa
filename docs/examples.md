@@ -648,6 +648,147 @@ class ChangeNodeColor implements MoveGenerator<GraphState> {
 }
 ```
 
+## Real-Time Progress Tracking
+
+Monitor optimization progress in real-time using the `onProgress` callback. This is useful for web applications, APIs, and monitoring systems.
+
+### Basic Progress Logging
+
+```typescript
+import { SimulatedAnnealing } from 'timetable-sa';
+
+const config = {
+  maxIterations: 10000,
+  logInterval: 1000,
+  
+  onProgress: (iteration, cost, temp, state, stats) => {
+    console.log(
+      `[${stats.phase}] ${stats.progressPercent.toFixed(1)}% | ` +
+      `Cost: ${cost.toFixed(2)} | Hard: ${stats.hardViolations}`
+    );
+  },
+};
+
+const solver = new SimulatedAnnealing(state, constraints, moves, config);
+const solution = await solver.solve();
+```
+
+### Web Application with React
+
+```typescript
+import { useState } from 'react';
+import { SimulatedAnnealing } from 'timetable-sa';
+
+function OptimizationComponent() {
+  const [progress, setProgress] = useState(0);
+  const [stats, setStats] = useState(null);
+  
+  const runOptimization = async () => {
+    const config = {
+      maxIterations: 20000,
+      logInterval: 500,
+      
+      onProgress: (iteration, cost, temp, state, progressStats) => {
+        setProgress(progressStats.progressPercent);
+        setStats(progressStats);
+      },
+    };
+    
+    const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
+    const solution = await solver.solve();
+    
+    console.log('Complete!', solution);
+  };
+  
+  return (
+    <div>
+      <progress value={progress} max={100} />
+      <span>{progress.toFixed(1)}%</span>
+      {stats && (
+        <div>
+          <p>Phase: {stats.phase}</p>
+          <p>Cost: {stats.currentCost.toFixed(2)}</p>
+          <p>Best: {stats.bestCost.toFixed(2)}</p>
+        </div>
+      )}
+      <button onClick={runOptimization}>Start</button>
+    </div>
+  );
+}
+```
+
+### Server with WebSocket
+
+```typescript
+import { Server } from 'socket.io';
+import { SimulatedAnnealing } from 'timetable-sa';
+
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+  socket.on('optimize', async (data) => {
+    const { jobId, initialState } = data;
+    
+    const config = {
+      maxIterations: 20000,
+      logInterval: 1000,
+      
+      onProgress: async (iteration, cost, temp, state, stats) => {
+        // Send to client
+        socket.emit('progress', {
+          jobId,
+          iteration,
+          progress: stats.progressPercent,
+          cost,
+          hardViolations: stats.hardViolations,
+          phase: stats.phase,
+        });
+        
+        // Save to database
+        await db.progress.create({
+          jobId,
+          iteration,
+          stats,
+        });
+      },
+    };
+    
+    const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
+    const solution = await solver.solve();
+    
+    socket.emit('complete', { jobId, solution });
+  });
+});
+```
+
+### CLI Progress Bar
+
+```typescript
+import { SingleBar, Presets } from 'cli-progress';
+import { SimulatedAnnealing } from 'timetable-sa';
+
+const progressBar = new SingleBar({}, Presets.shades_classic);
+progressBar.start(100, 0);
+
+const config = {
+  maxIterations: 10000,
+  logInterval: 100,
+  
+  onProgress: (iteration, cost, temp, state, stats) => {
+    progressBar.update(stats.progressPercent, {
+      cost: cost.toFixed(2),
+      temp: temp.toFixed(0),
+    });
+  },
+};
+
+const solver = new SimulatedAnnealing(state, constraints, moves, config);
+const solution = await solver.solve();
+
+progressBar.stop();
+console.log(`Complete! Fitness: ${solution.fitness}`);
+```
+
 ## Best Practices
 
 1. **Start Simple**: Begin with basic constraints and moves, add complexity gradually

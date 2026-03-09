@@ -201,8 +201,9 @@ function createTestConfig(overrides?: Partial<SAConfig<TaskAssignmentState>>): S
 // ========================================
 
 describe('SimulatedAnnealing Core Engine', () => {
+  // All tests are async since solve() now returns a Promise
   describe('Initialization', () => {
-    it('should initialize with valid configuration', () => {
+    it('should initialize with valid configuration', async () => {
       const state = createTestState();
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
@@ -213,7 +214,7 @@ describe('SimulatedAnnealing Core Engine', () => {
       expect(solver).toBeDefined();
     });
 
-    it('should separate hard and soft constraints', () => {
+    it('should separate hard and soft constraints', async () => {
       const state = createTestState();
       const constraints = [
         new NoWorkerConflict(), // hard
@@ -228,14 +229,14 @@ describe('SimulatedAnnealing Core Engine', () => {
       expect(solver).toBeDefined();
     });
 
-    it('should initialize operator statistics', () => {
+    it('should initialize operator statistics', async () => {
       const state = createTestState();
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot(), new ChangeWorker()];
       const config = createTestConfig({ maxIterations: 10 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      solver.solve();
+      await solver.solve();
 
       const stats = solver.getStats();
 
@@ -246,19 +247,19 @@ describe('SimulatedAnnealing Core Engine', () => {
   });
 
   describe('Optimization Loop', () => {
-    it('should complete optimization within maxIterations', () => {
+    it('should complete optimization within maxIterations', async () => {
       const state = createTestState(true); // With conflicts
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
       const config = createTestConfig({ maxIterations: 50 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution.iterations).toBeLessThanOrEqual(50);
     });
 
-    it('should respect minTemperature stopping condition', () => {
+    it('should respect minTemperature stopping condition', async () => {
       const state = createTestState();
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
@@ -270,45 +271,45 @@ describe('SimulatedAnnealing Core Engine', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution.finalTemperature).toBeLessThanOrEqual(5);
     });
 
-    it('should stop early if Phase 1 eliminates all hard violations', () => {
+    it('should stop early if Phase 1 eliminates all hard violations', async () => {
       const state = createTestState(false); // No conflicts
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
       const config = createTestConfig({ maxIterations: 1000 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution.hardViolations).toBe(0);
       // Should complete quickly since already optimal
     });
 
-    it('should handle empty move generators gracefully', () => {
+    it('should handle empty move generators gracefully', async () => {
       const state = createTestState();
       const constraints = [new NoWorkerConflict()];
       const moves: MoveGenerator<TaskAssignmentState>[] = []; // No moves!
       const config = createTestConfig({ maxIterations: 10 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       // Should return initial state unchanged
       expect(solution.iterations).toBe(0);
     });
 
-    it('should handle all non-applicable move generators', () => {
+    it('should handle all non-applicable move generators', async () => {
       const state = createTestState();
       const constraints = [new NoWorkerConflict()];
       const moves = [new NoOpMove()]; // Never applicable
       const config = createTestConfig({ maxIterations: 10 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       // Should return initial state
       expect(solution.iterations).toBe(0);
@@ -316,7 +317,7 @@ describe('SimulatedAnnealing Core Engine', () => {
   });
 
   describe('Constraint Evaluation', () => {
-    it('should correctly evaluate hard constraints', () => {
+    it('should correctly evaluate hard constraints', async () => {
       const stateWithConflict = createTestState(true);
       const stateWithoutConflict = createTestState(false);
       const constraints = [new NoWorkerConflict()];
@@ -324,10 +325,10 @@ describe('SimulatedAnnealing Core Engine', () => {
       const config = createTestConfig({ maxIterations: 500 });
 
       const solver1 = new SimulatedAnnealing(stateWithConflict, constraints, moves, config);
-      const solution1 = solver1.solve();
+      const solution1 = await solver1.solve();
 
       const solver2 = new SimulatedAnnealing(stateWithoutConflict, constraints, moves, config);
-      const solution2 = solver2.solve();
+      const solution2 = await solver2.solve();
 
       // With enough iterations, both should reach 0 violations
       // But we verify the solver can distinguish between them initially
@@ -335,14 +336,14 @@ describe('SimulatedAnnealing Core Engine', () => {
       expect(solution2.hardViolations).toBe(0);
     });
 
-    it('should correctly count violations using getViolations()', () => {
+    it('should correctly count violations using getViolations()', async () => {
       const state = createTestState(true); // Has conflict
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
       const config = createTestConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       // With enough iterations, should be able to eliminate violations
       // This test verifies that getViolations() is used correctly
@@ -350,7 +351,7 @@ describe('SimulatedAnnealing Core Engine', () => {
       expect(solution.violations).toBeDefined();
     });
 
-    it('should apply correct penalty weights for soft constraints', () => {
+    it('should apply correct penalty weights for soft constraints', async () => {
       const state = createTestState();
       const softConstraint = new PreferMorningSlots();
       const constraints = [softConstraint];
@@ -358,13 +359,13 @@ describe('SimulatedAnnealing Core Engine', () => {
       const config = createTestConfig({ maxIterations: 10 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       // Soft violations should be counted
       expect(solution.softViolations).toBeGreaterThanOrEqual(0);
     });
 
-    it('should heavily penalize hard constraints vs soft', () => {
+    it('should heavily penalize hard constraints vs soft', async () => {
       const state = createTestState(true); // With conflicts
       const constraints = [
         new NoWorkerConflict(), // hard
@@ -377,7 +378,7 @@ describe('SimulatedAnnealing Core Engine', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       // With enough iterations, hard constraints should be satisfied
       // This test verifies that hard constraints are prioritized
@@ -388,34 +389,34 @@ describe('SimulatedAnnealing Core Engine', () => {
   });
 
   describe('Solution Quality', () => {
-    it('should find feasible solution for solvable problem', () => {
+    it('should find feasible solution for solvable problem', async () => {
       const state = createTestState(true); // With conflicts
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot(), new ChangeWorker()];
       const config = createTestConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       // Should eliminate all hard violations with enough iterations
       expect(solution.hardViolations).toBe(0);
     });
 
-    it('should improve fitness over iterations', () => {
+    it('should improve fitness over iterations', async () => {
       const state = createTestState(true); // With conflicts
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
       const config = createTestConfig({ maxIterations: 200 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       // Final fitness should be better than initial
       // (We can't check this directly, but violations should decrease)
       expect(solution.hardViolations).toBeLessThanOrEqual(1);
     });
 
-    it('should optimize soft constraints after hard constraints satisfied', () => {
+    it('should optimize soft constraints after hard constraints satisfied', async () => {
       const state = createTestState(false); // No hard violations
       const constraints = [
         new NoWorkerConflict(), // hard (already satisfied)
@@ -425,13 +426,13 @@ describe('SimulatedAnnealing Core Engine', () => {
       const config = createTestConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution.hardViolations).toBe(0);
       // Soft constraint optimization should occur in Phase 2
     });
 
-    it('should handle unsolvable problems gracefully', () => {
+    it('should handle unsolvable problems gracefully', async () => {
       const state = createTestState();
       const constraints = [new AlwaysFail()]; // Always fails
       const moves = [new ChangeTimeSlot()];
@@ -439,7 +440,7 @@ describe('SimulatedAnnealing Core Engine', () => {
       const config = createTestConfig({ maxIterations: 10000 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       // Should complete without crashing
       expect(solution.hardViolations).toBeGreaterThan(0);
@@ -448,14 +449,14 @@ describe('SimulatedAnnealing Core Engine', () => {
   });
 
   describe('Operator Statistics', () => {
-    it('should track operator attempts', () => {
+    it('should track operator attempts', async () => {
       const state = createTestState(true);
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot(), new ChangeWorker()];
       const config = createTestConfig({ maxIterations: 50 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      solver.solve();
+      await solver.solve();
 
       const stats = solver.getStats();
 
@@ -463,14 +464,14 @@ describe('SimulatedAnnealing Core Engine', () => {
       expect(stats['Change Worker'].attempts).toBeGreaterThan(0);
     });
 
-    it('should track operator success rates', () => {
+    it('should track operator success rates', async () => {
       const state = createTestState(true);
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
       const config = createTestConfig({ maxIterations: 100 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      solver.solve();
+      await solver.solve();
 
       const stats = solver.getStats();
 
@@ -478,14 +479,14 @@ describe('SimulatedAnnealing Core Engine', () => {
       expect(stats['Change Time Slot'].successRate).toBeLessThanOrEqual(1);
     });
 
-    it('should calculate success rate as improvements/attempts', () => {
+    it('should calculate success rate as improvements/attempts', async () => {
       const state = createTestState(true);
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
       const config = createTestConfig({ maxIterations: 100 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      solver.solve();
+      await solver.solve();
 
       const stats = solver.getStats();
       const opStats = stats['Change Time Slot'];
@@ -497,7 +498,7 @@ describe('SimulatedAnnealing Core Engine', () => {
   });
 
   describe('Reheating Mechanism', () => {
-    it('should reheat when stuck in local minima', () => {
+    it('should reheat when stuck in local minima', async () => {
       const state = createTestState(true);
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
@@ -509,14 +510,14 @@ describe('SimulatedAnnealing Core Engine', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       // Reheating should have occurred if stuck
       expect(solution.reheats).toBeGreaterThanOrEqual(0);
       expect(solution.reheats).toBeLessThanOrEqual(3);
     });
 
-    it('should not exceed maxReheats', () => {
+    it('should not exceed maxReheats', async () => {
       const state = createTestState(true);
       const constraints = [new AlwaysFail()]; // Always fails to trigger reheating
       const moves = [new ChangeTimeSlot()];
@@ -528,21 +529,21 @@ describe('SimulatedAnnealing Core Engine', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution.reheats).toBeLessThanOrEqual(2);
     });
   });
 
   describe('Solution Output', () => {
-    it('should return complete solution object', () => {
+    it('should return complete solution object', async () => {
       const state = createTestState();
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
       const config = createTestConfig({ maxIterations: 50 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution.state).toBeDefined();
       expect(solution.fitness).toBeDefined();
@@ -555,14 +556,14 @@ describe('SimulatedAnnealing Core Engine', () => {
       expect(solution.operatorStats).toBeDefined();
     });
 
-    it('should include violation details', () => {
+    it('should include violation details', async () => {
       const state = createTestState(true); // With conflicts
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
       const config = createTestConfig({ maxIterations: 10 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(Array.isArray(solution.violations)).toBe(true);
 
@@ -573,7 +574,7 @@ describe('SimulatedAnnealing Core Engine', () => {
       }
     });
 
-    it('should not mutate initial state', () => {
+    it('should not mutate initial state', async () => {
       const state = createTestState(true);
       const initialStateCopy = JSON.parse(JSON.stringify(state));
 
@@ -582,7 +583,7 @@ describe('SimulatedAnnealing Core Engine', () => {
       const config = createTestConfig({ maxIterations: 50 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      solver.solve();
+      await solver.solve();
 
       // Initial state should remain unchanged
       expect(state).toEqual(initialStateCopy);
@@ -590,7 +591,7 @@ describe('SimulatedAnnealing Core Engine', () => {
   });
 
   describe('Edge Cases', () => {
-    it('should handle state with no assignments', () => {
+    it('should handle state with no assignments', async () => {
       const state: TaskAssignmentState = {
         assignments: [],
         totalWorkers: 2,
@@ -601,12 +602,12 @@ describe('SimulatedAnnealing Core Engine', () => {
       const config = createTestConfig({ maxIterations: 10 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution.hardViolations).toBe(0);
     });
 
-    it('should handle single assignment state', () => {
+    it('should handle single assignment state', async () => {
       const state: TaskAssignmentState = {
         assignments: [{ taskId: 'T1', workerId: 'W0', timeSlot: 0 }],
         totalWorkers: 2,
@@ -617,12 +618,12 @@ describe('SimulatedAnnealing Core Engine', () => {
       const config = createTestConfig({ maxIterations: 10 });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution.hardViolations).toBe(0);
     });
 
-    it('should handle very high temperature', () => {
+    it('should handle very high temperature', async () => {
       const state = createTestState(true);
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
@@ -632,12 +633,12 @@ describe('SimulatedAnnealing Core Engine', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution).toBeDefined();
     });
 
-    it('should handle very low cooling rate', () => {
+    it('should handle very low cooling rate', async () => {
       const state = createTestState(true);
       const constraints = [new NoWorkerConflict()];
       const moves = [new ChangeTimeSlot()];
@@ -647,7 +648,7 @@ describe('SimulatedAnnealing Core Engine', () => {
       });
 
       const solver = new SimulatedAnnealing(state, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await await solver.solve();
 
       expect(solution).toBeDefined();
       expect(solution.iterations).toBeLessThanOrEqual(100);

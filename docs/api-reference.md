@@ -1,10 +1,16 @@
 # API Reference
 
-Complete API documentation for **timetable-sa** v2.1.0.
+Complete API documentation for **timetable-sa** v2.3.0.
 
 ## Version History
 
-**v2.1.0 - Advanced Features (Current)**
+**v2.3.0 - Real-Time Progress Tracking (Current)**
+- `onProgress` callback for real-time optimization monitoring
+- `ProgressStats` interface with comprehensive metrics
+- Async `solve()` method to support async progress callbacks
+- Error handling that prevents callback errors from breaking optimization
+
+**v2.1.0 - Advanced Features**
 - Tabu Search support for preventing cycling and escaping local minima
 - Phase 1.5 Intensification for aggressive hard constraint violation resolution
 - Enhanced operator statistics with success rate tracking
@@ -22,6 +28,7 @@ Complete API documentation for **timetable-sa** v2.1.0.
   - [Constraint](#constraint)
   - [MoveGenerator](#movegenerator)
   - [SAConfig](#saconfig)
+  - [ProgressStats](#progressstats)
 - [Types](#types)
   - [Solution](#solution)
   - [Violation](#violation)
@@ -75,14 +82,16 @@ const solver = new SimulatedAnnealing(
 Run the optimization algorithm and return the best solution found.
 
 ```typescript
-solve(): Solution<TState>
+solve(): Promise<Solution<TState>>
 ```
 
-**Returns:** `Solution<TState>` - The best solution found
+**Returns:** `Promise<Solution<TState>>` - The best solution found
+
+**Note:** Since v2.3.0, `solve()` returns a `Promise` to support async `onProgress` callbacks. Use `await` when calling.
 
 **Example:**
 ```typescript
-const solution = solver.solve();
+const solution = await solver.solve();
 
 console.log('Fitness:', solution.fitness);
 console.log('Hard violations:', solution.hardViolations);
@@ -339,6 +348,9 @@ interface SAConfig<TState> {
 
   // Optional: Logging
   logging?: LoggingConfig;
+
+  // Optional: Progress Tracking
+  onProgress?: OnProgressCallback<TState>;
 }
 
 interface LoggingConfig {
@@ -517,6 +529,156 @@ const config: SAConfig<TimetableState> = {
 **logging.filePath?: string**
 - File path for file-based logging (when output is `'file'` or `'both'`)
 - Default: `'./sa-optimization.log'`
+
+#### Progress Tracking Parameters (Optional)
+
+**onProgress?: OnProgressCallback<TState>**
+- Callback function invoked at regular intervals during optimization
+- Provides real-time progress updates for monitoring, UI updates, database logging, etc.
+- Can be synchronous or asynchronous (returns `void` or `Promise<void>`)
+- Called at iteration 0, every `logInterval` iterations, on phase transitions, and during reheating
+- Errors in callback are caught and logged but don't break optimization
+- See [ProgressStats](#progressstats) for the data structure
+
+**Example: WebSocket Progress Updates**
+```typescript
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:3000');
+
+const config: SAConfig<MyState> = {
+  // ... core parameters
+  
+  onProgress: async (iteration, cost, temp, state, stats) => {
+    // Send to frontend via WebSocket
+    socket.emit('optimization-progress', {
+      iteration,
+      progress: stats.progressPercent,
+      cost,
+      temperature: temp,
+      hardViolations: stats.hardViolations,
+      phase: stats.phase,
+    });
+    
+    // Also save to database
+    await db.optimizationProgress.create({
+      data: { iteration, cost, stats },
+    });
+  },
+};
+```
+
+**Example: CLI Progress Bar**
+```typescript
+import { SingleBar, Presets } from 'cli-progress';
+
+const progressBar = new SingleBar({}, Presets.shades_classic);
+progressBar.start(100, 0);
+
+const config: SAConfig<MyState> = {
+  // ... core parameters
+  logInterval: 100,
+  
+  onProgress: (iteration, cost, temp, state, stats) => {
+    progressBar.update(stats.progressPercent, {
+      cost: cost.toFixed(2),
+      temp: temp.toFixed(0),
+    });
+  },
+};
+
+const solver = new SimulatedAnnealing(state, constraints, moves, config);
+const solution = await solver.solve();
+progressBar.stop();
+```
+
+---
+
+### ProgressStats
+
+Comprehensive statistics provided to the `onProgress` callback.
+
+```typescript
+interface ProgressStats {
+  iteration: number;
+  currentCost: number;
+  bestCost: number;
+  temperature: number;
+  hardViolations: number;
+  softViolations: number;
+  tabuHits: number;
+  phase: 'phase1' | 'phase15' | 'phase2' | 'initial';
+  reheatingCount: number;
+  acceptedMoves: number;
+  rejectedMoves: number;
+  stagnationCount: number;
+  bestCostIteration: number;
+  progressPercent: number;
+  timestamp: number;
+}
+```
+
+#### Properties
+
+**iteration: number**
+- Current iteration number
+- Range: 0 to `maxIterations`
+
+**currentCost: number**
+- Current cost/fitness value
+- Lower is better
+
+**bestCost: number**
+- Best cost found so far
+- Updated whenever a better solution is discovered
+
+**temperature: number**
+- Current temperature in the annealing process
+- Decreases over time (with occasional reheating)
+
+**hardViolations: number**
+- Number of hard constraint violations in current state
+- Should reach 0 for a feasible solution
+
+**softViolations: number**
+- Number of soft constraint violations in current state
+- Lower is better but not required to be 0
+
+**tabuHits: number**
+- Number of moves that were skipped due to Tabu Search
+- Only meaningful when `tabuSearchEnabled: true`
+
+**phase: 'phase1' | 'phase15' | 'phase2' | 'initial'**
+- Current optimization phase:
+  - `'initial'`: Before optimization starts
+  - `'phase1'`: Eliminating hard constraint violations
+  - `'phase15'`: Intensification phase (optional)
+  - `'phase2'`: Optimizing soft constraints
+
+**reheatingCount: number**
+- Number of reheating events that have occurred
+- 0 if reheating disabled or not triggered
+
+**acceptedMoves: number**
+- Total number of moves accepted so far
+
+**rejectedMoves: number**
+- Total number of moves rejected so far
+
+**stagnationCount: number**
+- Iterations without improvement
+- Resets when a better solution is found
+
+**bestCostIteration: number**
+- Iteration number where the best cost was found
+
+**progressPercent: number**
+- Progress percentage (0-100)
+- Calculated as `(iteration / maxIterations) * 100`
+
+**timestamp: number**
+- Unix timestamp when this progress was recorded (milliseconds)
+- Use `Date.now()` format
 
 ## Types
 

@@ -1,3 +1,5 @@
+import type { OnProgressCallback } from '../types/ProgressStats.js';
+
 /**
  * Configuration for the Simulated Annealing algorithm.
  *
@@ -11,6 +13,7 @@
  * - Reheating: Escapes local minima by temporarily increasing temperature
  * - Intensification: Focused optimization for stubborn violations
  * - Adaptive operator selection: Learns effective operators
+ * - Real-time progress tracking via onProgress callback
  *
  * @template TState - The state type for your problem domain
  */
@@ -375,6 +378,57 @@ export interface SAConfig<TState> {
    * Logging configuration
    */
   logging?: LoggingConfig;
+
+  /**
+   * Callback function for real-time progress tracking.
+   *
+   * This callback is invoked at regular intervals during optimization to provide
+   * real-time progress updates. It's called every `logInterval` iterations, at
+   * phase transitions, and when reheating occurs.
+   *
+   * **Use Cases:**
+   * - Web applications: Send progress to frontend via WebSocket
+   * - CLI tools: Update progress bars
+   * - Monitoring: Log to database or metrics service
+   * - Debugging: Track optimization behavior
+   *
+   * **Performance Note:**
+   * The callback receives `null` for the state parameter to avoid expensive
+   * cloning operations. If you need the state, access it through your own
+   * reference or consider storing metrics instead of full state.
+   *
+   * **Async Support:**
+   * The callback can be async (return a Promise). The optimization will wait
+   * for the callback to complete before continuing. Errors in the callback
+   * are caught and logged but won't break the optimization.
+   *
+   * @param iteration - Current iteration number
+   * @param currentCost - Current cost/fitness value
+   * @param temperature - Current temperature
+   * @param state - Current state (always null for performance)
+   * @param stats - Complete progress statistics
+   *
+   * @example
+   * ```typescript
+   * const config: SAConfig<MyState> = {
+   *   maxIterations: 20000,
+   *   logInterval: 500,
+   *   onProgress: async (iteration, cost, temp, state, stats) => {
+   *     // Update progress bar
+   *     console.log(`Progress: ${stats.progressPercent.toFixed(1)}%`);
+   *
+   *     // Send to server
+   *     await fetch('/api/progress', {
+   *       method: 'POST',
+   *       body: JSON.stringify({ iteration, cost, stats })
+   *     });
+   *   }
+   * };
+   * ```
+   *
+   * @default undefined (no progress tracking)
+   */
+  onProgress?: OnProgressCallback<TState>;
 }
 
 /**

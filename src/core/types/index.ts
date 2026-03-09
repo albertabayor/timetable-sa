@@ -4,3 +4,4 @@
 
 export type { Solution, OperatorStats } from './Solution.js';
 export type { Violation } from './Violation.js';
+export type { ProgressStats, OnProgressCallback } from './ProgressStats.js';

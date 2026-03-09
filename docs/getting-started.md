@@ -2,6 +2,8 @@
 
 Welcome to **timetable-sa** - a generic, unopinionated Simulated Annealing library for solving constraint satisfaction problems.
 
+> **Note for v2.3.0+**: The `solve()` method now returns a `Promise`. Make sure to use `await` when calling it, or wrap it in an async function. This change enables real-time progress tracking via the `onProgress` callback.
+
 ## What Can You Build?
 
 This library can solve ANY optimization problem with constraints:
@@ -144,7 +146,7 @@ const config: SAConfig<TaskAssignment> = {
 
 // Solve!
 const solver = new SimulatedAnnealing(initialState, constraints, moveGenerators, config);
-const solution = solver.solve();
+const solution = await solver.solve();
 
 // Check results
 console.log('Solution found!');
@@ -184,6 +186,7 @@ Assignments: [
 
 - [Core Concepts](./core-concepts.md) - Deep dive into states, constraints, and moves
 - [Configuration Guide](./configuration.md) - Tune the algorithm for best results
+- [Advanced Features](./advanced-features.md) - Real-time progress tracking, tabu search, and more
 - [Examples](./examples.md) - See more complete examples
 - [API Reference](./api-reference.md) - Complete API documentation
 
@@ -241,12 +244,34 @@ const config: SAConfig<TaskAssignment> = {
 
 Avoid `JSON.parse(JSON.stringify(...))` for large states - it's slow!
 
+### Track Progress in Real-Time
+
+Monitor optimization progress with the `onProgress` callback:
+
+```typescript
+const config: SAConfig<TaskAssignment> = {
+  // ... other config
+  logInterval: 1000, // Update every 1000 iterations
+
+  onProgress: (iteration, cost, temp, state, stats) => {
+    console.log(
+      `[${stats.phase}] ${stats.progressPercent.toFixed(1)}% | ` +
+      `Cost: ${cost.toFixed(2)} | Hard: ${stats.hardViolations}`
+    );
+  },
+};
+```
+
+This is great for web applications, progress bars, or monitoring systems.
+
 ## Tips for Success
 
-1. **Start Simple**: Begin with one hard constraint and one move operator
-2. **Test Constraints**: Verify your constraints work correctly on known inputs
-3. **Add Gradually**: Add more constraints and moves incrementally
-4. **Monitor Violations**: Use `solution.violations` to debug what's not working
-5. **Tune Parameters**: Adjust temperature and cooling rate if not finding good solutions
+1. **Use `await`**: Since v2.3.0, `solve()` returns a Promise - use `const solution = await solver.solve()`
+2. **Start Simple**: Begin with one hard constraint and one move operator
+3. **Test Constraints**: Verify your constraints work correctly on known inputs
+4. **Add Gradually**: Add more constraints and moves incrementally
+5. **Monitor Violations**: Use `solution.violations` to debug what's not working
+6. **Tune Parameters**: Adjust temperature and cooling rate if not finding good solutions
+7. **Track Progress**: Use `onProgress` callback for real-time monitoring in web apps
 
 Ready to build something? Check out the [Core Concepts](./core-concepts.md) guide!

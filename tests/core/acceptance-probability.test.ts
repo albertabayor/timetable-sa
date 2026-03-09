@@ -155,7 +155,7 @@ function createConfig(overrides?: Partial<SAConfig<SimpleState>>): SAConfig<Simp
 
 describe('Acceptance Probability Logic', () => {
   describe('Phase 1: Hard Constraint Elimination', () => {
-    it('should ALWAYS accept moves that reduce hard violations', () => {
+    it('should ALWAYS accept moves that reduce hard violations', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 5,
@@ -167,7 +167,7 @@ describe('Acceptance Probability Logic', () => {
       const config = createConfig({ maxIterations: 10 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Should accept all improvements and reach 0 violations
       expect(solution.hardViolations).toBe(0);
@@ -179,7 +179,7 @@ describe('Acceptance Probability Logic', () => {
       expect(moveStats.accepted).toBe(moveStats.attempts);
     });
 
-    it('should NEVER accept moves that increase hard violations in Phase 1', () => {
+    it('should NEVER accept moves that increase hard violations in Phase 1', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 1,
@@ -191,7 +191,7 @@ describe('Acceptance Probability Logic', () => {
       const config = createConfig({ maxIterations: 50 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       const stats = solver.getStats();
       const moveStats = stats['Worsens Hard'];
@@ -203,7 +203,7 @@ describe('Acceptance Probability Logic', () => {
       expect(solution.hardViolations).toBeGreaterThanOrEqual(1);
     });
 
-    it('should use Metropolis criterion for moves with same hard violations', () => {
+    it('should use Metropolis criterion for moves with same hard violations', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 0, // Already satisfied
@@ -221,7 +221,7 @@ describe('Acceptance Probability Logic', () => {
       });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      solver.solve();
+      await solver.solve();
 
       // With high temperature and neutral moves, some should be accepted
       // even though they don't improve (due to Metropolis criterion)
@@ -232,7 +232,7 @@ describe('Acceptance Probability Logic', () => {
       expect(moveStats.attempts).toBeGreaterThan(0);
     });
 
-    it('should prioritize hard violations over soft in Phase 1', () => {
+    it('should prioritize hard violations over soft in Phase 1', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 3,
@@ -247,7 +247,7 @@ describe('Acceptance Probability Logic', () => {
       const config = createConfig({ maxIterations: 200 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Hard violations should be completely eliminated
       expect(solution.hardViolations).toBe(0);
@@ -264,7 +264,7 @@ describe('Acceptance Probability Logic', () => {
   });
 
   describe('Phase 2: Soft Constraint Optimization', () => {
-    it('should STRICTLY reject moves that increase hard violations in Phase 2', () => {
+    it('should STRICTLY reject moves that increase hard violations in Phase 2', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 0, // Already satisfied (Phase 2 will start)
@@ -282,7 +282,7 @@ describe('Acceptance Probability Logic', () => {
       const config = createConfig({ maxIterations: 200 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       const stats = solver.getStats();
       const worseningStats = stats['Worsens Hard'];
@@ -294,7 +294,7 @@ describe('Acceptance Probability Logic', () => {
       expect(solution.hardViolations).toBe(0);
     });
 
-    it('should accept soft-improving moves in Phase 2', () => {
+    it('should accept soft-improving moves in Phase 2', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 0, // Phase 2
@@ -309,7 +309,7 @@ describe('Acceptance Probability Logic', () => {
       const config = createConfig({ maxIterations: 100 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Soft violations should improve
       expect(solution.softViolations).toBeLessThan(5);
@@ -321,7 +321,7 @@ describe('Acceptance Probability Logic', () => {
       expect(moveStats.accepted).toBeGreaterThan(0);
     });
 
-    it('should use Metropolis for soft-worsening moves (at high temp)', () => {
+    it('should use Metropolis for soft-worsening moves (at high temp)', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 0,
@@ -339,7 +339,7 @@ describe('Acceptance Probability Logic', () => {
       });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       const stats = solver.getStats();
       const moveStats = stats['Worsens Soft'];
@@ -350,7 +350,7 @@ describe('Acceptance Probability Logic', () => {
       expect(solution.hardViolations).toBe(0);
     });
 
-    it('should maintain hard constraint satisfaction throughout Phase 2', () => {
+    it('should maintain hard constraint satisfaction throughout Phase 2', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 0,
@@ -369,7 +369,7 @@ describe('Acceptance Probability Logic', () => {
       const config = createConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // CRITICAL TEST: Hard violations MUST remain 0
       expect(solution.hardViolations).toBe(0);
@@ -382,7 +382,7 @@ describe('Acceptance Probability Logic', () => {
   });
 
   describe('Temperature-Dependent Acceptance', () => {
-    it('should accept more worsening moves at high temperature', () => {
+    it('should accept more worsening moves at high temperature', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 0,
@@ -421,7 +421,7 @@ describe('Acceptance Probability Logic', () => {
       expect(acceptanceRateHigh).toBeGreaterThan(acceptanceRateLow);
     });
 
-    it('should accept fewer worsening moves as temperature decreases', () => {
+    it('should accept fewer worsening moves as temperature decreases', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 0,
@@ -438,7 +438,7 @@ describe('Acceptance Probability Logic', () => {
       });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      solver.solve();
+      await solver.solve();
 
       const stats = solver.getStats();
 
@@ -449,7 +449,7 @@ describe('Acceptance Probability Logic', () => {
   });
 
   describe('Acceptance Probability Edge Cases', () => {
-    it('should handle zero temperature gracefully', () => {
+    it('should handle zero temperature gracefully', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 0,
@@ -467,13 +467,13 @@ describe('Acceptance Probability Logic', () => {
       });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Should complete without errors
       expect(solution).toBeDefined();
     });
 
-    it('should handle identical fitness values', () => {
+    it('should handle identical fitness values', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 0,
@@ -489,13 +489,13 @@ describe('Acceptance Probability Logic', () => {
       const config = createConfig({ maxIterations: 50 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       expect(solution.hardViolations).toBe(0);
       expect(solution.softViolations).toBe(0);
     });
 
-    it('should handle very large fitness differences', () => {
+    it('should handle very large fitness differences', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 100, // Very bad
@@ -511,7 +511,7 @@ describe('Acceptance Probability Logic', () => {
       const config = createConfig({ maxIterations: 200 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Should still work and improve
       expect(solution.hardViolations).toBeLessThan(100);
@@ -519,7 +519,7 @@ describe('Acceptance Probability Logic', () => {
   });
 
   describe('Phase Transition', () => {
-    it('should transition from Phase 1 to Phase 2 when hard violations reach 0', () => {
+    it('should transition from Phase 1 to Phase 2 when hard violations reach 0', async () => {
       const initialState: SimpleState = {
         value: 0,
         hardViolationCount: 2,
@@ -535,7 +535,7 @@ describe('Acceptance Probability Logic', () => {
       const config = createConfig({ maxIterations: 500 });
 
       const solver = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution = solver.solve();
+      const solution = await solver.solve();
 
       // Should complete Phase 1 (eliminate hard violations)
       expect(solution.hardViolations).toBe(0);
@@ -544,7 +544,7 @@ describe('Acceptance Probability Logic', () => {
       expect(solution.softViolations).toBeLessThan(5);
     });
 
-    it('should enforce stricter acceptance in Phase 2 than Phase 1', () => {
+    it('should enforce stricter acceptance in Phase 2 than Phase 1', async () => {
       // This is tested implicitly by the Phase 2 tests above
       // where worsening hard moves are NEVER accepted in Phase 2
       // but might be explored (and rejected) in Phase 1

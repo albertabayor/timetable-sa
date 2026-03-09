@@ -21,6 +21,7 @@ import type { MoveGenerator } from './interfaces/MoveGenerator.js';
 import type { SAConfig } from './interfaces/SAConfig.js';
 import type { Solution, OperatorStats } from './types/Solution.js';
 import type { Violation } from './types/Violation.js';
+import type { ProgressStats } from './types/ProgressStats.js';
 
 export class SimulatedAnnealing<TState> {
   private initialState: TState;
@@ -47,6 +48,23 @@ export class SimulatedAnnealing<TState> {
 
   // Tabu list: stores move signatures with the iteration they were added
   private tabuList: Map<string, number> = new Map();
+
+  // Progress tracking
+  private progressStats: {
+    acceptedMoves: number;
+    rejectedMoves: number;
+    stagnationCount: number;
+    bestCostIteration: number;
+    currentPhase: 'phase1' | 'phase15' | 'phase2' | 'initial';
+    lastProgressIteration: number;
+  } = {
+    acceptedMoves: 0,
+    rejectedMoves: 0,
+    stagnationCount: 0,
+    bestCostIteration: 0,
+    currentPhase: 'initial',
+    lastProgressIteration: -1,
+  };
 
   /**
    * Validates all constructor inputs to ensure they meet requirements
@@ -223,9 +241,12 @@ export class SimulatedAnnealing<TState> {
    *
    * @returns Best solution found with detailed statistics
    */
-  solve(): Solution<TState> {
+  async solve(): Promise<Solution<TState>> {
     this.log('info', 'Starting optimization...');
     this.log('info', 'Phase 1: Eliminating hard constraint violations');
+    
+    // Initialize phase
+    this.setPhase('phase1');
 
     let currentState = this.config.cloneState(this.initialState);
     let bestState = this.config.cloneState(currentState);
@@ -262,6 +283,18 @@ export class SimulatedAnnealing<TState> {
       totalViolations: initialViolations.length,
     });
 
+    // Trigger initial progress callback
+    if (this.config.onProgress) {
+      await this.triggerProgressCallback(
+        0,
+        currentFitness,
+        temperature,
+        currentHardViolations,
+        initialSoftViolations,
+        reheats
+      );
+    }
+
     // Calculate breakdown per constraint type
     const violationsByConstraint = initialViolations.reduce(
       (acc, v) => {
@@ -275,7 +308,7 @@ export class SimulatedAnnealing<TState> {
     this.log('info', 'Initial violations breakdown by constraint', violationsByConstraint);
 
     // Phase 1: Eliminate hard constraints
-    const phase1Result = this.runPhase1(
+    const phase1Result = await this.runPhase1(
       currentState,
       bestState,
       currentFitness,
@@ -303,7 +336,8 @@ export class SimulatedAnnealing<TState> {
 
     // Phase 1.5: Intensification
     if (bestHardViolations > 0 && this.config.enableIntensification) {
-      const intensificationResult = this.runIntensification(
+      this.setPhase('phase15');
+      const intensificationResult = await this.runIntensification(
         bestState,
         bestFitness,
         bestHardViolations,
@@ -317,7 +351,7 @@ export class SimulatedAnnealing<TState> {
     }
 
     // Phase 2: Optimize soft constraints
-    const phase2Result = this.runPhase2(
+    const phase2Result = await this.runPhase2(
       bestState,
       bestFitness,
       bestHardViolations,
@@ -343,7 +377,7 @@ export class SimulatedAnnealing<TState> {
    * Focuses on reducing hard violations using tabu search and reheating.
    * Runs for 60% of maxIterations or until all hard violations are eliminated.
    */
-  private runPhase1(
+  private async runPhase1(
     currentState: TState,
     bestState: TState,
     currentFitness: number,
@@ -354,7 +388,7 @@ export class SimulatedAnnealing<TState> {
     iteration: number,
     iterationsWithoutImprovement: number,
     reheats: number
-  ): {
+  ): Promise<{
     currentState: TState;
     bestState: TState;
     currentFitness: number;
@@ -365,7 +399,7 @@ export class SimulatedAnnealing<TState> {
     iteration: number;
     iterationsWithoutImprovement: number;
     reheats: number;
-  } {
+  }> {
     const phase1MaxIterations = Math.floor(this.config.maxIterations * 0.6);
     let phase1Iteration = 0;
 
@@ -403,7 +437,11 @@ export class SimulatedAnnealing<TState> {
         temperature
       );
 
-      if (Math.random() < acceptProb) {
+      const accepted = Math.random() < acceptProb;
+      const isImprovement = newHardViolations < bestHardViolations ||
+        (newHardViolations === bestHardViolations && newFitness < bestFitness);
+
+      if (accepted) {
         this.operatorStats[operatorName]!.accepted++;
 
         if (newFitness < currentFitness) {
@@ -421,21 +459,22 @@ export class SimulatedAnnealing<TState> {
         currentHardViolations = newHardViolations;
 
         // Update best solution
-        if (
-          newHardViolations < bestHardViolations ||
-          (newHardViolations === bestHardViolations && newFitness < bestFitness)
-        ) {
+        if (isImprovement) {
           bestState = this.config.cloneState(currentState);
           bestFitness = newFitness;
           bestHardViolations = newHardViolations;
           iterationsWithoutImprovement = 0;
+          this.progressStats.bestCostIteration = iteration;
+          this.updateProgressStats(true, true, iteration);
 
           this.log('debug', `[Phase 1] New best: Hard violations = ${bestHardViolations}, Fitness = ${bestFitness.toFixed(2)}, Operator = ${operatorName}`);
         } else {
           iterationsWithoutImprovement++;
+          this.updateProgressStats(true, false);
         }
       } else {
         iterationsWithoutImprovement++;
+        this.updateProgressStats(false, false);
       }
 
       // Reheating
@@ -450,8 +489,15 @@ export class SimulatedAnnealing<TState> {
         temperature *= reheatingFactor;
         reheats++;
         iterationsWithoutImprovement = 0;
+        this.progressStats.stagnationCount = 0;
 
         this.log('info', `[Phase 1] Reheating #${reheats}: Temperature = ${temperature.toFixed(2)}, Hard violations = ${bestHardViolations}`);
+        
+        // Trigger progress callback on reheating
+        if (this.shouldTriggerProgress(iteration, true)) {
+          const softV = this.getViolations(bestState).filter(v => v.constraintType === 'soft').length;
+          await this.triggerProgressCallback(iteration, bestFitness, temperature, bestHardViolations, softV, reheats);
+        }
       }
 
       temperature *= this.config.coolingRate;
@@ -459,8 +505,14 @@ export class SimulatedAnnealing<TState> {
       iteration++;
 
       const logInterval = this.config.logging.logInterval ?? 1000;
-      if (phase1Iteration % logInterval === 0) {
+      if (phase1Iteration % logInterval === 0 || this.shouldTriggerProgress(iteration)) {
         this.log('info', `[Phase 1] Iteration ${phase1Iteration}: Temp = ${temperature.toFixed(2)}, Hard violations = ${currentHardViolations}, Best = ${bestHardViolations}`);
+        
+        // Trigger progress callback at intervals
+        if (this.shouldTriggerProgress(iteration)) {
+          const softV = this.getViolations(bestState).filter(v => v.constraintType === 'soft').length;
+          await this.triggerProgressCallback(iteration, bestFitness, temperature, bestHardViolations, softV, reheats);
+        }
       }
     }
 
@@ -484,17 +536,17 @@ export class SimulatedAnnealing<TState> {
    * Aggressively targets remaining hard violations with multiple restart attempts.
    * Uses focused operator selection and reheating when stagnation is detected.
    */
-  private runIntensification(
+  private async runIntensification(
     bestState: TState,
     bestFitness: number,
     bestHardViolations: number,
     iteration: number
-  ): {
+  ): Promise<{
     bestState: TState;
     bestFitness: number;
     bestHardViolations: number;
     iteration: number;
-  } {
+  }> {
     this.log('info', 'Phase 1.5: Intensification - targeting remaining hard violations');
 
     let currentState = this.config.cloneState(bestState);
@@ -631,7 +683,7 @@ export class SimulatedAnnealing<TState> {
    * Maintains hard constraint satisfaction while optimizing soft constraints.
    * Uses tabu search and reheating to escape local minima.
    */
-  private runPhase2(
+  private async runPhase2(
     bestState: TState,
     bestFitness: number,
     bestHardViolations: number,
@@ -639,15 +691,16 @@ export class SimulatedAnnealing<TState> {
     iteration: number,
     iterationsWithoutImprovement: number,
     reheats: number
-  ): {
+  ): Promise<{
     bestState: TState;
     bestFitness: number;
     bestHardViolations: number;
     temperature: number;
     iteration: number;
     reheats: number;
-  } {
+  }> {
     this.log('info', 'Phase 2: Optimizing soft constraints');
+    this.setPhase('phase2');
 
     let currentState = this.config.cloneState(bestState);
     let currentFitness = bestFitness;
@@ -682,7 +735,10 @@ export class SimulatedAnnealing<TState> {
         temperature
       );
 
-      if (Math.random() < acceptProb) {
+      const accepted = Math.random() < acceptProb;
+      const isImprovement = newFitness < bestFitness;
+
+      if (accepted) {
         this.operatorStats[operatorName]!.accepted++;
 
         if (newFitness < currentFitness) {
@@ -708,13 +764,17 @@ export class SimulatedAnnealing<TState> {
           bestState = this.config.cloneState(currentState);
           bestFitness = newFitness;
           iterationsWithoutImprovement = 0;
+          this.progressStats.bestCostIteration = iteration;
+          this.updateProgressStats(true, true, iteration);
 
           this.log('debug', `[Phase 2] New best: Fitness = ${bestFitness.toFixed(2)}, Hard violations = ${newHardViolations}, Operator = ${operatorName}`);
         } else {
           iterationsWithoutImprovement++;
+          this.updateProgressStats(true, false);
         }
       } else {
         iterationsWithoutImprovement++;
+        this.updateProgressStats(false, false);
       }
 
       // Reheating
@@ -729,16 +789,29 @@ export class SimulatedAnnealing<TState> {
         temperature *= reheatingFactor;
         reheats++;
         iterationsWithoutImprovement = 0;
+        this.progressStats.stagnationCount = 0;
 
         this.log('info', `[Phase 2] Reheating #${reheats}: Temperature = ${temperature.toFixed(2)}, Fitness = ${bestFitness.toFixed(2)}`);
+
+        // Trigger progress callback on reheating
+        if (this.shouldTriggerProgress(iteration, true)) {
+          const softV = this.getViolations(bestState).filter(v => v.constraintType === 'soft').length;
+          await this.triggerProgressCallback(iteration, bestFitness, temperature, bestHardViolations, softV, reheats);
+        }
       }
 
       temperature *= this.config.coolingRate;
       iteration++;
 
       const logInterval = this.config.logging.logInterval ?? 1000;
-      if (iteration % logInterval === 0) {
+      if (iteration % logInterval === 0 || this.shouldTriggerProgress(iteration)) {
         this.log('info', `[Phase 2] Iteration ${iteration}: Temp = ${temperature.toFixed(2)}, Current = ${currentFitness.toFixed(2)}, Best = ${bestFitness.toFixed(2)}`);
+
+        // Trigger progress callback at intervals
+        if (this.shouldTriggerProgress(iteration)) {
+          const softV = this.getViolations(bestState).filter(v => v.constraintType === 'soft').length;
+          await this.triggerProgressCallback(iteration, bestFitness, temperature, bestHardViolations, softV, reheats);
+        }
       }
     }
 
@@ -1290,6 +1363,102 @@ export class SimulatedAnnealing<TState> {
     for (const operatorName in this.operatorStats) {
       const stats = this.operatorStats[operatorName]!;
       this.log('info', `  ${operatorName}: Attempts = ${stats.attempts}, Improvements = ${stats.improvements}, Accepted = ${stats.accepted}, Success Rate = ${(stats.successRate * 100).toFixed(2)}%`);
+    }
+  }
+
+  /**
+   * Trigger progress callback with current statistics
+   *
+   * Called at regular intervals to provide real-time progress updates.
+   * Supports both sync and async callbacks with proper error handling.
+   */
+  private async triggerProgressCallback(
+    iteration: number,
+    currentCost: number,
+    temperature: number,
+    hardViolations: number,
+    softViolations: number,
+    reheats: number
+  ): Promise<void> {
+    if (!this.config.onProgress) return;
+    if (iteration === this.progressStats.lastProgressIteration) return;
+
+    this.progressStats.lastProgressIteration = iteration;
+
+    const stats: ProgressStats = {
+      iteration,
+      currentCost,
+      bestCost: currentCost, // Will be overridden by caller if needed
+      temperature,
+      hardViolations,
+      softViolations,
+      tabuHits: this.tabuList.size,
+      phase: this.progressStats.currentPhase,
+      reheatingCount: reheats,
+      acceptedMoves: this.progressStats.acceptedMoves,
+      rejectedMoves: this.progressStats.rejectedMoves,
+      stagnationCount: this.progressStats.stagnationCount,
+      bestCostIteration: this.progressStats.bestCostIteration,
+      progressPercent: Math.min(100, (iteration / this.config.maxIterations) * 100),
+      timestamp: Date.now(),
+    };
+
+    try {
+      const result = this.config.onProgress(iteration, currentCost, temperature, null, stats);
+      if (result instanceof Promise) {
+        await result;
+      }
+    } catch (error) {
+      // Don't let callback errors break optimization
+      this.log('warn', 'onProgress callback error:', error);
+    }
+  }
+
+  /**
+   * Check if progress callback should be triggered
+   */
+  private shouldTriggerProgress(iteration: number, force = false): boolean {
+    if (!this.config.onProgress) return false;
+    if (force) return true;
+    if (iteration === 0) return true; // Always trigger at start
+    if (iteration === this.progressStats.lastProgressIteration) return false;
+
+    const logInterval = this.config.logging.logInterval ?? 1000;
+    return iteration % logInterval === 0;
+  }
+
+  /**
+   * Update progress tracking statistics
+   */
+  private updateProgressStats(
+    accepted: boolean,
+    isImprovement: boolean,
+    bestCostIteration?: number
+  ): void {
+    if (accepted) {
+      this.progressStats.acceptedMoves++;
+      if (isImprovement) {
+        this.progressStats.stagnationCount = 0;
+      } else {
+        this.progressStats.stagnationCount++;
+      }
+    } else {
+      this.progressStats.rejectedMoves++;
+      this.progressStats.stagnationCount++;
+    }
+
+    if (bestCostIteration !== undefined) {
+      this.progressStats.bestCostIteration = bestCostIteration;
+    }
+  }
+
+  /**
+   * Set current optimization phase
+   */
+  private setPhase(phase: 'phase1' | 'phase15' | 'phase2' | 'initial'): void {
+    if (this.progressStats.currentPhase !== phase) {
+      this.progressStats.currentPhase = phase;
+      this.log('info', `Entering ${phase} phase`);
     }
   }
 

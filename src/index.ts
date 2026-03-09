@@ -72,4 +72,6 @@ export type {
   Solution,
   OperatorStats,
   Violation,
+  ProgressStats,
+  OnProgressCallback,
 } from './core/index.js';

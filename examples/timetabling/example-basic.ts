@@ -7,7 +7,7 @@
  * Run with: npm run example:timetabling
  */
 
-import type { SAConfig, Constraint, MoveGenerator } from "../../src/index.js";
+import type { SAConfig, Constraint, MoveGenerator, ProgressStats } from "../../src/index.js";
 import type { TimetableState, ScheduleEntry } from "./types/index.js";
 import { loadDataFromExcel } from "./data/index.js";
 import { generateInitialSolution } from "./utils/initial-solution.js";
@@ -120,7 +120,7 @@ const config: SAConfig<TimetableState> = {
   // Only clone schedule array (mutable), keep references to static data (rooms, lecturers, classes)
   cloneState: (state) => ({
     ...state,
-    schedule: state.schedule.map((entry: ScheduleEntry) => ({ ...entry }))
+    schedule: state.schedule.map((entry: ScheduleEntry) => ({ ...entry })),
   }),
 
   // Reheating to escape local minima
@@ -149,6 +149,11 @@ const config: SAConfig<TimetableState> = {
     level: "info",
     logInterval: 500,
   },
+  onProgress: (iteration: number, cost: number, temperature: number, state: TimetableState | null, stats: ProgressStats) => {
+    console.log(JSON.stringify(stats, null, 2));
+    
+
+  }
 };
 
 console.log(`   Initial temperature: ${config.initialTemperature}`);
@@ -162,7 +167,7 @@ console.log("=".repeat(70));
 
 const solver = new SimulatedAnnealing(initialState, constraints, moveGenerators, config);
 
-const solution = solver.solve();
+const solution = await solver.solve();
 
 console.log("=".repeat(70));
 console.log("\n✨ OPTIMIZATION COMPLETE!\n");

@@ -179,16 +179,19 @@ onProgress: (iteration, cost, temp, state, stats) => {
   // Cost information
   console.log(`Current Cost: ${stats.currentCost}`);
   console.log(`Best Cost: ${stats.bestCost}`);
+  console.log(`Initial Cost: ${stats.initialCost}`);
+  console.log(`Improvement: ${stats.improvement.toFixed(2)}%`);
   console.log(`Best found at iteration: ${stats.bestCostIteration}`);
-  
+
   // Constraints
   console.log(`Hard Violations: ${stats.hardViolations}`);
   console.log(`Soft Violations: ${stats.softViolations}`);
-  
+
   // Algorithm state
   console.log(`Temperature: ${stats.temperature}`);
   console.log(`Reheats: ${stats.reheatingCount}`);
   console.log(`Tabu Hits: ${stats.tabuHits}`);
+  console.log(`Tabu Size: ${stats.tabuSize}`);
   
   // Move statistics
   console.log(`Accepted Moves: ${stats.acceptedMoves}`);

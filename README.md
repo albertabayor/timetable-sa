@@ -1,4 +1,4 @@
-# timetable-sa v2.3.0
+# timetable-sa v2.4.0
 
 **Generic, Unopinionated Simulated Annealing Library for Constraint Satisfaction Problems**
 
@@ -6,6 +6,18 @@ A powerful TypeScript library that solves ANY constraint-satisfaction and optimi
 
 [![npm version](https://img.shields.io/npm/v/timetable-sa.svg)](https://www.npmjs.com/package/timetable-sa)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## What's New in v2.4.0
+
+**Enhanced Progress Statistics**
+
+- **New Fields in `ProgressStats`:**
+  - `initialCost`: The cost at the start of optimization
+  - `improvement`: Percentage improvement from initial to best cost
+  - `tabuSize`: Current number of states in the tabu list
+  - Improved `tabuHits`: Now correctly counts states rejected because they were tabu (not tabu list size)
+
+**Breaking Change:** The `tabuHits` field behavior has been corrected. Previously it reported the tabu list size; now it correctly counts tabu rejections. Use `tabuSize` for the list size.
 
 ## What's New in v2.3.0
 
@@ -338,10 +350,13 @@ interface ProgressStats {
   iteration: number;              // Current iteration
   currentCost: number;            // Current cost/fitness
   bestCost: number;               // Best cost found so far
+  initialCost: number;            // Cost at the start of optimization
+  improvement: number;            // Percentage improvement from initial to best
   temperature: number;            // Current temperature
   hardViolations: number;         // Number of hard constraint violations
   softViolations: number;         // Number of soft constraint violations
-  tabuHits: number;               // Number of tabu hits (if Tabu Search enabled)
+  tabuHits: number;               // States rejected because they were tabu
+  tabuSize: number;               // Current number of states in tabu list
   phase: 'phase1' | 'phase15' | 'phase2' | 'initial';  // Current phase
   reheatingCount: number;         // Number of reheating events
   acceptedMoves: number;          // Total accepted moves

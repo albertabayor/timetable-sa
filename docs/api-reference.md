@@ -1,10 +1,15 @@
 # API Reference
 
-Complete API documentation for **timetable-sa** v2.3.0.
+Complete API documentation for **timetable-sa** v2.4.0.
 
 ## Version History
 
-**v2.3.0 - Real-Time Progress Tracking (Current)**
+**v2.4.0 - Enhanced Progress Statistics (Current)**
+- Added `initialCost` and `improvement` fields to `ProgressStats`
+- Added `tabuSize` field for current tabu list size
+- Fixed `tabuHits` to correctly count tabu rejections (breaking change)
+
+**v2.3.0 - Real-Time Progress Tracking**
 - `onProgress` callback for real-time optimization monitoring
 - `ProgressStats` interface with comprehensive metrics
 - Async `solve()` method to support async progress callbacks
@@ -603,10 +608,13 @@ interface ProgressStats {
   iteration: number;
   currentCost: number;
   bestCost: number;
+  initialCost: number;
+  improvement: number;
   temperature: number;
   hardViolations: number;
   softViolations: number;
   tabuHits: number;
+  tabuSize: number;
   phase: 'phase1' | 'phase15' | 'phase2' | 'initial';
   reheatingCount: number;
   acceptedMoves: number;
@@ -632,6 +640,15 @@ interface ProgressStats {
 - Best cost found so far
 - Updated whenever a better solution is discovered
 
+**initialCost: number**
+- Cost at the start of optimization (iteration 0)
+- Used as baseline for improvement calculation
+
+**improvement: number**
+- Percentage improvement from `initialCost` to `bestCost`
+- Formula: `((initialCost - bestCost) / initialCost) * 100`
+- Higher percentage indicates better optimization
+
 **temperature: number**
 - Current temperature in the annealing process
 - Decreases over time (with occasional reheating)
@@ -645,8 +662,14 @@ interface ProgressStats {
 - Lower is better but not required to be 0
 
 **tabuHits: number**
-- Number of moves that were skipped due to Tabu Search
+- Number of moves that were skipped because the state was tabu
 - Only meaningful when `tabuSearchEnabled: true`
+- This counts actual tabu rejections, not the tabu list size
+
+**tabuSize: number**
+- Current number of states stored in the tabu list
+- Limited by `maxTabuListSize` configuration
+- May be less than `tabuHits` (same state can be hit multiple times)
 
 **phase: 'phase1' | 'phase15' | 'phase2' | 'initial'**
 - Current optimization phase:

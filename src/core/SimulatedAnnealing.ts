@@ -57,6 +57,8 @@ export class SimulatedAnnealing<TState> {
     bestCostIteration: number;
     currentPhase: 'phase1' | 'phase15' | 'phase2' | 'initial';
     lastProgressIteration: number;
+    initialCost: number;
+    tabuHits: number;
   } = {
     acceptedMoves: 0,
     rejectedMoves: 0,
@@ -64,6 +66,8 @@ export class SimulatedAnnealing<TState> {
     bestCostIteration: 0,
     currentPhase: 'initial',
     lastProgressIteration: -1,
+    initialCost: 0,
+    tabuHits: 0,
   };
 
   /**
@@ -255,6 +259,9 @@ export class SimulatedAnnealing<TState> {
     let currentFitness = initialResult.fitness;
     let bestFitness = currentFitness;
 
+    // Store initial cost for progress tracking
+    this.progressStats.initialCost = currentFitness;
+
     let currentHardViolations = initialResult.hardViolations;
     let bestHardViolations = currentHardViolations;
 
@@ -288,6 +295,7 @@ export class SimulatedAnnealing<TState> {
       await this.triggerProgressCallback(
         0,
         currentFitness,
+        bestFitness,
         temperature,
         currentHardViolations,
         initialSoftViolations,
@@ -418,6 +426,7 @@ export class SimulatedAnnealing<TState> {
       if (this.config.tabuSearchEnabled) {
         const newSignature = this.getStateSignature(newState);
         if (this.shouldSkipTabu(newSignature, iteration, currentFitness, bestFitness)) {
+          this.progressStats.tabuHits++; // Increment tabu hits counter
           phase1Iteration++;
           iteration++;
           continue;
@@ -496,7 +505,7 @@ export class SimulatedAnnealing<TState> {
         // Trigger progress callback on reheating
         if (this.shouldTriggerProgress(iteration, true)) {
           const softV = this.getViolations(bestState).filter(v => v.constraintType === 'soft').length;
-          await this.triggerProgressCallback(iteration, bestFitness, temperature, bestHardViolations, softV, reheats);
+          await this.triggerProgressCallback(iteration,currentFitness, bestFitness, temperature, bestHardViolations, softV, reheats);
         }
       }
 
@@ -511,7 +520,7 @@ export class SimulatedAnnealing<TState> {
         // Trigger progress callback at intervals
         if (this.shouldTriggerProgress(iteration)) {
           const softV = this.getViolations(bestState).filter(v => v.constraintType === 'soft').length;
-          await this.triggerProgressCallback(iteration, bestFitness, temperature, bestHardViolations, softV, reheats);
+          await this.triggerProgressCallback(iteration, currentFitness, bestFitness, temperature, bestHardViolations, softV, reheats);
         }
       }
     }
@@ -717,6 +726,7 @@ export class SimulatedAnnealing<TState> {
       if (this.config.tabuSearchEnabled) {
         const newSignature = this.getStateSignature(newState);
         if (this.shouldSkipTabu(newSignature, iteration, currentFitness, bestFitness)) {
+          this.progressStats.tabuHits++; // Increment tabu hits counter
           iteration++;
           continue;
         }
@@ -796,7 +806,7 @@ export class SimulatedAnnealing<TState> {
         // Trigger progress callback on reheating
         if (this.shouldTriggerProgress(iteration, true)) {
           const softV = this.getViolations(bestState).filter(v => v.constraintType === 'soft').length;
-          await this.triggerProgressCallback(iteration, bestFitness, temperature, bestHardViolations, softV, reheats);
+          await this.triggerProgressCallback(iteration,currentFitness, bestFitness, temperature, bestHardViolations, softV, reheats);
         }
       }
 
@@ -810,7 +820,7 @@ export class SimulatedAnnealing<TState> {
         // Trigger progress callback at intervals
         if (this.shouldTriggerProgress(iteration)) {
           const softV = this.getViolations(bestState).filter(v => v.constraintType === 'soft').length;
-          await this.triggerProgressCallback(iteration, bestFitness, temperature, bestHardViolations, softV, reheats);
+          await this.triggerProgressCallback(iteration, currentFitness, bestFitness, temperature, bestHardViolations, softV, reheats);
         }
       }
     }
@@ -1375,6 +1385,7 @@ export class SimulatedAnnealing<TState> {
   private async triggerProgressCallback(
     iteration: number,
     currentCost: number,
+    bestCost: number,
     temperature: number,
     hardViolations: number,
     softViolations: number,
@@ -1388,11 +1399,12 @@ export class SimulatedAnnealing<TState> {
     const stats: ProgressStats = {
       iteration,
       currentCost,
-      bestCost: currentCost, // Will be overridden by caller if needed
+      bestCost: bestCost, // Will be overridden by caller if needed
       temperature,
       hardViolations,
       softViolations,
-      tabuHits: this.tabuList.size,
+      tabuHits: this.progressStats.tabuHits,
+      tabuSize: this.tabuList.size,
       phase: this.progressStats.currentPhase,
       reheatingCount: reheats,
       acceptedMoves: this.progressStats.acceptedMoves,
@@ -1400,8 +1412,14 @@ export class SimulatedAnnealing<TState> {
       stagnationCount: this.progressStats.stagnationCount,
       bestCostIteration: this.progressStats.bestCostIteration,
       progressPercent: Math.min(100, (iteration / this.config.maxIterations) * 100),
+      initialCost: this.progressStats.initialCost,
+      improvement: this.progressStats.initialCost > 0
+        ? ((this.progressStats.initialCost - bestCost) / this.progressStats.initialCost) * 100
+        : 0,
       timestamp: Date.now(),
     };
+
+    
 
     try {
       const result = this.config.onProgress(iteration, currentCost, temperature, null, stats);

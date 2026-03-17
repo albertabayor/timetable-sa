@@ -24,8 +24,11 @@ export interface ProgressStats {
   /** Number of soft constraint violations */
   softViolations: number;
 
-  /** Number of tabu hits (if Tabu Search enabled) */
+  /** Number of tabu hits (states rejected because they were tabu) */
   tabuHits: number;
+
+  /** Current tabu list size (number of states in tabu list) */
+  tabuSize: number;
 
   /** Current optimization phase */
   phase: 'phase1' | 'phase15' | 'phase2' | 'initial';
@@ -47,6 +50,12 @@ export interface ProgressStats {
 
   /** Progress percentage (0-100) */
   progressPercent: number;
+
+  /** Initial cost at the start of optimization */
+  initialCost: number;
+
+  /** Improvement percentage from initial to best cost */
+  improvement: number;
 
   /** Timestamp when this progress was recorded */
   timestamp: number;

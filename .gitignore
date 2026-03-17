@@ -50,4 +50,7 @@ coverage/
 *.tmp
 *.temp
 .cache/
-.opencode/opencode.json
+
+# OpenCode
+.opencode/
+opencode.json

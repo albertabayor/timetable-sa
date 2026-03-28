@@ -3,6 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach } from '@jest/globals';
+import { existsSync, readFileSync, rmSync } from 'node:fs';
 import { SimulatedAnnealing } from '../../src/core/SimulatedAnnealing.js';
 import type { Constraint } from '../../src/core/interfaces/Constraint.js';
 import type { MoveGenerator } from '../../src/core/interfaces/MoveGenerator.js';
@@ -259,6 +260,98 @@ describe('SimulatedAnnealing Core Engine', () => {
         ...createTestConfig(),
         coolingRate: Number.POSITIVE_INFINITY,
       })).toThrow(/finite number/);
+    });
+
+    it('should reject negative soft constraint weight', async () => {
+      const state = createTestState();
+      const constraints: Constraint<TaskAssignmentState>[] = [
+        new NoWorkerConflict(),
+        {
+          name: 'Bad Soft Weight',
+          type: 'soft',
+          weight: -1,
+          evaluate: () => 1,
+        },
+      ];
+
+      expect(() =>
+        new SimulatedAnnealing(state, constraints, [new ChangeTimeSlot()], createTestConfig())
+      ).toThrow(/must be >= 0/);
+    });
+
+    it('should return immutable stats snapshot', async () => {
+      const state = createTestState(true);
+      const constraints = [new NoWorkerConflict()];
+      const moves = [new ChangeTimeSlot()];
+      const solver = new SimulatedAnnealing(
+        state,
+        constraints,
+        moves,
+        createTestConfig({ maxIterations: 20 })
+      );
+
+      await solver.solve();
+      const statsA = solver.getStats();
+      statsA['Change Time Slot'].attempts = 999999;
+
+      const statsB = solver.getStats();
+      expect(statsB['Change Time Slot'].attempts).not.toBe(999999);
+    });
+
+    it('should support file logging sink', async () => {
+      const logPath = '/tmp/timetable-sa-logger-test.log';
+      rmSync(logPath, { force: true });
+
+      const state = createTestState(true);
+      const constraints = [new NoWorkerConflict()];
+      const moves = [new ChangeTimeSlot()];
+      const solver = new SimulatedAnnealing(
+        state,
+        constraints,
+        moves,
+        createTestConfig({
+          maxIterations: 10,
+          logging: {
+            enabled: true,
+            output: 'file',
+            filePath: logPath,
+            level: 'info',
+            logInterval: 5,
+          },
+        })
+      );
+
+      await solver.solve();
+
+      expect(existsSync(logPath)).toBe(true);
+      const content = readFileSync(logPath, 'utf8');
+      expect(content).toContain('Simulated Annealing initialized');
+      rmSync(logPath, { force: true });
+    });
+
+    it('should support non-blocking progress callback mode', async () => {
+      const state = createTestState(true);
+      const constraints = [new NoWorkerConflict()];
+      const moves = [new ChangeTimeSlot()];
+
+      let callbackCalls = 0;
+      const solver = new SimulatedAnnealing(
+        state,
+        constraints,
+        moves,
+        createTestConfig({
+          maxIterations: 30,
+          onProgressMode: 'fire-and-forget',
+          logging: { enabled: false, logInterval: 1 },
+          onProgress: async () => {
+            callbackCalls++;
+            await new Promise((resolve) => setTimeout(resolve, 1));
+          },
+        })
+      );
+
+      await solver.solve();
+      expect(callbackCalls).toBeGreaterThan(0);
     });
   });
 

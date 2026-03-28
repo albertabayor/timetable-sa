@@ -64,6 +64,12 @@
 
 // Export core library (unopinionated)
 export { SimulatedAnnealing } from './core/index.js';
+export {
+  SAError,
+  SAConfigError,
+  ConstraintValidationError,
+  SolveConcurrencyError,
+} from './core/index.js';
 export type {
   Constraint,
   MoveGenerator,

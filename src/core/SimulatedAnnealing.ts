@@ -46,6 +46,9 @@ export class SimulatedAnnealing<TState> {
   // Operator statistics
   private operatorStats: OperatorStats = {};
 
+  // Re-entrancy guard
+  private isSolving = false;
+
   // Tabu list: stores move signatures with the iteration they were added
   private tabuList: Map<string, number> = new Map();
 
@@ -69,6 +72,50 @@ export class SimulatedAnnealing<TState> {
     initialCost: 0,
     tabuHits: 0,
   };
+
+  /**
+   * Reset mutable runtime state before each solve() call
+   */
+  private resetRuntimeState(): void {
+    this.tabuList.clear();
+
+    this.progressStats = {
+      acceptedMoves: 0,
+      rejectedMoves: 0,
+      stagnationCount: 0,
+      bestCostIteration: 0,
+      currentPhase: 'initial',
+      lastProgressIteration: -1,
+      initialCost: 0,
+      tabuHits: 0,
+    };
+
+    for (const operatorName in this.operatorStats) {
+      this.operatorStats[operatorName] = {
+        attempts: 0,
+        improvements: 0,
+        accepted: 0,
+        successRate: 0,
+      };
+    }
+  }
+
+  /**
+   * Validate required numeric config field
+   */
+  private assertFiniteNumber(value: number, fieldName: string): void {
+    if (typeof value !== 'number' || !Number.isFinite(value)) {
+      throw new Error(`${fieldName} must be a finite number, got ${value}`);
+    }
+  }
+
+  /**
+   * Validate optional numeric config field
+   */
+  private assertOptionalFiniteNumber(value: number | undefined, fieldName: string): void {
+    if (value === undefined) return;
+    this.assertFiniteNumber(value, fieldName);
+  }
 
   /**
    * Validates all constructor inputs to ensure they meet requirements
@@ -122,23 +169,28 @@ export class SimulatedAnnealing<TState> {
     }
 
     // Validate config
+    this.assertFiniteNumber(config.initialTemperature, 'initialTemperature');
     if (config.initialTemperature <= 0) {
       throw new Error(`initialTemperature must be positive, got ${config.initialTemperature}`);
     }
 
+    this.assertFiniteNumber(config.minTemperature, 'minTemperature');
     if (config.minTemperature <= 0) {
       throw new Error(`minTemperature must be positive, got ${config.minTemperature}`);
     }
 
+    this.assertFiniteNumber(config.coolingRate, 'coolingRate');
     if (config.coolingRate <= 0 || config.coolingRate >= 1) {
       throw new Error(`coolingRate must be between 0 and 1 (exclusive), got ${config.coolingRate}`);
     }
 
-    if (config.maxIterations <= 0) {
+    this.assertFiniteNumber(config.maxIterations, 'maxIterations');
+    if (!Number.isInteger(config.maxIterations) || config.maxIterations <= 0) {
       throw new Error(`maxIterations must be positive, got ${config.maxIterations}`);
     }
 
-    if (typeof config.hardConstraintWeight !== 'number' || config.hardConstraintWeight <= 0) {
+    this.assertFiniteNumber(config.hardConstraintWeight, 'hardConstraintWeight');
+    if (config.hardConstraintWeight <= 0) {
       throw new Error(`hardConstraintWeight must be a positive number, got ${config.hardConstraintWeight}`);
     }
 
@@ -147,36 +199,51 @@ export class SimulatedAnnealing<TState> {
     }
 
     // Validate optional config values if provided
-    if (config.reheatingThreshold !== undefined && config.reheatingThreshold <= 0) {
+    this.assertOptionalFiniteNumber(config.reheatingThreshold, 'reheatingThreshold');
+    if (config.reheatingThreshold !== undefined && (!Number.isInteger(config.reheatingThreshold) || config.reheatingThreshold <= 0)) {
       throw new Error(`reheatingThreshold must be positive if provided, got ${config.reheatingThreshold}`);
     }
 
-    if (config.maxReheats !== undefined && config.maxReheats < 0) {
+    this.assertOptionalFiniteNumber(config.maxReheats, 'maxReheats');
+    if (config.maxReheats !== undefined && (!Number.isInteger(config.maxReheats) || config.maxReheats < 0)) {
       throw new Error(`maxReheats must be non-negative if provided, got ${config.maxReheats}`);
     }
 
+    this.assertOptionalFiniteNumber(config.reheatingFactor, 'reheatingFactor');
     if (config.reheatingFactor !== undefined && config.reheatingFactor <= 1) {
       throw new Error(`reheatingFactor must be greater than 1 if provided, got ${config.reheatingFactor}`);
     }
 
-    if (config.tabuTenure !== undefined && config.tabuTenure <= 0) {
+    this.assertOptionalFiniteNumber(config.tabuTenure, 'tabuTenure');
+    if (config.tabuTenure !== undefined && (!Number.isInteger(config.tabuTenure) || config.tabuTenure <= 0)) {
       throw new Error(`tabuTenure must be positive if provided, got ${config.tabuTenure}`);
     }
 
-    if (config.maxTabuListSize !== undefined && config.maxTabuListSize <= 0) {
+    this.assertOptionalFiniteNumber(config.maxTabuListSize, 'maxTabuListSize');
+    if (config.maxTabuListSize !== undefined && (!Number.isInteger(config.maxTabuListSize) || config.maxTabuListSize <= 0)) {
       throw new Error(`maxTabuListSize must be positive if provided, got ${config.maxTabuListSize}`);
     }
 
-    if (config.intensificationIterations !== undefined && config.intensificationIterations <= 0) {
+    this.assertOptionalFiniteNumber(config.intensificationIterations, 'intensificationIterations');
+    if (config.intensificationIterations !== undefined && (!Number.isInteger(config.intensificationIterations) || config.intensificationIterations <= 0)) {
       throw new Error(`intensificationIterations must be positive if provided, got ${config.intensificationIterations}`);
     }
 
-    if (config.maxIntensificationAttempts !== undefined && config.maxIntensificationAttempts <= 0) {
+    this.assertOptionalFiniteNumber(config.maxIntensificationAttempts, 'maxIntensificationAttempts');
+    if (config.maxIntensificationAttempts !== undefined && (!Number.isInteger(config.maxIntensificationAttempts) || config.maxIntensificationAttempts <= 0)) {
       throw new Error(`maxIntensificationAttempts must be positive if provided, got ${config.maxIntensificationAttempts}`);
     }
 
-    if (config.intensificationStagnationLimit !== undefined && config.intensificationStagnationLimit <= 0) {
+    this.assertOptionalFiniteNumber(config.intensificationStagnationLimit, 'intensificationStagnationLimit');
+    if (config.intensificationStagnationLimit !== undefined && (!Number.isInteger(config.intensificationStagnationLimit) || config.intensificationStagnationLimit <= 0)) {
       throw new Error(`intensificationStagnationLimit must be positive if provided, got ${config.intensificationStagnationLimit}`);
+    }
+
+    if (config.logging?.logInterval !== undefined) {
+      this.assertFiniteNumber(config.logging.logInterval, 'logging.logInterval');
+      if (!Number.isInteger(config.logging.logInterval) || config.logging.logInterval <= 0) {
+        throw new Error(`logging.logInterval must be a positive integer if provided, got ${config.logging.logInterval}`);
+      }
     }
   }
 
@@ -246,137 +313,148 @@ export class SimulatedAnnealing<TState> {
    * @returns Best solution found with detailed statistics
    */
   async solve(): Promise<Solution<TState>> {
-    this.log('info', 'Starting optimization...');
-    this.log('info', 'Phase 1: Eliminating hard constraint violations');
-    
-    // Initialize phase
-    this.setPhase('phase1');
-
-    let currentState = this.config.cloneState(this.initialState);
-    let bestState = this.config.cloneState(currentState);
-
-    const initialResult = this.calculateFitnessAndViolations(currentState);
-    let currentFitness = initialResult.fitness;
-    let bestFitness = currentFitness;
-
-    // Store initial cost for progress tracking
-    this.progressStats.initialCost = currentFitness;
-
-    let currentHardViolations = initialResult.hardViolations;
-    let bestHardViolations = currentHardViolations;
-
-    let temperature = this.config.initialTemperature;
-    let iteration = 0;
-    let iterationsWithoutImprovement = 0;
-    let reheats = 0;
-
-    this.log('info', 'Initial state', {
-      fitness: currentFitness.toFixed(2),
-      hardViolations: currentHardViolations,
-    });
-
-    // Calculate and log soft violations for initial state
-    const initialViolations = this.getViolations(currentState);
-    const initialSoftViolations = initialViolations.filter(
-      (v) => v.constraintType === 'soft'
-    ).length;
-    const initialHardViolations = initialViolations.filter(
-      (v) => v.constraintType === 'hard'
-    ).length;
-
-    this.log('info', 'Initial state violations summary', {
-      hardViolations: initialHardViolations,
-      softViolations: initialSoftViolations,
-      totalViolations: initialViolations.length,
-    });
-
-    // Trigger initial progress callback
-    if (this.config.onProgress) {
-      await this.triggerProgressCallback(
-        0,
-        currentFitness,
-        bestFitness,
-        temperature,
-        currentHardViolations,
-        initialSoftViolations,
-        reheats
-      );
+    if (this.isSolving) {
+      throw new Error('solve() is already running on this SimulatedAnnealing instance. Await the current solve() call or use a new instance.');
     }
 
-    // Calculate breakdown per constraint type
-    const violationsByConstraint = initialViolations.reduce(
-      (acc, v) => {
-        const key = `${v.constraintType}:${v.constraintName}`;
-        acc[key] = (acc[key] || 0) + 1;
-        return acc;
-      },
-      {} as Record<string, number>
-    );
+    this.isSolving = true;
+    this.resetRuntimeState();
 
-    this.log('info', 'Initial violations breakdown by constraint', violationsByConstraint);
+    try {
+      this.log('info', 'Starting optimization...');
+      this.log('info', 'Phase 1: Eliminating hard constraint violations');
+      
+      // Initialize phase
+      this.setPhase('phase1');
 
-    // Phase 1: Eliminate hard constraints
-    const phase1Result = await this.runPhase1(
-      currentState,
-      bestState,
-      currentFitness,
-      bestFitness,
-      currentHardViolations,
-      bestHardViolations,
-      temperature,
-      iteration,
-      iterationsWithoutImprovement,
-      reheats
-    );
+      let currentState = this.config.cloneState(this.initialState);
+      let bestState = this.config.cloneState(currentState);
 
-    currentState = phase1Result.currentState;
-    bestState = phase1Result.bestState;
-    currentFitness = phase1Result.currentFitness;
-    bestFitness = phase1Result.bestFitness;
-    currentHardViolations = phase1Result.currentHardViolations;
-    bestHardViolations = phase1Result.bestHardViolations;
-    temperature = phase1Result.temperature;
-    iteration = phase1Result.iteration;
-    iterationsWithoutImprovement = phase1Result.iterationsWithoutImprovement;
-    reheats = phase1Result.reheats;
+      const initialResult = this.calculateFitnessAndViolations(currentState);
+      let currentFitness = initialResult.fitness;
+      let bestFitness = currentFitness;
 
-    this.log('info', `Phase 1 complete: Hard violations = ${bestHardViolations}`);
+      // Store initial cost for progress tracking
+      this.progressStats.initialCost = currentFitness;
 
-    // Phase 1.5: Intensification
-    if (bestHardViolations > 0 && this.config.enableIntensification) {
-      this.setPhase('phase15');
-      const intensificationResult = await this.runIntensification(
+      let currentHardViolations = initialResult.hardViolations;
+      let bestHardViolations = currentHardViolations;
+
+      let temperature = this.config.initialTemperature;
+      let iteration = 0;
+      let iterationsWithoutImprovement = 0;
+      let reheats = 0;
+
+      this.log('info', 'Initial state', {
+        fitness: currentFitness.toFixed(2),
+        hardViolations: currentHardViolations,
+      });
+
+      // Calculate and log soft violations for initial state
+      const initialViolations = this.getViolations(currentState);
+      const initialSoftViolations = initialViolations.filter(
+        (v) => v.constraintType === 'soft'
+      ).length;
+      const initialHardViolations = initialViolations.filter(
+        (v) => v.constraintType === 'hard'
+      ).length;
+
+      this.log('info', 'Initial state violations summary', {
+        hardViolations: initialHardViolations,
+        softViolations: initialSoftViolations,
+        totalViolations: initialViolations.length,
+      });
+
+      // Trigger initial progress callback
+      if (this.config.onProgress) {
+        await this.triggerProgressCallback(
+          0,
+          currentFitness,
+          bestFitness,
+          temperature,
+          currentHardViolations,
+          initialSoftViolations,
+          reheats
+        );
+      }
+
+      // Calculate breakdown per constraint type
+      const violationsByConstraint = initialViolations.reduce(
+        (acc, v) => {
+          const key = `${v.constraintType}:${v.constraintName}`;
+          acc[key] = (acc[key] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
+
+      this.log('info', 'Initial violations breakdown by constraint', violationsByConstraint);
+
+      // Phase 1: Eliminate hard constraints
+      const phase1Result = await this.runPhase1(
+        currentState,
+        bestState,
+        currentFitness,
+        bestFitness,
+        currentHardViolations,
+        bestHardViolations,
+        temperature,
+        iteration,
+        iterationsWithoutImprovement,
+        reheats
+      );
+
+      currentState = phase1Result.currentState;
+      bestState = phase1Result.bestState;
+      currentFitness = phase1Result.currentFitness;
+      bestFitness = phase1Result.bestFitness;
+      currentHardViolations = phase1Result.currentHardViolations;
+      bestHardViolations = phase1Result.bestHardViolations;
+      temperature = phase1Result.temperature;
+      iteration = phase1Result.iteration;
+      iterationsWithoutImprovement = phase1Result.iterationsWithoutImprovement;
+      reheats = phase1Result.reheats;
+
+      this.log('info', `Phase 1 complete: Hard violations = ${bestHardViolations}`);
+
+      // Phase 1.5: Intensification
+      if (bestHardViolations > 0 && this.config.enableIntensification) {
+        this.setPhase('phase15');
+        const intensificationResult = await this.runIntensification(
+          bestState,
+          bestFitness,
+          bestHardViolations,
+          iteration
+        );
+
+        bestState = intensificationResult.bestState;
+        bestFitness = intensificationResult.bestFitness;
+        bestHardViolations = intensificationResult.bestHardViolations;
+        iteration = intensificationResult.iteration;
+      }
+
+      // Phase 2: Optimize soft constraints
+      const phase2Result = await this.runPhase2(
         bestState,
         bestFitness,
         bestHardViolations,
-        iteration
+        temperature,
+        iteration,
+        iterationsWithoutImprovement,
+        reheats
       );
 
-      bestState = intensificationResult.bestState;
-      bestFitness = intensificationResult.bestFitness;
-      bestHardViolations = intensificationResult.bestHardViolations;
-      iteration = intensificationResult.iteration;
+      bestState = phase2Result.bestState;
+      bestFitness = phase2Result.bestFitness;
+      bestHardViolations = phase2Result.bestHardViolations;
+      temperature = phase2Result.temperature;
+      iteration = phase2Result.iteration;
+      reheats = phase2Result.reheats;
+
+      return this.createSolution(bestState, bestFitness, bestHardViolations, temperature, iteration, reheats);
+    } finally {
+      this.isSolving = false;
     }
-
-    // Phase 2: Optimize soft constraints
-    const phase2Result = await this.runPhase2(
-      bestState,
-      bestFitness,
-      bestHardViolations,
-      temperature,
-      iteration,
-      iterationsWithoutImprovement,
-      reheats
-    );
-
-    bestState = phase2Result.bestState;
-    bestFitness = phase2Result.bestFitness;
-    bestHardViolations = phase2Result.bestHardViolations;
-    temperature = phase2Result.temperature;
-    iteration = phase2Result.iteration;
-    reheats = phase2Result.reheats;
-
-    return this.createSolution(bestState, bestFitness, bestHardViolations, temperature, iteration, reheats);
   }
 
   /**
@@ -422,10 +500,12 @@ export class SimulatedAnnealing<TState> {
         break;
       }
 
+      const { fitness: newFitness, hardViolations: newHardViolations } = this.calculateFitnessAndViolations(newState);
+
       // Tabu Search: Check if this state was recently visited (with aspiration criteria)
       if (this.config.tabuSearchEnabled) {
         const newSignature = this.getStateSignature(newState);
-        if (this.shouldSkipTabu(newSignature, iteration, currentFitness, bestFitness)) {
+        if (this.shouldSkipTabu(newSignature, iteration, newFitness, bestFitness)) {
           this.progressStats.tabuHits++; // Increment tabu hits counter
           phase1Iteration++;
           iteration++;
@@ -434,8 +514,6 @@ export class SimulatedAnnealing<TState> {
       }
 
       this.operatorStats[operatorName]!.attempts++;
-
-      const { fitness: newFitness, hardViolations: newHardViolations } = this.calculateFitnessAndViolations(newState);
 
       // Phase 1 acceptance: prioritize reducing hard violations
       const acceptProb = this.acceptanceProbabilityPhase1(
@@ -722,10 +800,12 @@ export class SimulatedAnnealing<TState> {
         break;
       }
 
+      const { fitness: newFitness, hardViolations: newHardViolations } = this.calculateFitnessAndViolations(newState);
+
       // Tabu Search: Check if this state was recently visited (with aspiration criteria)
       if (this.config.tabuSearchEnabled) {
         const newSignature = this.getStateSignature(newState);
-        if (this.shouldSkipTabu(newSignature, iteration, currentFitness, bestFitness)) {
+        if (this.shouldSkipTabu(newSignature, iteration, newFitness, bestFitness)) {
           this.progressStats.tabuHits++; // Increment tabu hits counter
           iteration++;
           continue;
@@ -733,8 +813,6 @@ export class SimulatedAnnealing<TState> {
       }
 
       this.operatorStats[operatorName]!.attempts++;
-
-      const { fitness: newFitness, hardViolations: newHardViolations } = this.calculateFitnessAndViolations(newState);
 
       // STRICT Phase 2: NEVER accept solutions that increase hard violations
       const acceptProb = this.acceptanceProbabilityPhase2(
@@ -906,7 +984,7 @@ export class SimulatedAnnealing<TState> {
 
     // Evaluate hard constraints ONCE - calculate both penalty and violation count
     for (const constraint of this.hardConstraints) {
-      const score = constraint.evaluate(state);
+      const score = this.evaluateConstraintScore(constraint, state);
       if (score < 1) {
         hardPenalty += (1 - score);
 
@@ -926,7 +1004,7 @@ export class SimulatedAnnealing<TState> {
 
     // Evaluate soft constraints
     for (const constraint of this.softConstraints) {
-      const score = constraint.evaluate(state);
+      const score = this.evaluateConstraintScore(constraint, state);
       const weight = constraint.weight ?? 10;
       if (score < 1) {
         softPenalty += (1 - score) * weight;
@@ -1096,14 +1174,13 @@ export class SimulatedAnnealing<TState> {
     // Default implementation: Try to get schedule from state (for timetabling problems)
     const schedule = (state as any).schedule;
     if (!schedule || !Array.isArray(schedule)) {
-      // For non-timetable states, use JSON serialization as fallback
-      // This provides a consistent signature for any state type
+      // For non-timetable states, use deterministic serialization fallback
       try {
-        return JSON.stringify(state);
+        return this.stableStringify(state);
       } catch {
-        // If state can't be serialized, use random as last resort
-        // This effectively disables tabu search for such states
-        return Math.random().toString(36);
+        throw new Error(
+          'Unable to generate deterministic state signature. Please provide config.getStateSignature for your state type.'
+        );
       }
     }
 
@@ -1315,7 +1392,7 @@ export class SimulatedAnnealing<TState> {
     const violations: Violation[] = [];
 
     for (const constraint of this.constraints) {
-      const score = constraint.evaluate(state);
+      const score = this.evaluateConstraintScore(constraint, state);
 
       if (score < 1) {
         // Use getViolations() if available for detailed violation list
@@ -1350,6 +1427,128 @@ export class SimulatedAnnealing<TState> {
     }
 
     return violations;
+  }
+
+  /**
+   * Evaluate and validate a constraint score
+   */
+  private evaluateConstraintScore(constraint: Constraint<TState>, state: TState): number {
+    const score = constraint.evaluate(state);
+
+    if (typeof score !== 'number' || !Number.isFinite(score)) {
+      throw new Error(
+        `Constraint "${constraint.name}" returned invalid score (${score}). ` +
+        'evaluate() must return a finite number between 0 and 1.'
+      );
+    }
+
+    if (score < 0 || score > 1) {
+      throw new Error(
+        `Constraint "${constraint.name}" returned out-of-range score (${score}). ` +
+        'evaluate() must return a number between 0 and 1.'
+      );
+    }
+
+    return score;
+  }
+
+  /**
+   * Deterministic stringify for state signatures
+   */
+  private stableStringify(value: unknown, seen = new WeakSet<object>()): string {
+    if (value === null) return 'null';
+
+    const valueType = typeof value;
+    if (valueType === 'number' || valueType === 'boolean') {
+      return String(value);
+    }
+
+    if (typeof value === 'string') {
+      return JSON.stringify(value);
+    }
+
+    if (typeof value === 'bigint') {
+      return `${value.toString()}n`;
+    }
+
+    if (valueType === 'undefined') {
+      return 'undefined';
+    }
+
+    if (valueType === 'function') {
+      return '[Function]';
+    }
+
+    if (valueType === 'symbol') {
+      return '[Symbol]';
+    }
+
+    if (Array.isArray(value)) {
+      return `[${value.map((item) => this.stableStringify(item, seen)).join(',')}]`;
+    }
+
+    if (valueType === 'object') {
+      const obj = value as Record<string, unknown>;
+      if (seen.has(obj)) {
+        return '[Circular]';
+      }
+
+      seen.add(obj);
+      const keys = Object.keys(obj).sort();
+      const content = keys
+        .map((key) => `${JSON.stringify(key)}:${this.stableStringify(obj[key], seen)}`)
+        .join(',');
+      seen.delete(obj);
+
+      return `{${content}}`;
+    }
+
+    return String(value);
+  }
+
+  /**
+   * Sanitize log payload to reduce accidental sensitive data exposure
+   */
+  private sanitizeLogData(data: unknown, depth = 0, seen = new WeakSet<object>()): unknown {
+    if (depth > 4) return '[TruncatedDepth]';
+    if (data === null || data === undefined) return data;
+
+    const dataType = typeof data;
+    if (typeof data === 'string') {
+      return data.length > 500 ? `${data.slice(0, 500)}...[truncated]` : data;
+    }
+
+    if (dataType === 'number' || dataType === 'boolean') return data;
+    if (dataType === 'bigint') return `${data.toString()}n`;
+    if (dataType === 'function') return '[Function]';
+    if (dataType === 'symbol') return '[Symbol]';
+
+    if (Array.isArray(data)) {
+      return data.slice(0, 100).map((item) => this.sanitizeLogData(item, depth + 1, seen));
+    }
+
+    if (dataType === 'object') {
+      const obj = data as Record<string, unknown>;
+      if (seen.has(obj)) return '[Circular]';
+      seen.add(obj);
+
+      const redacted: Record<string, unknown> = {};
+      const sensitiveKeyPattern = /(password|secret|token|apikey|api_key|authorization|cookie|session|credential|privatekey|private_key)/i;
+      const keys = Object.keys(obj).slice(0, 100);
+
+      for (const key of keys) {
+        if (sensitiveKeyPattern.test(key)) {
+          redacted[key] = '[REDACTED]';
+        } else {
+          redacted[key] = this.sanitizeLogData(obj[key], depth + 1, seen);
+        }
+      }
+
+      seen.delete(obj);
+      return redacted;
+    }
+
+    return '[UnsupportedType]';
   }
 
   /**
@@ -1535,9 +1734,17 @@ export class SimulatedAnnealing<TState> {
     if (messageLevelIndex < currentLevelIndex) return;
 
     const timestamp = new Date().toISOString();
-    const logMessage = data
-      ? `[${timestamp}] [${level.toUpperCase()}] ${message} ${JSON.stringify(data)}`
-      : `[${timestamp}] [${level.toUpperCase()}] ${message}`;
+    let serializedData = '';
+
+    if (data !== undefined) {
+      try {
+        serializedData = ` ${JSON.stringify(this.sanitizeLogData(data))}`;
+      } catch {
+        serializedData = ' [UnserializableData]';
+      }
+    }
+
+    const logMessage = `[${timestamp}] [${level.toUpperCase()}] ${message}${serializedData}`;
 
     if (this.config.logging.output === 'console' || this.config.logging.output === 'both') {
       console.log(logMessage);

@@ -407,11 +407,11 @@ describe('Acceptance Probability Logic', () => {
       });
 
       const solverHigh = new SimulatedAnnealing(initialState, constraints, moves, configHigh);
-      solverHigh.solve();
+      await solverHigh.solve();
       const statsHigh = solverHigh.getStats();
 
       const solverLow = new SimulatedAnnealing(initialState, constraints, moves, configLow);
-      solverLow.solve();
+      await solverLow.solve();
       const statsLow = solverLow.getStats();
 
       // High temperature should accept more worsening moves

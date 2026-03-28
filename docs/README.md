@@ -1,142 +1,169 @@
 # Documentation
 
-Welcome to the **timetable-sa** documentation! This library provides a generic, unopinionated Simulated Annealing implementation for solving constraint satisfaction problems.
+Complete technical documentation for `timetable-sa` - a production-grade, generic Simulated Annealing optimization library for TypeScript.
+
+## Overview
+
+This documentation provides comprehensive coverage of the `timetable-sa` package, organized to support practitioners at all levels—from first-time users to advanced researchers implementing domain-specific optimization systems. The reference sections are aligned with the current implementation in `src/` so the docs can be used as an operational source of truth, not only as conceptual guidance.
+
+### Documentation Philosophy
+
+Following Silicon Valley engineering standards, this documentation prioritizes:
+
+- **Completeness**: Every public API, configuration option, and internal mechanism documented
+- **Precision**: Technical accuracy with mathematical formalism where appropriate
+- **Practicality**: Working examples, configuration profiles, and troubleshooting guidance
+- **Extensibility**: Clear extension points for custom constraints, move generators, and policies
+
+## Documentation Workflows
+
+The documentation is structured around three primary user journeys:
+
+### 1. Learn
+
+Get started with the fundamentals and build your first working optimizer.
+
+- **[Introduction](./introduction.md)** - Library overview, capabilities, and design philosophy
+- **[Installation](./installation.md)** - Setup instructions for Node.js and Bun environments
+- **[Quick Start](./quickstart.md)** - Complete 5-step walkthrough from state to solution
+- **[Core Concepts](./core-concepts.md)** - Essential concepts: constraints, moves, fitness, phases, tabu search
+
+**Time to first solution**: ~15 minutes
+
+### 2. Configure
+
+Tune solver behavior for production workloads and specific problem domains.
+
+- **[Configuration Guide](./configuration.md)** - Complete configuration reference with tuning strategies
+- **[Algorithm and Runtime Behavior](./advanced-features.md)** - Deep dive into phase lifecycles, acceptance rules, and reheating
+- **[Examples](./examples.md)** - Domain-specific implementations and patterns
+- **[Testing Guide](./testing-guide.md)** - Comprehensive testing strategies for constraints, moves, and solver configurations
+
+**Recommended for**: Production deployments, performance tuning, custom implementations
+
+### 3. Integrate
+
+Understand internals for advanced customization and system integration.
+
+- **[Internal Architecture](./architecture.md)** - System design, component interactions, and extension points
+- **[API Reference](./api-reference.md)** - Complete API documentation with TypeScript signatures
+- **[Migration Guide](./migration-guide.md)** - Version migration instructions
+- **[Troubleshooting](./troubleshooting.md)** - Common issues and diagnostic procedures
+- **[Documentation changelog](./documentation-changelog.md)** - Summary of major documentation corrections and expansions
+
+**Recommended for**: Library contributors, framework builders, research applications
 
 ## Quick Navigation
 
-### Getting Started
-- **[Getting Started Guide](./getting-started.md)** - Your first program with timetable-sa
-- **[Core Concepts](./core-concepts.md)** - Understanding states, constraints, and moves
+### By Task
 
-### Configuration & Tuning
-- **[Configuration Guide](./configuration.md)** - Detailed parameter tuning
-- **[Advanced Features](./advanced-features.md)** - Multi-phase optimization, reheating, adaptive operators, progress tracking
+| Task | Documentation |
+|------|---------------|
+| First-time setup | [Installation](./installation.md) → [Quick Start](./quickstart.md) |
+| Understanding concepts | [Introduction](./introduction.md) → [Core Concepts](./core-concepts.md) |
+| Configuring solver | [Configuration Guide](./configuration.md) → [Advanced Features](./advanced-features.md) |
+| Writing constraints | [Core Concepts](./core-concepts.md#constraints) → [API Reference](./api-reference.md#constrainttstate) → [Testing Guide](./testing-guide.md#unit-testing-constraints) |
+| Writing move generators | [Core Concepts](./core-concepts.md#move-generators) → [API Reference](./api-reference.md#movegeneratortstate) → [Testing Guide](./testing-guide.md#unit-testing-move-generators) |
+| Testing implementation | [Testing Guide](./testing-guide.md) |
+| Debugging issues | [Troubleshooting](./troubleshooting.md) |
+| Optimizing performance | [Configuration Guide](./configuration.md) → [Benchmark Reports](./benchmarks/) |
+| Understanding internals | [Internal Architecture](./architecture.md) |
+| API details | [API Reference](./api-reference.md) |
 
-### Reference
-- **[API Reference](./api-reference.md)** - Complete API documentation
-- **[Examples](./examples.md)** - Complete working examples for common use cases
+### By Experience Level
 
-### Migration
-- **[Migration Guide](./migration-guide.md)** - Migrating from v1.x to v2.0
+**Beginner (New to optimization)**
+1. [Introduction](./introduction.md)
+2. [Installation](./installation.md)
+3. [Quick Start](./quickstart.md)
+4. [Core Concepts](./core-concepts.md)
 
-## What's New in v2.3.0
+**Intermediate (Building production systems)**
+1. [Configuration Guide](./configuration.md)
+2. [Advanced Features](./advanced-features.md)
+3. [Testing Guide](./testing-guide.md)
+4. [Examples](./examples.md)
 
-**Real-Time Progress Tracking** - Track optimization progress in real-time with the `onProgress` callback:
-- Monitor iterations, cost, temperature, and violations live
-- Support for async callbacks (WebSocket, database, etc.)
-- Full TypeScript support with comprehensive `ProgressStats`
+**Advanced (Research and extension)**
+1. [Internal Architecture](./architecture.md)
+2. [API Reference](./api-reference.md)
+3. Benchmark Reports in [benchmarks/](./benchmarks/)
+4. Source code (TypeScript with comprehensive JSDoc)
 
-See the [Advanced Features](./advanced-features.md#real-time-progress-tracking) guide for details.
+## Reference Materials
 
-## What is timetable-sa?
+### Benchmarks and Case Studies
 
-**timetable-sa** is a TypeScript library that uses Simulated Annealing to solve constraint-satisfaction and optimization problems. Unlike most SA libraries, it's completely generic - you can solve ANY optimization problem by defining:
+Detailed performance analysis and real-world optimization case studies:
 
-1. Your **state** structure (how to represent a solution)
-2. Your **constraints** (what makes a solution valid or desirable)
-3. Your **move operators** (how to modify a solution)
+- **[Baseline Benchmarks](./benchmarks/baseline-20260328.md)** - Synthetic problem performance baselines
+- **[Timetabling Case Study](./benchmarks/timetabling-comparison-20260328.md)** - Complete iterative optimization workflow with A/B testing
 
-## What Can You Build?
+### Configuration Profiles
 
-- **Timetabling**: University courses, school schedules, exam scheduling
-- **Shift Scheduling**: Employee shifts, nurse rosters, security patrols
-- **Resource Allocation**: Meeting rooms, equipment, vehicles
-- **Planning**: Project tasks, delivery routes, production schedules
-- **Graph Problems**: Coloring, frequency assignment
-- **Packing**: Bin packing, container loading
-- **And more**: Any problem with constraints and objectives
+Pre-configured parameter sets for common scenarios (from [Configuration Guide](./configuration.md)):
 
-## Documentation Structure
+- **Quick Start**: Rapid prototyping, small problems
+- **Quality**: Production optimization, high-quality solutions
+- **Fast**: Time-constrained scenarios
+- **Custom**: User-defined parameters
 
-### For Beginners
+### Mathematical Foundations
 
-1. Start with [Getting Started](./getting-started.md)
-2. Read [Core Concepts](./core-concepts.md)
-3. Try the [Examples](./examples.md)
+Key algorithms and mathematical concepts:
 
-### For Advanced Users
+- **Simulated Annealing**: Boltzmann acceptance probability, geometric cooling
+- **Tabu Search**: Short-term memory with aspiration criteria
+- **Adaptive Operator Selection**: Hybrid and roulette-wheel strategies
+- **Multi-phase Optimization**: Phase 1 (hard), Phase 1.5 (intensification), Phase 2 (soft)
 
-1. Review [Configuration Guide](./configuration.md) for tuning
-2. Explore [Advanced Features](./advanced-features.md)
-3. Reference the [API Documentation](./api-reference.md)
+See [Advanced Features](./advanced-features.md) and [Internal Architecture](./architecture.md) for formal specifications.
 
-### For v1.x Users
+## Contributing to Documentation
 
-- Read the [Migration Guide](./migration-guide.md)
+When contributing to this documentation:
 
-## Quick Example
+1. **Keep it accurate**: Test all code examples before submitting
+2. **Be precise**: Use exact TypeScript types and API signatures
+3. **Include context**: Explain *why*, not just *how*
+4. **Maintain consistency**: Follow existing formatting and structure
+5. **Consider the audience**: Tailor technical depth to the intended reader
 
-```typescript
-import { SimulatedAnnealing } from 'timetable-sa';
-import type { Constraint, MoveGenerator, SAConfig } from 'timetable-sa';
+## Document Conventions
 
-// 1. Define your state
-interface MyState {
-  assignments: Array<{ task: string; worker: string; time: number }>;
-}
+### Code Examples
 
-// 2. Define constraints
-class NoWorkerConflict implements Constraint<MyState> {
-  name = 'No Worker Conflict';
-  type = 'hard' as const;
-  evaluate(state: MyState): number {
-    // Return 1 if satisfied, 0 if violated
-  }
-}
+All code examples are:
+- **Runnable**: Can be copied and executed with minimal modification
+- **Complete**: Include necessary imports and type definitions
+- **Type-safe**: Valid TypeScript with proper type annotations
+- **Practical**: Derived from real-world use cases
 
-// 3. Define move operators
-class ChangeTime implements MoveGenerator<MyState> {
-  name = 'Change Time';
-  canApply(state: MyState): boolean { return true; }
-  generate(state: MyState, temperature: number): MyState {
-    // Return modified state
-  }
-}
+### Mathematical Notation
 
-// 4. Configure and solve
-const solver = new SimulatedAnnealing(
-  initialState,
-  [new NoWorkerConflict()],
-  [new ChangeTime()],
-  {
-    initialTemperature: 100,
-    minTemperature: 0.01,
-    coolingRate: 0.99,
-    maxIterations: 10000,
-    hardConstraintWeight: 1000,
-    cloneState: (state) => JSON.parse(JSON.stringify(state)),
-  }
-);
+Mathematical descriptions use:
+- **Pseudocode**: Clear algorithmic descriptions
+- **Formal notation**: Set theory, probability, and optimization notation where appropriate
+- **Complexity analysis**: Big-O notation for performance characteristics
 
-const solution = await solver.solve();
-```
+### Cross-References
 
-## Key Features
+Related documentation is linked:
+- Inline links: `[Configuration Guide](./configuration.md)`
+- Section anchors: `[API Reference](./api-reference.md#constrainttstate)`
+- See also sections at document conclusions
 
-- **Real-Time Progress Tracking**: `onProgress` callback for live monitoring via WebSocket, database, or UI updates
-- **Multi-Phase Optimization**: First satisfies hard constraints, then optimizes soft constraints
-- **Tabu Search**: Prevents cycling and escapes local minima
-- **Intensification**: Aggressively targets stubborn hard violations
-- **Adaptive Operator Selection**: Learns which move operators are most effective
-- **Reheating**: Escapes local minima by temporarily increasing temperature
-- **Type-Safe**: Full TypeScript support with generics
-- **Comprehensive Logging**: Track progress and debug issues
-- **Zero Dependencies**: Core library has no dependencies
+## Getting Help
 
-## Support
+If you can't find what you need:
 
-- **GitHub Issues**: [Report bugs or request features](https://github.com/albertabayor/simulated-annealing-university-timetabling-course-problem/issues)
-- **Examples**: Check the `examples/` directory in the repository
-- **Documentation**: You're reading it!
-
-## Contributing
-
-Contributions are welcome! Please open an issue or PR on GitHub.
-
-## License
-
-MIT
+1. Check [Troubleshooting](./troubleshooting.md) for common issues
+2. Review [Examples](./examples.md) for similar use cases
+3. Examine benchmark reports for performance guidance
+4. Read the source code (extensively commented JSDoc)
 
 ---
 
-**Ready to get started?** → [Getting Started Guide](./getting-started.md)
+**Documentation Version**: 1.0.0  
+**Last Updated**: March 2026  
+**Maintainer**: San Francisco Engineering Standards

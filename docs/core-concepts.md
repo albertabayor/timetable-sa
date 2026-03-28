@@ -1,504 +1,141 @@
 # Core Concepts
 
-This guide explains the fundamental concepts in **timetable-sa** and how they work together to solve optimization problems.
-
-## Table of Contents
-
-- [State](#state)
-- [Constraints](#constraints)
-- [Move Generators](#move-generators)
-- [The Algorithm](#the-algorithm)
-- [Fitness Calculation](#fitness-calculation)
+This guide explains the conceptual model behind `timetable-sa`. It focuses on
+the contracts that shape correct integrations: the meaning of `TState`, the
+constraint score model, the role of move generators, the fitness decomposition,
+and the runtime guarantees the solver provides.
 
 ## State
 
-The **state** represents a candidate solution to your problem. It can be ANY TypeScript type.
+`TState` is the full candidate solution explored by the optimizer. Every
+constraint, move generator, progress report, and final solution is defined in
+terms of this type.
 
-### Defining Your State
+### Design recommendations
 
-```typescript
-// Example 1: Timetabling
-interface TimetableState {
-  schedule: ScheduleEntry[];
-  rooms: Room[];
-  lecturers: Lecturer[];
-}
+- keep frequently mutated data compact,
+- keep static reference data outside the mutable core when possible,
+- prefer plain objects and arrays unless a different structure is clearly more
+  efficient,
+- make cloning predictable and explicit because the solver depends on your
+  `cloneState` function.
 
-interface ScheduleEntry {
-  classId: string;
-  roomId: string;
-  lecturerId: string;
-  day: string;
-  startTime: string;
-  duration: number;
-}
+From a systems perspective, the quality of the state representation strongly
+influences both performance and the expressiveness of local moves.
 
-// Example 2: Shift scheduling
-interface ShiftState {
-  shifts: Map<string, Shift[]>;
-  employees: Employee[];
-}
+## Constraint contract
 
-// Example 3: Graph coloring
-interface GraphState {
-  nodeColors: Map<string, number>;
-  edges: Edge[];
-}
+Each `Constraint<TState>` returns a normalized satisfaction score.
+
+- `1` means fully satisfied,
+- `0` means maximally violated,
+- values between `0` and `1` represent partial satisfaction.
+
+Hard and soft constraints use the same score semantics but differ in how the
+solver aggregates them into fitness and how phase logic treats them.
+
+### Runtime validation
+
+The solver validates constraint scores at runtime.
+
+- the score must be finite,
+- the score must lie in `[0, 1]`.
+
+If either rule is violated, the solver throws `ConstraintValidationError`.
+
+### Diagnostic helpers
+
+Constraints may optionally implement:
+
+- `describe(state)` for one human-readable explanation,
+- `getViolations(state)` for a detailed list of violation strings.
+
+If `getViolations()` exists, the solver uses it for richer violation reporting
+and more accurate hard-violation counting.
+
+## Move generators
+
+Move generators are neighborhood operators. They define how the solver moves
+from one candidate state to a nearby candidate state.
+
+- `canApply(state)` determines whether the operator is currently valid,
+- `generate(state, temperature)` receives a solver-prepared clone, mutates it,
+  and returns it.
+
+### Practical guidance
+
+- keep moves small enough to preserve local-search structure,
+- include at least one exploratory move for diversification,
+- add targeted repair operators for dominant hard violations,
+- use names intentionally because Phase 1 heuristics can favor operators whose
+  names suggest specific repair behavior.
+
+## Fitness model
+
+The solver minimizes a scalar objective built from hard and soft penalties.
+
+```text
+hardPenalty = sum(1 - hardScore)
+softPenalty = sum((1 - softScore) * softWeight)
+fitness = hardPenalty * hardConstraintWeight + softPenalty
 ```
 
-### State Guidelines
-
-1. **Immutability**: Never modify the state in constraints or move generators
-2. **Completeness**: State should contain all information needed to evaluate constraints
-3. **Simplicity**: Keep it simple - complex nested structures can slow down cloning
-4. **Flexibility**: You define the structure - no restrictions from the library
-
-## Constraints
-
-Constraints evaluate how "good" a state is. There are two types:
-
-### Hard Constraints
-
-**Hard constraints MUST be satisfied.** They represent non-negotiable requirements.
-
-Examples:
-- No room can be used by two classes at the same time
-- Workers cannot exceed maximum hours
-- Graph nodes connected by an edge must have different colors
-
-```typescript
-class NoRoomConflict implements Constraint<TimetableState> {
-  name = 'No Room Conflict';
-  type = 'hard' as const;
-
-  evaluate(state: TimetableState): number {
-    const violations = new Set<number>();
-
-    for (let i = 0; i < state.schedule.length; i++) {
-      for (let j = i + 1; j < state.schedule.length; j++) {
-        const a = state.schedule[i];
-        const b = state.schedule[j];
-
-        // Check if same room at overlapping times
-        if (a.roomId === b.roomId && a.day === b.day) {
-          const aEnd = addMinutes(a.startTime, a.duration);
-          const bEnd = addMinutes(b.startTime, b.duration);
-
-          if (timesOverlap(a.startTime, aEnd, b.startTime, bEnd)) {
-            violations.add(i);
-          }
-        }
-      }
-    }
-
-    // Return 1 (satisfied) or 0 (violated)
-    return violations.size === 0 ? 1 : 0;
-  }
-
-  describe(state: TimetableState): string | undefined {
-    // Return description of first violation found
-    for (let i = 0; i < state.schedule.length; i++) {
-      for (let j = i + 1; j < state.schedule.length; j++) {
-        // ... check for conflicts
-        if (hasConflict) {
-          return `Room ${a.roomId} has conflict: ${a.classId} and ${b.classId} at ${a.day} ${a.startTime}`;
-        }
-      }
-    }
-    return undefined;
-  }
-}
-```
-
-### Soft Constraints
-
-**Soft constraints are preferences** - desirable but not required.
-
-Examples:
-- Prefer morning time slots
-- Minimize gaps between classes
-- Balance workload across workers
-
-```typescript
-class PreferMorningSlots implements Constraint<TimetableState> {
-  name = 'Prefer Morning Slots';
-  type = 'soft' as const;
-  weight = 10; // Importance (default is 10)
-
-  evaluate(state: TimetableState): number {
-    let morningClasses = 0;
-    let totalClasses = state.schedule.length;
-
-    for (const entry of state.schedule) {
-      const hour = parseInt(entry.startTime.split(':')[0]);
-      if (hour < 12) morningClasses++;
-    }
-
-    // Return satisfaction score 0.0 to 1.0
-    return morningClasses / totalClasses;
-  }
-}
-```
-
-### Constraint Interface
-
-```typescript
-interface Constraint<TState> {
-  // Unique name for logging
-  name: string;
-
-  // 'hard' or 'soft'
-  type: 'hard' | 'soft';
+Lower fitness is better.
 
-  // Weight for soft constraints (optional, default: 10)
-  weight?: number;
+This design means two things:
 
-  // Evaluate the constraint
-  // Returns: 1.0 = fully satisfied, 0.0 = violated
-  evaluate(state: TState): number;
+- constraint scores are interpreted as satisfaction, not penalty,
+- hard feasibility pressure is controlled primarily by
+  `hardConstraintWeight`.
 
-  // Optional: Describe violations for debugging
-  describe?(state: TState): string | undefined;
-
-  // Optional: Get all violations (for detailed reporting)
-  getViolations?(state: TState): string[];
-}
-```
-
-### Advanced: Multiple Violations
+## Optimization phases
 
-Use `getViolations()` to report ALL violations, not just the first one:
-
-```typescript
-class NoRoomConflict implements Constraint<TimetableState> {
-  name = 'No Room Conflict';
-  type = 'hard' as const;
+The runtime is organized into three named phases.
 
-  evaluate(state: TimetableState): number {
-    const violations = this.findConflicts(state);
-    return violations.length === 0 ? 1 : 1 / (1 + violations.length);
-  }
+- `phase1`: reduce hard-constraint violations,
+- `phase15`: optional intensification if hard violations remain,
+- `phase2`: optimize total fitness while preserving the best hard-violation
+  boundary found so far.
 
-  getViolations(state: TimetableState): string[] {
-    const violations: string[] = [];
+This architecture separates feasibility-seeking behavior from late-stage
+quality refinement.
 
-    for (let i = 0; i < state.schedule.length; i++) {
-      for (let j = i + 1; j < state.schedule.length; j++) {
-        // Check for conflict
-        if (hasConflict(state.schedule[i], state.schedule[j])) {
-          violations.push(
-            `Room ${a.roomId}: ${a.classId} at ${a.startTime} conflicts with ${b.classId} at ${b.startTime}`
-          );
-        }
-      }
-    }
+## Tabu and aspiration
 
-    return violations;
-  }
+When enabled, tabu search prevents short-term cycling by tracking previously
+visited state signatures.
 
-  private findConflicts(state: TimetableState) {
-    // ... implementation
-  }
-}
-```
+- recent signatures remain tabu for `tabuTenure` iterations,
+- tabu states are skipped before acceptance,
+- aspiration can override tabu if a candidate improves global best fitness.
 
-## Move Generators
+If your state is large or structurally complex, a custom `getStateSignature(...)`
+function is often worth adding.
 
-Move generators define how to explore the solution space by creating **neighbor states**.
+## Progress and observability
 
-### Types of Moves
+The solver exposes two built-in observability mechanisms.
 
-**Local Moves**: Modify a single element
-```typescript
-class ChangeTimeSlot implements MoveGenerator<TimetableState> {
-  name = 'Change Time Slot';
+- `onProgress` emits structured `ProgressStats` during the run,
+- logging supports `console`, `file`, or `both` outputs.
 
-  canApply(state: TimetableState): boolean {
-    return state.schedule.length > 0;
-  }
+The progress callback is designed for telemetry rather than state transport. In
+practice, the callback receives `state = null` for performance reasons.
 
-  generate(state: TimetableState, temperature: number): TimetableState {
-    const newState = cloneState(state);
-    const randomIndex = Math.floor(Math.random() * newState.schedule.length);
+## Runtime safety guarantees
 
-    // Change to a random time slot
-    newState.schedule[randomIndex].startTime = getRandomTimeSlot();
+The implementation provides a small but important set of safety guarantees.
 
-    return newState;
-  }
-}
-```
+- invalid config numbers are rejected at construction time,
+- invalid constraint scores are rejected at runtime,
+- one solver instance cannot run overlapping `solve()` calls,
+- mutable runtime state is reset for each solve,
+- `getStats()` returns a snapshot copy rather than internal mutable state.
 
-**Swap Moves**: Exchange properties between two elements
-```typescript
-class SwapTimeSlots implements MoveGenerator<TimetableState> {
-  name = 'Swap Time Slots';
+## Next steps
 
-  canApply(state: TimetableState): boolean {
-    return state.schedule.length >= 2;
-  }
+If you want to move from concepts to implementation detail:
 
-  generate(state: TimetableState, temperature: number): TimetableState {
-    const newState = cloneState(state);
-
-    // Pick two random classes
-    const i = Math.floor(Math.random() * newState.schedule.length);
-    let j = Math.floor(Math.random() * newState.schedule.length);
-    while (j === i) j = Math.floor(Math.random() * newState.schedule.length);
-
-    // Swap their time slots
-    const temp = newState.schedule[i].startTime;
-    newState.schedule[i].startTime = newState.schedule[j].startTime;
-    newState.schedule[j].startTime = temp;
-
-    return newState;
-  }
-}
-```
-
-**Multi-attribute Moves**: Change multiple properties at once
-```typescript
-class ChangeTimeAndRoom implements MoveGenerator<TimetableState> {
-  name = 'Change Time and Room';
-
-  canApply(state: TimetableState): boolean {
-    return state.schedule.length > 0 && state.rooms.length > 0;
-  }
-
-  generate(state: TimetableState, temperature: number): TimetableState {
-    const newState = cloneState(state);
-    const randomIndex = Math.floor(Math.random() * newState.schedule.length);
-
-    // Change both time and room
-    newState.schedule[randomIndex].startTime = getRandomTimeSlot();
-    newState.schedule[randomIndex].roomId = getRandomRoom(state.rooms);
-
-    return newState;
-  }
-}
-```
-
-### Temperature-Dependent Moves
-
-Use temperature to adjust exploration intensity:
-
-```typescript
-class AdaptiveSwap implements MoveGenerator<TimetableState> {
-  name = 'Adaptive Swap';
-
-  canApply(state: TimetableState): boolean {
-    return state.schedule.length >= 2;
-  }
-
-  generate(state: TimetableState, temperature: number): TimetableState {
-    const newState = cloneState(state);
-
-    // High temperature: swap distant classes (more exploration)
-    // Low temperature: swap nearby classes (fine-tuning)
-    const maxDistance = temperature > 50 ? Infinity : 5;
-
-    const [i, j] = this.pickClassesToSwap(state, maxDistance);
-
-    // Swap
-    const temp = newState.schedule[i].startTime;
-    newState.schedule[i].startTime = newState.schedule[j].startTime;
-    newState.schedule[j].startTime = temp;
-
-    return newState;
-  }
-
-  private pickClassesToSwap(state: TimetableState, maxDistance: number) {
-    // Implementation...
-  }
-}
-```
-
-### Move Generator Interface
-
-```typescript
-interface MoveGenerator<TState> {
-  // Unique name for logging
-  name: string;
-
-  // Check if move is applicable
-  canApply(state: TState): boolean;
-
-  // Generate a neighbor state
-  // temperature: current temperature (use for adaptive moves)
-  generate(state: TState, temperature: number): TState;
-}
-```
-
-### Best Practices
-
-1. **Don't Modify Input**: Always clone the state before modifying
-2. **Use canApply**: Skip moves that don't make sense for the current state
-3. **Combine Strategies**: Use multiple move types for better exploration
-4. **Start Simple**: Begin with basic moves, add complex ones later
-5. **Performance**: Efficient cloning is critical (avoid `JSON.parse/stringify` if possible)
-
-## The Algorithm
-
-timetable-sa uses a **multi-phase simulated annealing** approach:
-
-### Phase 1: Eliminate Hard Constraints
-
-Goal: Find a **feasible** solution (all hard constraints satisfied)
-
-- Focus exclusively on reducing hard constraint violations
-- Reject moves that increase hard violations
-- Continue until hard violations reach 0 or phase 1 iteration limit
-- Uses 60% of maxIterations
-
-### Phase 1.5: Intensification (Optional)
-
-Goal: Aggressively eliminate remaining hard violations
-
-- **Triggered**: When Phase 1 ends with hard violations > 0
-- **Focus**: Uses targeted operators (fix, swap, change) to resolve violations
-- **Behavior**: Heavily favors moves that reduce hard violations
-- **Multiple attempts**: Up to `maxIntensificationAttempts` restarts
-- **Reheating**: Reheats if stagnation detected during intensification
-- **Stops early**: When all hard violations eliminated
-- Uses `intensificationIterations` per attempt
-
-**Configuration**:
-```typescript
-const config = {
-  enableIntensification: true,  // Default: true
-  intensificationIterations: 2000,  // Default: 2000
-  maxIntensificationAttempts: 3,    // Default: 3
-};
-```
-
-### Phase 2: Optimize Soft Constraints
-
-Goal: Find the **best** feasible solution
-
-- Maintain hard constraint satisfaction (NEVER accept moves that violate hard constraints)
-- Optimize soft constraint satisfaction
-- Continue until temperature reaches minimum or max iterations
-
-### Tabu Search (Optional)
-
-Goal: Prevent cycling and escape local minima
-
-- **Enabled**: Set `tabuSearchEnabled: true` in config
-- **Behavior**: Tracks recently visited states and prevents returning to them
-- **Tabu Tenure**: States remain tabu for `tabuTenure` iterations (default: 50)
-- **Memory Management**: Limits tabu list size to `maxTabuListSize` (default: 1000)
-
-**Configuration**:
-```typescript
-const config = {
-  tabuSearchEnabled: true,  // Default: false
-  tabuTenure: 50,           // Default: 50
-  maxTabuListSize: 1000,    // Default: 1000
-};
-```
-
-### Adaptive Operator Selection
-
-The algorithm tracks which move operators are most effective:
-
-- **70%** of the time: Select operators based on success rate (weighted random)
-- **30%** of the time: Random selection (exploration)
-
-This ensures effective operators are used more often while still exploring alternatives.
-
-### Reheating
-
-When stuck in a local minimum, the algorithm can "reheat":
-
-1. Detects: No improvement for N iterations
-2. Response: Multiply temperature by reheating factor
-3. Effect: Temporarily increase exploration to escape local minimum
-4. Limit: Maximum number of reheats (default: 3)
-5. Occurs in: Phase 1, Intensification, and Phase 2
-
-**Configuration**:
-```typescript
-const config = {
-  reheatingThreshold: 2000,  // Trigger after 2000 iterations without improvement
-  reheatingFactor: 2.5,      // Multiply temperature by 2.5
-  maxReheats: 5,             // Maximum 5 reheating events
-};
-```
-
-## Fitness Calculation
-
-The fitness function combines hard and soft constraint penalties:
-
-```
-fitness = (hardPenalty × hardConstraintWeight) + softPenalty
-```
-
-Where:
-- `hardPenalty = sum((1 - score) for each hard constraint)`
-- `softPenalty = sum((1 - score) × weight for each soft constraint)`
-
-### Example
-
-Given:
-- Hard constraint weight: 10000
-- 1 hard constraint violated (score = 0): penalty = 1
-- 2 soft constraints partially satisfied (scores = 0.6, 0.8, weights = 10, 5)
-
-```
-hardPenalty = (1 - 0) = 1
-softPenalty = (1 - 0.6) × 10 + (1 - 0.8) × 5 = 4 + 1 = 5
-fitness = 1 × 10000 + 5 = 10005
-```
-
-The large hard constraint weight ensures hard constraints are prioritized.
-
-## Putting It All Together
-
-```typescript
-// 1. Define your state
-interface MyState { /* ... */ }
-
-// 2. Create constraints
-const constraints: Constraint<MyState>[] = [
-  new HardConstraint1(),
-  new HardConstraint2(),
-  new SoftConstraint1(),
-  new SoftConstraint2(),
-];
-
-// 3. Create move generators
-const moveGenerators: MoveGenerator<MyState>[] = [
-  new Move1(),
-  new Move2(),
-  new Move3(),
-];
-
-// 4. Configure
-const config: SAConfig<MyState> = {
-  initialTemperature: 1000,
-  minTemperature: 0.01,
-  coolingRate: 0.995,
-  maxIterations: 50000,
-  hardConstraintWeight: 10000,
-  cloneState: (state) => /* clone implementation */,
-};
-
-// 5. Solve
-const solver = new SimulatedAnnealing(initialState, constraints, moveGenerators, config);
-const solution = solver.solve();
-
-// 6. Check results
-if (solution.hardViolations === 0) {
-  console.log('Valid solution found!');
-  console.log('Soft violations:', solution.softViolations);
-} else {
-  console.log('Could not find valid solution');
-  console.log('Violations:', solution.violations);
-}
-```
-
-## Next Steps
-
-- [Configuration Guide](./configuration.md) - Tune the algorithm
-- [Advanced Features](./advanced-features.md) - Reheating, logging, custom operators
-- [Examples](./examples.md) - Complete working examples
+- read `quickstart.md` for an end-to-end example,
+- read `configuration.md` for tuning strategy,
+- read `advanced-features.md` for phase logic and algorithm behavior.

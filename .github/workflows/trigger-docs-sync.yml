@@ -14,13 +14,15 @@ permissions:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
+    env:
+      DOCS_REPO_DISPATCH_TOKEN: ${{ secrets.DOCS_REPO_DISPATCH_TOKEN }}
 
     steps:
       - name: Dispatch docs sync to docs repository
-        if: ${{ secrets.DOCS_REPO_DISPATCH_TOKEN != '' }}
+        if: ${{ env.DOCS_REPO_DISPATCH_TOKEN != '' }}
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.DOCS_REPO_DISPATCH_TOKEN }}
+          token: ${{ env.DOCS_REPO_DISPATCH_TOKEN }}
           repository: albertabayor/timetable-sa-docs
           event-type: docs-updated
           client-payload: >-
@@ -31,7 +33,7 @@ jobs:
             }
 
       - name: Skip dispatch (token missing)
-        if: ${{ secrets.DOCS_REPO_DISPATCH_TOKEN == '' }}
+        if: ${{ env.DOCS_REPO_DISPATCH_TOKEN == '' }}
         run: |
           echo "DOCS_REPO_DISPATCH_TOKEN is not configured."
           echo "Skipping docs sync trigger."

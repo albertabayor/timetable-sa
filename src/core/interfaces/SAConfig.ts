@@ -429,6 +429,16 @@ export interface SAConfig<TState> {
    * @default undefined (no progress tracking)
    */
   onProgress?: OnProgressCallback<TState>;
+
+  /**
+   * Progress callback execution mode.
+   *
+   * - `'await'`: Wait for callback completion before continuing optimization
+   * - `'fire-and-forget'`: Trigger callback without blocking optimization loop
+   *
+   * @default 'await'
+   */
+  onProgressMode?: 'await' | 'fire-and-forget';
 }
 
 /**

@@ -225,18 +225,6 @@ The CI pipeline requires:
 - Coverage threshold met (75%+)
 - No failing assertions
 
-## Performance Benchmarks
-
-Integration tests include basic performance benchmarks:
-- Small problems (3-5 classes): < 1 second
-- Medium problems (10-20 classes): < 5 seconds
-- Large problems (50+ classes): < 30 seconds
-
-These are rough guidelines and may vary based on:
-- SA configuration (iterations, cooling rate)
-- Problem complexity (number of constraints)
-- Hardware performance
-
 ## Contributing
 
 When contributing new features:

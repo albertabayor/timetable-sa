@@ -1,6 +1,6 @@
 {
   "name": "timetable-sa",
-  "version": "2.4.0",
+  "version": "3.0.0",
   "description": "Generic, unopinionated Simulated Annealing library for constraint satisfaction problems. Solve timetabling, scheduling, resource allocation, and any optimization problem with custom constraints.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -47,7 +47,7 @@
     "optimization-algorithm",
     "metaheuristic"
   ],
-  "author": "Emmanuel Alejandro Albert A Bayor",
+  "author": "Benjamin Naphtali <benjamin.naphtali@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -61,19 +61,17 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@types/pdfkit": "^0.17.3",
-    "pdfkit": "^0.17.2",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@jest/globals": "^30.2.0",
+    "@jest/globals": "^30.3.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.1",
-    "jest": "^30.2.0",
-    "nodemon": "^3.1.11",
-    "ts-jest": "^29.4.5",
+    "@types/node": "^24.12.0",
+    "jest": "^30.3.0",
+    "nodemon": "^3.1.14",
+    "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
-    "tsx": "^4.7.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "publishConfig": {

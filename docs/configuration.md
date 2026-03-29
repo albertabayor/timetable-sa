@@ -1,1105 +1,473 @@
-# Configuration Guide
+# Configuration guide
 
-This guide helps you configure the Simulated Annealing algorithm for optimal results.
+This guide explains `SAConfig<TState>` from both a practical tuning perspective
+and an implementation-accurate perspective. It documents which fields are truly
+required, which defaults are resolved internally, what validation rules are
+enforced, and how each setting influences runtime behavior.
 
-## Table of Contents
+## Configuration model
 
-- [Basic Configuration](#basic-configuration)
-- [Temperature Parameters](#temperature-parameters)
-- [Iteration Control](#iteration-control)
-- [Constraint Weights](#constraint-weights)
-- [State Cloning](#state-cloning)
-- [Reheating](#reheating)
-- [Tabu Search](#tabu-search)
-- [Intensification](#intensification)
-- [Logging](#logging)
-- [Progress Tracking](#progress-tracking)
-- [Operator Selection](#operator-selection)
-- [Tuning Guide](#tuning-guide)
+`SAConfig<TState>` combines six categories of settings:
 
-## Basic Configuration
+- core annealing parameters,
+- state cloning,
+- reheating,
+- tabu search,
+- intensification,
+- telemetry and operator selection.
 
-The minimum configuration requires these parameters:
-
-```typescript
-const config: SAConfig<MyState> = {
-  initialTemperature: 1000,      // Starting temperature
-  minTemperature: 0.01,          // Stopping temperature
-  coolingRate: 0.995,            // Temperature decay rate
-  maxIterations: 50000,          // Maximum iterations
-  hardConstraintWeight: 10000,   // Penalty for hard violations
-  cloneState: (state) => /* clone function */,
-};
-```
-
-## Temperature Parameters
-
-### Initial Temperature
-
-**What it does:** Controls how much exploration happens at the start.
-
-**Typical values:** 100 - 10,000
-
-**Guidelines:**
-- **Too high (>10000)**: Wastes iterations on random exploration
-- **Too low (<50)**: Gets stuck in local minima quickly
-- **Recommended**: Start with 1000 and adjust based on problem size
-
-```typescript
-const config = {
-  // Small problems (< 100 variables)
-  initialTemperature: 100,
-
-  // Medium problems (100 - 1000 variables)
-  initialTemperature: 1000,
-
-  // Large problems (> 1000 variables)
-  initialTemperature: 5000,
-};
-```
-
-### Minimum Temperature
-
-**What it does:** Stopping criterion - algorithm stops when temperature drops below this.
-
-**Typical values:** 0.001 - 1
-
-**Guidelines:**
-- Lower values = more iterations = potentially better solutions
-- Higher values = faster convergence = potentially worse solutions
-- **Recommended**: 0.01 for most problems
-
-```typescript
-const config = {
-  // Fast results
-  minTemperature: 0.1,
-
-  // Balanced (recommended)
-  minTemperature: 0.01,
-
-  // High quality (slow)
-  minTemperature: 0.001,
-};
-```
-
-### Cooling Rate
-
-**What it does:** How fast temperature decreases. `T_new = T_old * coolingRate`
-
-**Valid range:** 0 < coolingRate < 1
-
-**Typical values:** 0.95 - 0.999
-
-**Guidelines:**
-- **Too low (<0.9)**: Cools too fast, may miss optimal solution
-- **Too high (>0.999)**: Very slow, may waste time
-- **Formula for iterations**: `iterations ≈ log(T_min/T_initial) / log(coolingRate)`
-
-```typescript
-// Calculate cooling rate for target iterations
-function calculateCoolingRate(initialTemp: number, minTemp: number, targetIterations: number): number {
-  return Math.exp(Math.log(minTemp / initialTemp) / targetIterations);
-}
-
-// Example: 50,000 iterations from T=1000 to T=0.01
-const coolingRate = calculateCoolingRate(1000, 0.01, 50000);
-console.log(coolingRate); // ≈ 0.995
-```
-
-**Recommended values:**
-```typescript
-const config = {
-  // Fast cooling (10,000 - 20,000 iterations)
-  coolingRate: 0.99,
-
-  // Medium cooling (30,000 - 50,000 iterations)
-  coolingRate: 0.995,
-
-  // Slow cooling (100,000+ iterations)
-  coolingRate: 0.998,
-};
-```
-
-## Iteration Control
-
-### Max Iterations
-
-**What it does:** Hard limit on iterations (even if temperature hasn't reached minimum).
-
-**Typical values:** 10,000 - 100,000
-
-**Guidelines:**
-- Set higher than expected iterations from cooling rate
-- Acts as safety net to prevent infinite loops
-- Monitor actual iterations used: if hitting max iterations, increase limit or adjust cooling
-
-```typescript
-const config = {
-  // Quick testing
-  maxIterations: 10000,
-
-  // Production (small problems)
-  maxIterations: 50000,
-
-  // Production (large problems)
-  maxIterations: 100000,
-};
-```
-
-## Constraint Weights
-
-### Hard Constraint Weight
-
-**What it does:** Penalty multiplier for hard constraint violations.
-
-**Typical values:** 1,000 - 100,000
-
-**Guidelines:**
-- Must be MUCH larger than soft constraint weights
-- Ensures hard constraints are satisfied before optimizing soft constraints
-- **Formula**: `hardConstraintWeight >> max(softConstraintWeight) * 10`
-
-```typescript
-const config = {
-  // If max soft weight is 10
-  hardConstraintWeight: 1000,  // 100x larger
-
-  // If max soft weight is 100
-  hardConstraintWeight: 10000, // 100x larger
-};
-```
-
-### Soft Constraint Weights
-
-Set individual weights for soft constraints based on importance:
-
-```typescript
-class HighPrioritySoft implements Constraint<MyState> {
-  name = 'High Priority';
-  type = 'soft' as const;
-  weight = 50; // Very important
-
-  evaluate(state: MyState): number { /* ... */ }
-}
-
-class MediumPrioritySoft implements Constraint<MyState> {
-  name = 'Medium Priority';
-  type = 'soft' as const;
-  weight = 10; // Default importance
-
-  evaluate(state: MyState): number { /* ... */ }
-}
-
-class LowPrioritySoft implements Constraint<MyState> {
-  name = 'Low Priority';
-  type = 'soft' as const;
-  weight = 1; // Nice to have
-
-  evaluate(state: MyState): number { /* ... */ }
+```ts
+interface SAConfig<TState> {
+  initialTemperature: number;
+  minTemperature: number;
+  coolingRate: number;
+  maxIterations: number;
+  hardConstraintWeight: number;
+  cloneState: (state: TState) => TState;
+  reheatingThreshold?: number;
+  maxReheats?: number;
+  reheatingFactor?: number;
+  tabuSearchEnabled?: boolean;
+  tabuTenure?: number;
+  aspirationEnabled?: boolean;
+  maxTabuListSize?: number;
+  enableIntensification?: boolean;
+  intensificationIterations?: number;
+  maxIntensificationAttempts?: number;
+  intensificationStagnationLimit?: number;
+  getStateSignature?: (state: TState) => string;
+  operatorSelectionMode?: 'hybrid' | 'roulette-wheel';
+  logging?: LoggingConfig;
+  onProgress?: OnProgressCallback<TState>;
+  onProgressMode?: 'await' | 'fire-and-forget';
 }
 ```
 
-**Guidelines:**
-- Use relative weights (e.g., 1, 5, 10, 50, 100)
-- Default weight is 10
-- Higher weight = more important
-- Keep weights reasonable (< 1000 to avoid numerical issues)
-
-## State Cloning
-
-The `cloneState` function must create a **deep copy** of your state.
-
-### Option 1: JSON-based (Simple but Slow)
-
-```typescript
-const config: SAConfig<MyState> = {
-  // ... other config
-  cloneState: (state) => JSON.parse(JSON.stringify(state)),
-};
-```
-
-**Pros:**
-- Simple
-- Works for most structures
-
-**Cons:**
-- SLOW for large states
-- Loses functions, Dates, Maps, Sets
-
-### Option 2: Manual Clone (Fast)
-
-```typescript
-const config: SAConfig<TimetableState> = {
-  // ... other config
-  cloneState: (state) => ({
-    schedule: state.schedule.map(entry => ({ ...entry })),
-    rooms: state.rooms.map(room => ({ ...room })),
-    lecturers: state.lecturers.map(lecturer => ({ ...lecturer })),
-  }),
-};
-```
-
-**Pros:**
-- Fast (3-10x faster than JSON)
-- Handles complex types
-
-**Cons:**
-- More code
-- Must update if state structure changes
-
-### Option 3: Shallow Clone (Fastest, Careful!)
-
-```typescript
-// Only if state has ONE array and no nested objects
-const config: SAConfig<SimpleState> = {
-  cloneState: (state) => ({
-    ...state,
-    items: [...state.items], // Clone array
-  }),
-};
-```
-
-**Warning:** Only use if your array items are primitives or don't need deep cloning!
-
-### Performance Comparison
-
-```typescript
-// Benchmark: Clone state with 1000 schedule entries
-// JSON:          ~50ms
-// Manual:        ~5ms
-// Shallow:       ~1ms
-
-// Over 50,000 iterations:
-// JSON:          2500s (42 minutes!)
-// Manual:        250s (4 minutes)
-// Shallow:       50s (1 minute)
-```
-
-**Recommendation:** Use manual cloning for production use!
-
-## Tabu Search
-
-Tabu Search prevents the algorithm from cycling back to recently visited states.
-
-### Enable Tabu Search
-
-```typescript
-const config: SAConfig<MyState> = {
-  // ... other config
-  tabuSearchEnabled: true,    // Enable tabu search
-  tabuTenure: 50,              // Keep states tabu for 50 iterations
-  maxTabuListSize: 1000,       // Maximum 1000 tabu entries
-};
-```
-
-### Parameters
-
-**tabuSearchEnabled**
-- Enable/disable Tabu Search
-- Default: `false`
-- Recommended for complex problems with many local minima
-
-**tabuTenure**
-- Number of iterations a state stays in the tabu list
-- Higher: more diverse search, less cycling
-- Lower: faster convergence, may cycle
-- Default: 50
-- Typical range: 30 - 100
-
-**maxTabuListSize**
-- Maximum number of tabu entries stored
-- Prevents unbounded memory usage
-- Default: 1000
-- Typical range: 500 - 5000
-
-### When to Use Tabu Search
-
-**Enable when:**
-- Seeing oscillation in fitness values
-- Getting stuck in local minima repeatedly
-- Problem has many similar states
-- Long optimization runs (50,000+ iterations)
-
-**Disable when:**
-- Problem is simple/convex
-- Quick testing or prototyping
-- Memory is very limited
-- Problem has extremely large state space
-
-### Configuration Examples
-
-```typescript
-// Conservative tabu search (minimal cycling prevention)
-{
-  tabuSearchEnabled: true,
-  tabuTenure: 30,              // Remember for 30 iterations
-  maxTabuListSize: 500,        // Keep up to 500 entries
-}
-```
-
-### Custom State Signatures
-
-By default, the algorithm uses a built-in signature generator that works well for timetabling problems. For non-timetabling problems or custom state structures, you can provide your own signature function.
-
-**Why custom signatures matter:**
-- Tabu Search needs to uniquely identify states
-- Default signature may not work correctly for your domain
-- Custom signatures can improve performance and accuracy
-
-```typescript
-// For timetabling problems (uses schedule property)
-const config: SAConfig<TimetableState> = {
-  // ... other config
-  tabuSearchEnabled: true,
-  // Uses default: extracts classId, day, time, room from schedule array
-};
-
-// For custom problems (provide your own signature)
-const config: SAConfig<JobSchedulingState> = {
-  // ... other config
-  tabuSearchEnabled: true,
-  getStateSignature: (state) => {
-    // Create unique signature based on job assignments
-    return state.jobs
-      .map(job => `${job.id}:${job.machine}:${job.startTime}`)
-      .sort()
-      .join('|');
-  },
-};
-
-// For simple states (JSON serialization)
-const config: SAConfig<SimpleState> = {
-  // ... other config
-  tabuSearchEnabled: true,
-  getStateSignature: (state) => JSON.stringify(state),
-};
-```
-
-**Signature Requirements:**
-- Must return a **string**
-- Same state must produce **same signature**
-- Different states should produce **different signatures**
-- Should be **deterministic** (no random values)
-- Should be **fast** to compute (called every iteration)
-
-**Performance Tips:**
-- Avoid expensive operations in signature function
-- Sort arrays for consistency
-- Use simple string concatenation
-- For large states, hash only the essential properties
-
-```typescript
-// Good: Fast and deterministic
-getStateSignature: (state) => {
-  return state.items
-    .map(item => `${item.id}:${item.value}`)
-    .sort()
-    .join(',');
-}
-
-// Avoid: Slow and non-deterministic
-getStateSignature: (state) => {
-  // Don't use JSON.stringify for large objects
-  // Don't include timestamps or random values
-  return JSON.stringify({ ...state, timestamp: Date.now() });
-}
-```
-
-## Intensification
-
-Intensification is an aggressive phase (Phase 1.5) that targets remaining hard violations when Phase 1 doesn't achieve zero violations.
-
-### Enable Intensification
-
-```typescript
-const config: SAConfig<MyState> = {
-  // ... other config
-  enableIntensification: true,        // Enable intensification (default)
-  intensificationIterations: 2000,    // 2000 iterations per attempt
-  maxIntensificationAttempts: 3,       // Up to 3 restart attempts
-};
-```
-
-### Parameters
-
-**enableIntensification**
-- Enable/disable Phase 1.5 intensification
-- Default: `true`
-- Recommended for problems with complex, conflicting constraints
-
-**intensificationIterations**
-- Number of iterations per intensification attempt
-- Higher: more thorough search of remaining violations
-- Lower: faster but may miss solutions
-- Default: 2000
-- Typical range: 1000 - 5000
-
-**maxIntensificationAttempts**
-- Maximum number of restart attempts
-- Each attempt resets temperature and focuses on remaining violations
-- Default: 3
-- Typical range: 2 - 5
-
-**intensificationStagnationLimit** (v2.2.0+)
-- Number of iterations without improvement before triggering reheating
-- Reheating increases temperature to escape local minima
-- Default: 300
-- Typical range: 100 - 500
-
-```typescript
-const config: SAConfig<MyState> = {
-  // ... other config
-  enableIntensification: true,
-  intensificationIterations: 2000,
-  maxIntensificationAttempts: 3,
-  intensificationStagnationLimit: 300,  // Reheat after 300 iterations without improvement
-};
-```
-
-**When to adjust:**
-- **Lower (100-200)**: More aggressive reheating, faster exploration
-- **Higher (400-500)**: More patient search, better for complex constraint landscapes
-
-### How Intensification Works
-
-1. **Trigger**: Phase 1 ends with `hardViolations > 0`
-2. **Focused Selection**: Uses targeted operators (fix, swap, change) 70% of time
-3. **Aggressive Acceptance**: Heavily favors moves reducing hard violations
-4. **Multiple Attempts**: Up to `maxIntensificationAttempts` restarts
-5. **Early Exit**: Stops when all hard violations eliminated
-
-### When to Use Intensification
-
-**Enable (default) when:**
-- Phase 1 frequently ends with violations
-- Problem has many complex constraints
-- Hard constraints are difficult to satisfy
-- You need guaranteed feasibility
-
-**Disable when:**
-- Phase 1 consistently reaches zero violations
-- Problem is simple
-- Looking for quick approximate solutions
-- Soft constraints are more important
-
-### Configuration Examples
-
-```typescript
-// Standard intensification (default)
-{
-  enableIntensification: true,
-  intensificationIterations: 2000,    // 2000 iterations per attempt
-  maxIntensificationAttempts: 3,       // Up to 3 attempts
-}
-
-// Aggressive intensification (for very difficult problems)
-{
-  enableIntensification: true,
-  intensificationIterations: 5000,    // 5000 iterations per attempt
-  maxIntensificationAttempts: 5,       // Up to 5 attempts
-}
-
-// Quick intensification (for faster runs)
-{
-  enableIntensification: true,
-  intensificationIterations: 1000,    // 1000 iterations per attempt
-  maxIntensificationAttempts: 2,       // Up to 2 attempts
-}
-
-// Disabled (for simple problems)
-{
-  enableIntensification: false,       // Skip Phase 1.5
-}
-```
-
-### Monitoring Intensification
-
-```typescript
-const config: SAConfig<MyState> = {
-  // ... other config
-  logging: {
-    level: 'debug',
-    logInterval: 500,
-  },
-};
-
-// Output shows intensification progress:
-// [INFO] Phase 1 complete: Hard violations = 3
-// [INFO] Phase 1.5: Intensification - targeting remaining hard violations
-// [INFO] [Intensification] Attempt 1/3
-// [DEBUG] [Intensification] New best: Hard violations = 2
-// [DEBUG] [Intensification] New best: Hard violations = 0
-// [INFO] [Intensification] SUCCESS! All hard violations eliminated in attempt 1
-```
-
-## Reheating
-
-Reheating helps escape local minima by temporarily increasing temperature.
-
-### Enable Reheating
-
-```typescript
-const config: SAConfig<MyState> = {
-  // ... basic config
-  reheatingThreshold: 2000,    // Reheat after 2000 iterations without improvement
-  reheatingFactor: 2.0,        // Multiply temperature by 2
-  maxReheats: 3,               // Maximum 3 reheating events
-};
-```
-
-### Parameters
-
-**reheatingThreshold**
-- Iterations without improvement before reheating
-- Too low: Reheats too often (wastes time)
-- Too high: May not escape local minima
-- **Recommended**: 1000 - 5000
-
-**reheatingFactor**
-- Temperature multiplier during reheat
-- Too low: Not enough to escape
-- Too high: Loses progress
-- **Recommended**: 1.5 - 3.0
-
-**maxReheats**
-- Maximum reheating events
-- Prevents infinite loops
-- **Recommended**: 3 - 5
-
-### When to Use Reheating
-
-**Use reheating when:**
-- Getting stuck in local minima
-- Hard constraints partially satisfied but can't reach 0
-- Solution quality plateaus early
-
-**Skip reheating when:**
-- Finding good solutions quickly
-- Limited computation time
-- Problem has smooth fitness landscape
-
-### Example
-
-```typescript
-// Problem: Often gets stuck with 1-2 hard violations
-
-const config: SAConfig<MyState> = {
+## Required fields
+
+These fields must always be supplied by the caller because the engine does not
+define defaults for them.
+
+### `initialTemperature`
+
+`initialTemperature` sets the starting temperature for the main annealing loop.
+The validator requires a finite number greater than `0`.
+
+At runtime, the value also acts as a reference scale for:
+
+- the Phase 1 stopping threshold `initialTemperature / 10`,
+- the reheating gate `temperature < initialTemperature / 100`,
+- the restart temperature used in intensification.
+
+### `minTemperature`
+
+`minTemperature` is the lower termination bound for Phase 2. The validator
+requires a finite number greater than `0`.
+
+The code does not enforce `minTemperature < initialTemperature`, even though
+that relation is usually desirable in practice.
+
+### `coolingRate`
+
+`coolingRate` controls geometric cooling. The validator requires a finite
+number strictly between `0` and `1`.
+
+Because all main loops multiply temperature by `coolingRate` after each
+iteration, values closer to `1` produce slower cooling, more exploration, and
+typically higher runtime.
+
+### `maxIterations`
+
+`maxIterations` is the global iteration budget. The validator requires a
+positive integer.
+
+The value shapes multiple behaviors:
+
+- it bounds Phase 2 directly,
+- it gives Phase 1 an internal budget of `floor(maxIterations * 0.6)`,
+- it defines the denominator for `ProgressStats.progressPercent`.
+
+### `hardConstraintWeight`
+
+`hardConstraintWeight` scales the aggregated hard penalty relative to soft
+penalties. The validator requires a finite number greater than `0`.
+
+If this weight is too low, the solver may trade away hard feasibility for soft
+quality more often than you intend.
+
+### `cloneState`
+
+`cloneState` is the engine-owned deep-clone function. The validator requires it
+to be a function.
+
+This is one of the most important configuration points because the engine calls
+it frequently:
+
+- at solve startup,
+- whenever a new best state is recorded,
+- before passing state to move generators,
+- when restarting intensification attempts.
+
+An inaccurate clone function can corrupt search behavior in ways that look like
+algorithmic failure but are actually aliasing bugs.
+
+## Resolved defaults
+
+The following defaults are applied by `mergeConfigWithDefaults(...)`.
+
+| Field | Resolved default |
+| --- | --- |
+| `reheatingThreshold` | `undefined` |
+| `maxReheats` | `3` |
+| `reheatingFactor` | `2.0` |
+| `tabuSearchEnabled` | `false` |
+| `tabuTenure` | `50` |
+| `maxTabuListSize` | `1000` |
+| `aspirationEnabled` | `true` |
+| `enableIntensification` | `true` |
+| `intensificationIterations` | `2000` |
+| `maxIntensificationAttempts` | `3` |
+| `intensificationStagnationLimit` | `300` |
+| `onProgressMode` | `'await'` |
+| `logging.enabled` | `true` |
+| `logging.level` | `'info'` |
+| `logging.logInterval` | `1000` |
+| `logging.output` | `'console'` |
+| `logging.filePath` | `'./sa-optimization.log'` |
+
+## Validation rules
+
+This section captures the explicit rules enforced by
+`validateSolverInputs(...)`.
+
+### Constraint validation
+
+Each constraint must satisfy these checks:
+
+- `name` must be a non-empty string,
+- `type` must be `'hard'` or `'soft'`,
+- `evaluate` must be a function.
+
+For soft constraints, if `weight` is provided:
+
+- it must be finite,
+- it must be greater than or equal to `0`.
+
+The constructor does not require constraint arrays to be non-empty.
+
+### Move-generator validation
+
+Each move generator must satisfy these checks:
+
+- `name` must be a non-empty string,
+- `generate` must be a function,
+- `canApply` must be a function.
+
+As with constraints, the constructor validates shape but does not require the
+array to be non-empty.
+
+### Optional numeric validation
+
+If present, these fields must satisfy the listed rules:
+
+- `reheatingThreshold`: positive integer,
+- `maxReheats`: non-negative integer,
+- `reheatingFactor`: number greater than `1`,
+- `tabuTenure`: positive integer,
+- `maxTabuListSize`: positive integer,
+- `intensificationIterations`: positive integer,
+- `maxIntensificationAttempts`: positive integer,
+- `intensificationStagnationLimit`: positive integer,
+- `logging.logInterval`: positive integer.
+
+## Core annealing tuning
+
+The core parameters define the geometry of the search schedule. You should tune
+them before adding advanced features because every later mechanism operates on
+top of this baseline.
+
+### Practical baseline
+
+This baseline is close to the defaults implied by the code and works as a good
+starting point for medium-sized problems.
+
+```ts
+const baseConfig = {
   initialTemperature: 1000,
   minTemperature: 0.01,
   coolingRate: 0.995,
-  maxIterations: 50000,
-  hardConstraintWeight: 10000,
-  cloneState: manualClone,
-
-  // Enable reheating
-  reheatingThreshold: 2000,
-  reheatingFactor: 2.5,
-  maxReheats: 5,
-};
-```
-
-## Logging
-
-Control what information is printed during optimization.
-
-### Basic Logging
-
-```typescript
-const config: SAConfig<MyState> = {
-  // ... other config
-  logging: {
-    enabled: true,
-    level: 'info',
-    logInterval: 1000,
-  },
-};
-```
-
-### Log Levels
-
-```typescript
-// Debug: Very detailed (every best solution found)
-logging: { level: 'debug' }
-
-// Info: Progress updates (recommended)
-logging: { level: 'info' }
-
-// Warn: Only warnings
-logging: { level: 'warn' }
-
-// Error: Only errors
-logging: { level: 'error' }
-
-// None: Silent
-logging: { level: 'none' }
-```
-
-### Log Interval
-
-```typescript
-// Log every 100 iterations (verbose)
-logging: { logInterval: 100 }
-
-// Log every 1000 iterations (default, recommended)
-logging: { logInterval: 1000 }
-
-// Log every 5000 iterations (quiet)
-logging: { logInterval: 5000 }
-```
-
-### Disable Logging
-
-```typescript
-logging: { enabled: false }
-```
-
-## Progress Tracking
-
-Monitor optimization progress in real-time using the `onProgress` callback. This is useful for:
-
-- **Web Applications**: Update progress bars in the frontend
-- **APIs**: Send progress updates to clients via WebSocket
-- **Monitoring**: Log progress to databases or metrics systems
-- **Debugging**: Track optimization behavior
-
-### Basic Usage
-
-```typescript
-const config: SAConfig<MyState> = {
-  // ... other config
-  logInterval: 500,  // Callback frequency (iterations)
-  
-  onProgress: (iteration, cost, temp, state, stats) => {
-    console.log(`[${stats.phase}] Iter ${iteration}: Cost=${cost.toFixed(2)}`);
-  },
-};
-
-const solver = new SimulatedAnnealing(state, constraints, moves, config);
-const solution = await solver.solve();
-```
-
-### Progress Stats
-
-The `stats` parameter provides comprehensive optimization metrics:
-
-```typescript
-onProgress: (iteration, cost, temp, state, stats) => {
-  console.log({
-    iteration: stats.iteration,
-    progress: `${stats.progressPercent.toFixed(1)}%`,
-    phase: stats.phase,
-    cost: stats.currentCost,
-    bestCost: stats.bestCost,
-    temperature: stats.temperature,
-    hardViolations: stats.hardViolations,
-    softViolations: stats.softViolations,
-    tabuHits: stats.tabuHits,
-    reheatingCount: stats.reheatingCount,
-    acceptedMoves: stats.acceptedMoves,
-    rejectedMoves: stats.rejectedMoves,
-    stagnationCount: stats.stagnationCount,
-    timestamp: new Date(stats.timestamp).toISOString(),
-  });
-}
-```
-
-### Async Callbacks
-
-The callback can be async, perfect for database writes or API calls:
-
-```typescript
-onProgress: async (iteration, cost, temp, state, stats) => {
-  // Save to database
-  await db.optimizationProgress.create({
-    data: {
-      runId: 'run-001',
-      iteration,
-      cost,
-      temperature: temp,
-      hardViolations: stats.hardViolations,
-      progress: stats.progressPercent,
-    },
-  });
-  
-  // Send to monitoring service
-  await metrics.send('optimization.progress', {
-    iteration,
-    cost,
-    violations: stats.hardViolations,
-  });
-}
-```
-
-### WebSocket Example
-
-Update frontend in real-time:
-
-```typescript
-import { io } from 'socket.io-client';
-
-const socket = io('http://localhost:3000');
-const optimizationId = 'opt-123';
-
-const config: SAConfig<MyState> = {
   maxIterations: 20000,
-  logInterval: 500,
-  
-  onProgress: (iteration, cost, temp, state, stats) => {
-    socket.emit('optimization-progress', {
-      optimizationId,
-      data: {
-        iteration,
-        progress: stats.progressPercent,
-        currentCost: cost,
-        bestCost: stats.bestCost,
-        temperature: temp,
-        hardViolations: stats.hardViolations,
-        softViolations: stats.softViolations,
-        tabuHits: stats.tabuHits,
-        phase: stats.phase,
-      },
-    });
-  },
-};
-```
-
-### CLI Progress Bar
-
-```typescript
-import { SingleBar, Presets } from 'cli-progress';
-
-const progressBar = new SingleBar({
-  format: 'Progress |{bar}| {percentage}% | Cost: {cost} | Temp: {temp}',
-}, Presets.shades_classic);
-
-progressBar.start(100, 0);
-
-const config: SAConfig<MyState> = {
-  maxIterations: 10000,
-  logInterval: 100,
-  
-  onProgress: (iteration, cost, temp, state, stats) => {
-    progressBar.update(stats.progressPercent, {
-      cost: cost.toFixed(2),
-      temp: temp.toFixed(0),
-    });
-  },
-};
-
-const solver = new SimulatedAnnealing(state, constraints, moves, config);
-const solution = await solver.solve();
-
-progressBar.stop();
-console.log(`Optimization complete! Best cost: ${solution.fitness}`);
-```
-
-### When Callback is Triggered
-
-The `onProgress` callback is called at:
-
-1. **Iteration 0**: Initial state before optimization starts
-2. **Every `logInterval` iterations**: Regular progress updates
-3. **Phase transitions**: When moving between phase1 → phase1.5 → phase2
-4. **Reheating events**: When temperature is increased to escape local minima
-
-### Error Handling
-
-Errors in the callback don't break optimization:
-
-```typescript
-onProgress: (iteration, cost, temp, state, stats) => {
-  // This error will be caught and logged, but optimization continues
-  if (iteration === 100) {
-    throw new Error('Test error');
-  }
-  
-  console.log(`Progress: ${stats.progressPercent}%`);
-}
-```
-
-### Performance Considerations
-
-- Callback frequency is controlled by `logInterval`
-- Lower `logInterval` = more frequent updates but higher overhead
-- For async callbacks, optimization waits for callback to complete
-- State parameter is always `null` for performance (avoid expensive cloning)
-
-```typescript
-// High frequency updates (more overhead)
-logInterval: 100  // Called every 100 iterations
-
-// Low frequency updates (less overhead)
-logInterval: 5000 // Called every 5000 iterations
-```
-
-## Operator Selection
-
-The algorithm uses adaptive operator selection to choose which move generator to apply at each iteration. Two selection modes are available.
-
-### Selection Modes
-
-**hybrid (default)**
-- 30% random selection for exploration
-- 70% weighted selection by success rate for exploitation
-- More robust, balances exploration and exploitation
-- Based on research by Cowling et al. (2002)
-
-**roulette-wheel**
-- 100% fitness-proportionate selection
-- Pure Roulette Wheel Selection matching the Muklason et al. (2024) thesis formula
-- Higher exploitation, less exploration
-- May converge faster but risks missing good solutions
-
-```typescript
-const config: SAConfig<MyState> = {
-  // ... other config
-  operatorSelectionMode: 'hybrid',  // Default - balanced exploration/exploitation
-};
-
-// Use pure roulette-wheel for higher exploitation
-const config2: SAConfig<MyState> = {
-  // ... other config
-  operatorSelectionMode: 'roulette-wheel',
-};
-```
-
-### When to Use Each Mode
-
-**Use hybrid when:**
-- Problem has many local minima
-- You want robust performance across different instances
-- Exploration is more important than rapid convergence
-
-**Use roulette-wheel when:**
-- Problem is well-understood with smooth fitness landscape
-- Rapid convergence is important
-- You want strict adherence to the theoretical formula
-
-### How Operator Success is Tracked
-
-The algorithm tracks success rate for each operator:
-- A move is "successful" if it produces a better solution OR is accepted despite being worse
-- Success rates are updated continuously during optimization
-- More successful operators get higher selection probability
-
-```typescript
-// Example: After solving, check operator performance
-const solver = new SimulatedAnnealing(initialState, constraints, moveGenerators, config);
-const solution = solver.solve();
-
-const stats = solver.getStats();
-console.log('Operator performance:');
-for (const [name, data] of Object.entries(stats)) {
-  console.log(`${name}: ${data.successRate.toFixed(2)} success rate`);
-}
-```
-
-## Tuning Guide
-
-### Step 1: Start with Defaults
-
-```typescript
-const config: SAConfig<MyState> = {
-  initialTemperature: 1000,
-  minTemperature: 0.01,
-  coolingRate: 0.995,
-  maxIterations: 50000,
   hardConstraintWeight: 10000,
-  cloneState: manualClone,
 };
 ```
 
-### Step 2: Run and Observe
+### Tuning heuristics
 
-```typescript
-const solution = solver.solve();
-console.log('Iterations used:', solution.iterations);
-console.log('Hard violations:', solution.hardViolations);
-console.log('Fitness:', solution.fitness);
-```
+- Increase `initialTemperature` if the search freezes too early.
+- Increase `coolingRate` toward `1` if improvements continue late in the run.
+- Increase `maxIterations` when the solver is still improving near the budget
+  boundary.
+- Increase `hardConstraintWeight` when hard-feasibility progress is too weak
+  relative to soft optimization.
 
-### Step 3: Adjust Based on Results
+## Reheating configuration
 
-**Problem: Hitting max iterations**
-```typescript
-// Solution: Increase cooling rate or max iterations
-coolingRate: 0.998,  // was 0.995
-maxIterations: 100000, // was 50000
-```
+Reheating is disabled unless `reheatingThreshold` is defined.
 
-**Problem: Too slow**
-```typescript
-// Solution: Decrease max iterations or increase cooling rate
-coolingRate: 0.99,  // was 0.995
-maxIterations: 20000, // was 50000
-```
-
-**Problem: Can't satisfy hard constraints**
-```typescript
-// Solution: Enable intensification, add reheating, check constraints are feasible
-enableIntensification: true,
-intensificationIterations: 2000,
-maxIntensificationAttempts: 5,
-reheatingThreshold: 2000,
-reheatingFactor: 2.5,
-maxReheats: 5,
-```
-
-**Problem: Hard constraints satisfied but poor soft constraint satisfaction**
-```typescript
-// Solution: More iterations, slower cooling
-coolingRate: 0.998,  // was 0.995
-maxIterations: 100000, // was 50000
-```
-
-**Problem: Converges too early**
-```typescript
-// Solution: Higher initial temperature, enable tabu search
-initialTemperature: 5000, // was 1000
-tabuSearchEnabled: true,
-tabuTenure: 50,
-```
-
-**Problem: Fitness oscillating between values**
-```typescript
-// Solution: Enable tabu search to prevent cycling
-tabuSearchEnabled: true,
-tabuTenure: 50,
-maxTabuListSize: 1000,
-```
-
-**Problem: Phase 1 always ends with violations**
-```typescript
-// Solution: Increase intensification iterations and attempts
-enableIntensification: true,
-intensificationIterations: 4000,  // was 2000
-maxIntensificationAttempts: 5,      // was 3
-```
-
-### Step 4: Fine-tune Weights
-
-```typescript
-// Balance soft constraint importance
-constraints = [
-  new CriticalSoft({ weight: 100 }),
-  new ImportantSoft({ weight: 50 }),
-  new NormalSoft({ weight: 10 }),
-  new NiceToHaveSoft({ weight: 1 }),
-];
-```
-
-## Configuration Templates
-
-### Fast Prototyping
-
-```typescript
-const config: SAConfig<MyState> = {
-  initialTemperature: 100,
-  minTemperature: 0.1,
-  coolingRate: 0.99,
-  maxIterations: 10000,
-  hardConstraintWeight: 1000,
-  cloneState: (state) => JSON.parse(JSON.stringify(state)),
-  logging: { level: 'info', logInterval: 500 },
-};
-```
-
-### Production - Balanced
-
-```typescript
-const config: SAConfig<MyState> = {
-  initialTemperature: 1000,
-  minTemperature: 0.01,
-  coolingRate: 0.995,
-  maxIterations: 50000,
-  hardConstraintWeight: 10000,
-  cloneState: manualCloneFunction,
-  reheatingThreshold: 2000,
+```ts
+{
+  reheatingThreshold: 1000,
   reheatingFactor: 2.0,
   maxReheats: 3,
+}
+```
+
+### Operational behavior
+
+In Phase 1 and Phase 2, reheating triggers only when all of these hold:
+
+- stagnation reaches `reheatingThreshold`,
+- `reheats < maxReheats`,
+- current temperature is below `initialTemperature / 100`.
+
+This final condition is easy to miss. If cooling has not yet progressed far
+enough, reheating will not fire even when stagnation is high.
+
+### Tuning guidance
+
+- Use smaller thresholds for rugged landscapes with many local minima.
+- Use larger thresholds when progress is noisy and you want more patience.
+- Keep `reheatingFactor` moderate unless you have a clear reason to make
+  reheating more aggressive.
+
+## Tabu search configuration
+
+Tabu search adds short-term memory to reduce cycling.
+
+```ts
+{
   tabuSearchEnabled: true,
   tabuTenure: 50,
   maxTabuListSize: 1000,
+  aspirationEnabled: true,
+  getStateSignature: (state) => string,
+}
+```
+
+### Runtime behavior
+
+- `tabuSearchEnabled` defaults to `false`.
+- `tabuTenure` measures the number of iterations for which a signature remains
+  tabu.
+- `aspirationEnabled` lets the solver override tabu when
+  `newFitness < globalBestFitness`.
+- `maxTabuListSize` limits memory growth indirectly through cleanup.
+
+### State-signature guidance
+
+The default signature generator is often sufficient for small plain objects, but
+you should provide `getStateSignature(...)` when:
+
+- the state contains non-deterministic property ordering,
+- the state is large and expensive to serialize,
+- the state includes cyclic or unusual structures,
+- only part of the state determines search identity.
+
+For timetable-like states with a `schedule` array, the engine already provides a
+specialized default based on `classId`, `timeSlot.day`, `timeSlot.startTime`,
+and `room`.
+
+## Intensification configuration
+
+Intensification is enabled by default and only runs when Phase 1 fails to reach
+zero hard violations.
+
+```ts
+{
   enableIntensification: true,
   intensificationIterations: 2000,
   maxIntensificationAttempts: 3,
-  logging: { level: 'info', logInterval: 1000 },
-};
+  intensificationStagnationLimit: 300,
+}
 ```
 
-### Production - High Quality
+### Runtime behavior
 
-```typescript
-const config: SAConfig<MyState> = {
-  initialTemperature: 5000,
-  minTemperature: 0.001,
-  coolingRate: 0.998,
-  maxIterations: 200000,
-  hardConstraintWeight: 10000,
-  cloneState: manualCloneFunction,
-  reheatingThreshold: 5000,
-  reheatingFactor: 2.5,
-  maxReheats: 5,
-  tabuSearchEnabled: true,
-  tabuTenure: 100,
-  maxTabuListSize: 2000,
-  enableIntensification: true,
-  intensificationIterations: 5000,
-  maxIntensificationAttempts: 5,
-  logging: { level: 'info', logInterval: 2000 },
-};
+Each intensification attempt:
+
+- restarts from the current best state,
+- starts with `initialTemperature`,
+- cools with a fixed multiplier `0.999`,
+- reheats locally to `initialTemperature * 0.5` when stagnation exceeds the
+  configured limit,
+- prefers move generators with names containing `fix`, `swap`, or `change`.
+
+### Tuning guidance
+
+- Increase `intensificationIterations` for difficult feasibility problems.
+- Increase `maxIntensificationAttempts` when restarts help but one attempt is
+  rarely enough.
+- Reduce `intensificationStagnationLimit` when local search gets trapped for too
+  long.
+
+## Operator selection configuration
+
+Operator selection controls how the engine chooses among applicable move
+generators.
+
+```ts
+{ operatorSelectionMode: 'hybrid' | 'roulette-wheel' }
 ```
 
-### Production - Maximum Features
+### `'hybrid'`
 
-```typescript
-const config: SAConfig<MyState> = {
-  // Temperature settings
-  initialTemperature: 10000,
-  minTemperature: 0.0001,
-  coolingRate: 0.999,
-  maxIterations: 500000,
+`'hybrid'` is the default and usually the best general-purpose choice. It uses
+30 percent random exploration and 70 percent weighted selection by historical
+operator performance.
 
-  // Constraint weight
-  hardConstraintWeight: 50000,
+### `'roulette-wheel'`
 
-  // State cloning
-  cloneState: manualCloneFunction,
+`'roulette-wheel'` always uses weighted selection. It is useful when the
+operator set is well understood and you want more direct exploitation of online
+statistics.
 
-  // Reheating - escape local minima
-  reheatingThreshold: 3000,
-  reheatingFactor: 3.0,
-  maxReheats: 5,
+## Logging configuration
 
-  // Tabu Search - prevent cycling
-  tabuSearchEnabled: true,
-  tabuTenure: 150,
-  maxTabuListSize: 3000,
+Logging provides built-in observability without requiring an external telemetry
+framework.
 
-  // Intensification - target stubborn violations
-  enableIntensification: true,
-  intensificationIterations: 8000,
-  maxIntensificationAttempts: 5,
-
-  // Logging
+```ts
+{
   logging: {
     enabled: true,
-    level: 'debug',
+    level: 'debug' | 'info' | 'warn' | 'error' | 'none',
     logInterval: 1000,
-    output: 'console',
+    output: 'console' | 'file' | 'both',
+    filePath: './sa-optimization.log',
+  }
+}
+```
+
+### Important implementation details
+
+- `logging.logInterval` is also used as the cadence for normal progress
+  callbacks.
+- If `output` is `'file'` or `'both'`, missing parent directories are created
+  automatically.
+- Log payloads are sanitized and known sensitive key names are redacted.
+
+## Progress callback configuration
+
+Progress callbacks expose internal runtime metrics for UI integration,
+monitoring, and experimentation.
+
+```ts
+{
+  onProgress: (iteration, currentCost, temperature, state, stats) => {
+    // state is always null
   },
+  onProgressMode: 'await' | 'fire-and-forget',
+}
+```
+
+### Behavioral notes
+
+- `onProgressMode` defaults to `'await'`.
+- The callback may return `void` or `Promise<void>`.
+- `state` is intentionally `null` in every invocation.
+- Callback failures are caught and logged, not propagated.
+
+### Choosing a mode
+
+- Use `'await'` when ordering and backpressure matter.
+- Use `'fire-and-forget'` when raw optimization throughput matters more than
+  strict telemetry synchronization.
+
+## Recommended profiles
+
+These profiles are not built into the library. They are curated starting points
+based on the implemented defaults and runtime mechanics.
+
+### Fast exploration profile
+
+Use this profile for quick feedback loops and debugging small problems.
+
+```ts
+const fastConfig: SAConfig<MyState> = {
+  initialTemperature: 200,
+  minTemperature: 0.1,
+  coolingRate: 0.99,
+  maxIterations: 10000,
+  hardConstraintWeight: 5000,
+  cloneState: deepClone,
+  tabuSearchEnabled: false,
+  enableIntensification: false,
+  logging: { enabled: true, level: 'info', logInterval: 500 },
 };
 ```
 
-Use this configuration for:
-- Very large, complex problems
-- When solution quality is critical
-- Problems with many local minima
-- When you have time for longer optimization runs
+### Feasibility-first profile
 
+Use this profile when hard constraints are difficult and infeasible solutions
+are unacceptable.
 
-## Next Steps
+```ts
+const feasibilityConfig: SAConfig<MyState> = {
+  initialTemperature: 1000,
+  minTemperature: 0.01,
+  coolingRate: 0.995,
+  maxIterations: 50000,
+  hardConstraintWeight: 50000,
+  cloneState: deepClone,
+  tabuSearchEnabled: true,
+  tabuTenure: 75,
+  aspirationEnabled: true,
+  enableIntensification: true,
+  intensificationIterations: 4000,
+  maxIntensificationAttempts: 4,
+};
+```
 
-- [Advanced Features](./advanced-features.md) - Deep dive into algorithm features
-- [Examples](./examples.md) - See complete configurations in action
-- [API Reference](./api-reference.md) - Full API documentation
+### Quality-focused profile
+
+Use this profile when you already know the search space is manageable and want
+better final quality.
+
+```ts
+const qualityConfig: SAConfig<MyState> = {
+  initialTemperature: 1500,
+  minTemperature: 0.005,
+  coolingRate: 0.997,
+  maxIterations: 80000,
+  hardConstraintWeight: 10000,
+  cloneState: deepClone,
+  tabuSearchEnabled: true,
+  tabuTenure: 50,
+  maxTabuListSize: 2000,
+  enableIntensification: true,
+  reheatingThreshold: 1500,
+  reheatingFactor: 2,
+  maxReheats: 3,
+  operatorSelectionMode: 'hybrid',
+};
+```
+
+## Configuration anti-patterns
+
+These patterns are valid in the type system but often harmful in practice.
+
+- Setting `hardConstraintWeight` too close to soft weights.
+- Using a very slow `cloneState` implementation on large states.
+- Enabling tabu without a meaningful signature for complex states.
+- Using `'await'` mode for expensive network-bound progress callbacks.
+- Treating `minTemperature` as the main stopping control while keeping
+  `maxIterations` unrealistically low.
+
+## Next steps
+
+To validate and tune a configuration more effectively:
+
+- read `advanced-features.md` for the precise runtime rules behind each option,
+- read `api-reference.md` for exact defaults and type semantics,
+- read `troubleshooting.md` when a configuration appears valid but behaves
+  poorly in practice.

@@ -508,10 +508,10 @@ describe('Simple Timetabling Integration Tests', () => {
       const config = createConfig({ maxIterations: 500 });
 
       const solverGood = new SimulatedAnnealing(goodState, constraints, moves, config);
-      const solutionGood = solverGood.solve();
+      const solutionGood = await solverGood.solve();
 
       const solverBad = new SimulatedAnnealing(badState, constraints, moves, config);
-      const solutionBad = solverBad.solve();
+      const solutionBad = await solverBad.solve();
 
       // Good initial state should converge faster (fewer iterations)
       // Note: This might not always hold due to randomness, but generally should
@@ -527,10 +527,10 @@ describe('Simple Timetabling Integration Tests', () => {
 
       // Run twice - both should reach feasible solutions
       const solver1 = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution1 = solver1.solve();
+      const solution1 = await solver1.solve();
 
       const solver2 = new SimulatedAnnealing(initialState, constraints, moves, config);
-      const solution2 = solver2.solve();
+      const solution2 = await solver2.solve();
 
       // Both should find feasible solutions
       expect(solution1.hardViolations).toBe(0);

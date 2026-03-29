@@ -195,10 +195,10 @@ describe('Fitness Calculation', () => {
       });
 
       const solverHard = new SimulatedAnnealing(stateHard, constraintsHard, [new NoOpMove()], config);
-      const solutionHard = solverHard.solve();
+      const solutionHard = await solverHard.solve();
 
       const solverSoft = new SimulatedAnnealing(stateSoft, constraintsSoft, [new NoOpMove()], config);
-      const solutionSoft = solverSoft.solve();
+      const solutionSoft = await solverSoft.solve();
 
       // Hard violation fitness should be MUCH higher than soft
       expect(solutionHard.fitness).toBeGreaterThan(solutionSoft.fitness * 100);
@@ -214,10 +214,10 @@ describe('Fitness Calculation', () => {
       const config = createConfig({ maxIterations: 5 });
 
       const solver5 = new SimulatedAnnealing(state, constraintsWeight5, [new NoOpMove()], config);
-      const solution5 = solver5.solve();
+      const solution5 = await solver5.solve();
 
       const solver20 = new SimulatedAnnealing(state, constraintsWeight20, [new NoOpMove()], config);
-      const solution20 = solver20.solve();
+      const solution20 = await solver20.solve();
 
       // Higher weight should result in higher fitness penalty
       // Weight 5: (1 - 0) * 5 = 5

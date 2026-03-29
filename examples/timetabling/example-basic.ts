@@ -18,12 +18,17 @@ import { getCacheStats } from "./utils/cache.js";
 
 import { NoLecturerConflict, NoRoomConflict, RoomCapacity, NoProdiConflict, MaxDailyPeriods, ClassTypeTime, SaturdayRestriction, FridayTimeRestriction, PrayerTimeStart, ExclusiveRoom } from "./constraints/hard/index.js";
 import { Compactness, EveningClassPriority, OverflowPenalty, PrayerTimeOverlap, PreferredRoom, PreferredTime, ResearchDay, TransitTime } from "./constraints/soft/index.js";
-import { ChangeTimeSlot, ChangeRoom, SwapClasses, ChangeTimeSlotAndRoom, FixFridayPrayerConflict, FixLecturerConflict, FixRoomConflict, FixMaxDailyPeriods, FixRoomCapacity } from "./moves/index.js";
+import { ChangeTimeSlot, ChangeRoom, SwapClasses, ChangeTimeSlotAndRoom, FixFridayPrayerConflict, FixFridayLecturerConflict, FixLecturerConflict, FixRoomConflict, FixMaxDailyPeriods, FixRoomCapacity, FixExclusiveRoom } from "./moves/index.js";
 import { SwapFridayWithNonFriday } from "./moves/SwapFridayWithNonFriday.js";
 
 console.log("=".repeat(70));
 console.log("  UNIVERSITY COURSE TIMETABLING - Simulated Annealing v2.0");
 console.log("=".repeat(70));
+
+const now = new Date();
+const pad2 = (value: number) => String(value).padStart(2, "0");
+const timestamp = `${now.getFullYear()}${pad2(now.getMonth() + 1)}${pad2(now.getDate())}-${pad2(now.getHours())}${pad2(now.getMinutes())}${pad2(now.getSeconds())}`;
+const logFilePath = `./examples/timetabling/log/timetable-optimization-${timestamp}.log`;
 
 // 1. Load data from Excel
 console.log("\n📂 Loading data from Excel file...");
@@ -89,11 +94,13 @@ console.log("\n🔄 Setting up move operators...");
 const moveGenerators: MoveGenerator<TimetableState>[] = [
   // Targeted operators (higher priority - will be selected more often when violations exist)
   new FixFridayPrayerConflict(),
+  new FixFridayLecturerConflict(),
   new SwapFridayWithNonFriday(),
   new FixLecturerConflict(),
   new FixRoomConflict(),
   new FixMaxDailyPeriods(),
   new FixRoomCapacity(),
+  new FixExclusiveRoom(),
 
   // General operators (for exploration and optimization)
   new ChangeTimeSlotAndRoom(), // BEST operator - 10-13% success rate, changes both time AND room
@@ -102,7 +109,7 @@ const moveGenerators: MoveGenerator<TimetableState>[] = [
   new SwapClasses(), // Low success rate but provides critical search diversity
 ];
 
-console.log(`   Targeted operators: 5 (FixFridayPrayerConflict, FixLecturerConflict, etc.)`);
+console.log(`   Targeted operators: 7 (FixFridayPrayerConflict, FixFridayLecturerConflict, FixExclusiveRoom, etc.)`);
 console.log(`   General operators: 4 (including high-success ChangeTimeSlotAndRoom)`);
 console.log(`   Total operators: ${moveGenerators.length}`);
 
@@ -110,10 +117,10 @@ console.log(`   Total operators: ${moveGenerators.length}`);
 console.log("\n⚙️  Configuring Simulated Annealing...");
 
 const config: SAConfig<TimetableState> = {
-  initialTemperature: 100000, // Higher for better exploration at start
+  initialTemperature: 10000000000, // Higher for better exploration at start
   minTemperature: 0.0000001,
   coolingRate: 0.9995, // Slower cooling for thorough search
-  maxIterations: 20_000, // Increased for better convergence (15-30 min runtime)
+  maxIterations: 1_000_000, // Increased for better convergence (15-30 min runtime)
   hardConstraintWeight: 100000, // Very high penalty for hard violations
 
   // State cloning function - optimized for performance
@@ -132,14 +139,14 @@ const config: SAConfig<TimetableState> = {
   // NEW: Tabu Search Configuration
   // ============================================
   tabuSearchEnabled: true, // Enable to prevent cycling
-  tabuTenure: 50, // How long a state stays tabu
+  tabuTenure: 200, // How long a state stays tabu
   maxTabuListSize: 1000, // Memory limit for tabu list
   aspirationEnabled: true, // Allow overriding tabu if better solution found
 
   // ============================================
   // NEW: Intensification Configuration
   // ============================================
-  enableIntensification: false, // Enable Phase 1.5 for stubborn hard violations
+  enableIntensification: true, // Enable Phase 1.5 for stubborn hard violations
   intensificationIterations: 2000, // Iterations per intensification attempt
   maxIntensificationAttempts: 3, // Max restart attempts
   operatorSelectionMode: "hybrid",
@@ -148,17 +155,16 @@ const config: SAConfig<TimetableState> = {
     enabled: true,
     level: "info",
     logInterval: 500,
+    output: "file",
+    filePath: logFilePath,
   },
-  onProgress: (iteration: number, cost: number, temperature: number, state: TimetableState | null, stats: ProgressStats) => {
-    console.log(JSON.stringify(stats, null, 2));
-    
-
-  }
+  onProgress: (iteration: number, cost: number, temperature: number, state: TimetableState | null, stats: ProgressStats) => {},
 };
 
 console.log(`   Initial temperature: ${config.initialTemperature}`);
 console.log(`   Cooling rate: ${config.coolingRate}`);
 console.log(`   Max iterations: ${config.maxIterations}`);
+console.log(`   Log file: ${logFilePath}`);
 
 
 // 6. Create solver and run optimization

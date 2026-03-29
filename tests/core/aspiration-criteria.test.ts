@@ -418,5 +418,93 @@ describe('Aspiration Criteria', () => {
       const result = (solver as any).shouldSkipTabu('test-signature', 110, 500, 1000000);
       expect(result).toBe(false); // Should accept (aspiration met)
     });
+
+    it('should pass newFitness (candidate) to tabu aspiration check during solve', async () => {
+      interface LocalState {
+        value: number;
+      }
+
+      const solver = new SimulatedAnnealing<LocalState>(
+        { value: 0 },
+        [
+          {
+            name: 'HardControl',
+            type: 'hard',
+            evaluate: (state) => (state.value >= 1 ? 1 : 0),
+          },
+        ],
+        [
+          {
+            name: 'Increment',
+            canApply: () => true,
+            generate: (state) => ({ ...state, value: state.value + 1 }),
+          },
+        ],
+        {
+          initialTemperature: 10,
+          minTemperature: 0.0001,
+          coolingRate: 0.9,
+          maxIterations: 3,
+          hardConstraintWeight: 1000,
+          cloneState: (s) => ({ ...s }),
+          tabuSearchEnabled: true,
+          tabuTenure: 50,
+          aspirationEnabled: true,
+          logging: { enabled: false },
+        }
+      );
+
+      const originalShouldSkipTabu = (solver as any).shouldSkipTabu.bind(solver);
+      const recordedNewFitness: number[] = [];
+
+      (solver as any).shouldSkipTabu = (
+        signature: string,
+        iteration: number,
+        newFitness: number,
+        globalBestFitness: number
+      ) => {
+        recordedNewFitness.push(newFitness);
+        return originalShouldSkipTabu(signature, iteration, newFitness, globalBestFitness);
+      };
+
+      await solver.solve();
+
+      expect(recordedNewFitness.length).toBeGreaterThan(0);
+      // New candidate has value >= 1 so hard penalty is zero, and fitness should be 0
+      expect(recordedNewFitness[0]).toBe(0);
+    });
+
+    it('should generate deterministic fallback signature for non-timetable states', async () => {
+      type CircularState = {
+        value: number;
+        self?: CircularState;
+      };
+
+      const solver = new SimulatedAnnealing<CircularState>(
+        { value: 1 },
+        [createMockConstraint()],
+        [createMockMoveGenerator('test', 1)],
+        {
+          initialTemperature: 10,
+          minTemperature: 0.0001,
+          coolingRate: 0.95,
+          maxIterations: 10,
+          hardConstraintWeight: 1000,
+          cloneState: (s) => ({ ...s }),
+          tabuSearchEnabled: true,
+          tabuTenure: 10,
+          logging: { enabled: false },
+        }
+      );
+
+      const circular: CircularState = { value: 42 };
+      circular.self = circular;
+
+      const sig1 = (solver as any).getStateSignature(circular);
+      const sig2 = (solver as any).getStateSignature(circular);
+
+      expect(sig1).toBe(sig2);
+      expect(sig1).toContain('[Circular]');
+    });
   });
 });

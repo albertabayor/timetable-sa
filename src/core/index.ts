@@ -9,6 +9,7 @@
 
 // Main solver
 export { SimulatedAnnealing } from './SimulatedAnnealing.js';
+export { SAError, SAConfigError, ConstraintValidationError, SolveConcurrencyError } from './errors.js';
 
 // Interfaces
 export type { Constraint } from './interfaces/Constraint.js';

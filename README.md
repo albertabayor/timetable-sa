@@ -15,7 +15,7 @@ timetabling, assignment, packing, allocation, and other state-space search
 problems where you want to keep domain logic in your own code while reusing a
 robust search engine.
 
-**Learn more in the [documentation hub](./docs/README.md).**
+**Learn more in the [documentation hub](https://github.com/albertabayor/timetable-sa-docs).**
 
 ## Why `timetable-sa`
 
@@ -123,21 +123,15 @@ satisfaction scores in `[0, 1]`.
 
 ## Documentation
 
-The documentation is organized for both practical users and advanced readers.
+All package documentation now lives in the dedicated docs repository:
 
-- [Documentation hub](./docs/README.md)
-- [Introduction](./docs/introduction.md)
-- [Installation](./docs/installation.md)
-- [Quick Start](./docs/quickstart.md)
-- [Core Concepts](./docs/core-concepts.md)
-- [Configuration Guide](./docs/configuration.md)
-- [Algorithm and Runtime Behavior](./docs/advanced-features.md)
-- [Internal Architecture](./docs/architecture.md)
-- [API Reference](./docs/api-reference.md)
-- [Examples](./docs/examples.md)
-- [Testing Guide](./docs/testing-guide.md)
-- [Troubleshooting](./docs/troubleshooting.md)
-- [Migration Guide](./docs/migration-guide.md)
+- [timetable-sa-docs](https://github.com/albertabayor/timetable-sa-docs)
+
+Use that repository as the source of truth for:
+
+- getting started and quickstart guides,
+- configuration and advanced algorithm behavior,
+- architecture, API reference, examples, and troubleshooting.
 
 ## Public API
 
@@ -166,7 +160,6 @@ The repository includes source code, tests, and example artifacts used to
 validate and evolve the solver implementation.
 
 - source: `src/`
-- docs: `docs/`
 - tests: `tests/`
 - examples and scripts: `examples/`, `scripts/`
 

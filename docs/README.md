@@ -8,7 +8,7 @@ This documentation provides comprehensive coverage of the `timetable-sa` package
 
 ### Documentation Philosophy
 
-Following Silicon Valley engineering standards, this documentation prioritizes:
+this documentation prioritizes:
 
 - **Completeness**: Every public API, configuration option, and internal mechanism documented
 - **Precision**: Technical accuracy with mathematical formalism where appropriate
@@ -49,7 +49,6 @@ Understand internals for advanced customization and system integration.
 - **[API Reference](./api-reference.md)** - Complete API documentation with TypeScript signatures
 - **[Migration Guide](./migration-guide.md)** - Version migration instructions
 - **[Troubleshooting](./troubleshooting.md)** - Common issues and diagnostic procedures
-- **[Documentation changelog](./documentation-changelog.md)** - Summary of major documentation corrections and expansions
 
 **Recommended for**: Library contributors, framework builders, research applications
 
@@ -66,7 +65,7 @@ Understand internals for advanced customization and system integration.
 | Writing move generators | [Core Concepts](./core-concepts.md#move-generators) → [API Reference](./api-reference.md#movegeneratortstate) → [Testing Guide](./testing-guide.md#unit-testing-move-generators) |
 | Testing implementation | [Testing Guide](./testing-guide.md) |
 | Debugging issues | [Troubleshooting](./troubleshooting.md) |
-| Optimizing performance | [Configuration Guide](./configuration.md) → [Benchmark Reports](./benchmarks/) |
+| Optimizing performance | [Configuration Guide](./configuration.md) → [Advanced Features](./advanced-features.md) |
 | Understanding internals | [Internal Architecture](./architecture.md) |
 | API details | [API Reference](./api-reference.md) |
 
@@ -87,17 +86,9 @@ Understand internals for advanced customization and system integration.
 **Advanced (Research and extension)**
 1. [Internal Architecture](./architecture.md)
 2. [API Reference](./api-reference.md)
-3. Benchmark Reports in [benchmarks/](./benchmarks/)
-4. Source code (TypeScript with comprehensive JSDoc)
+3. Source code (TypeScript with comprehensive JSDoc)
 
 ## Reference Materials
-
-### Benchmarks and Case Studies
-
-Detailed performance analysis and real-world optimization case studies:
-
-- **[Baseline Benchmarks](./benchmarks/baseline-20260328.md)** - Synthetic problem performance baselines
-- **[Timetabling Case Study](./benchmarks/timetabling-comparison-20260328.md)** - Complete iterative optimization workflow with A/B testing
 
 ### Configuration Profiles
 
@@ -159,11 +150,10 @@ If you can't find what you need:
 
 1. Check [Troubleshooting](./troubleshooting.md) for common issues
 2. Review [Examples](./examples.md) for similar use cases
-3. Examine benchmark reports for performance guidance
-4. Read the source code (extensively commented JSDoc)
+3. Read the source code (extensively commented JSDoc)
 
 ---
 
 **Documentation Version**: 1.0.0  
 **Last Updated**: March 2026  
-**Maintainer**: San Francisco Engineering Standards
+**Maintainer**: Benjamin Naphtali

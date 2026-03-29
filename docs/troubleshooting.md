@@ -233,7 +233,7 @@ schedule alone.
 - add or rename repair-oriented operators with names like `fix`, `swap`,
   `change`, `capacity`, `lecturer`, or domain-specific equivalents,
 - implement `getViolations()` for hard constraints,
-- benchmark several independent runs before concluding infeasibility.
+- run several independent solves before concluding infeasibility.
 
 ## Tabu search does not help
 

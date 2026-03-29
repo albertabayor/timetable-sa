@@ -237,7 +237,8 @@ enough, reheating will not fire even when stagnation is high.
 
 - Use smaller thresholds for rugged landscapes with many local minima.
 - Use larger thresholds when progress is noisy and you want more patience.
-- Keep `reheatingFactor` moderate unless benchmarks justify aggressive resets.
+- Keep `reheatingFactor` moderate unless you have a clear reason to make
+  reheating more aggressive.
 
 ## Tabu search configuration
 

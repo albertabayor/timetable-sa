@@ -138,7 +138,6 @@ The documentation is organized for both practical users and advanced readers.
 - [Testing Guide](./docs/testing-guide.md)
 - [Troubleshooting](./docs/troubleshooting.md)
 - [Migration Guide](./docs/migration-guide.md)
-- [Documentation changelog](./docs/documentation-changelog.md)
 
 ## Public API
 
@@ -163,8 +162,8 @@ The package exports a compact but expressive API surface.
 
 ## Development notes
 
-The repository includes source code, tests, benchmark notes, and example
-artifacts used to validate and evolve the solver implementation.
+The repository includes source code, tests, and example artifacts used to
+validate and evolve the solver implementation.
 
 - source: `src/`
 - docs: `docs/`

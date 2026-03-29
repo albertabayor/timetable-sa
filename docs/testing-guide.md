@@ -34,7 +34,6 @@ move generators that operate on a solver-provided clone.
 
 - **Jest** or **Vitest**: Unit and integration testing
 - **fast-check**: Property-based testing
-- **benchmark.js**: Performance benchmarking
 - **@types/jest**: TypeScript support
 
 ## Unit Testing Constraints
@@ -719,118 +718,6 @@ function arbitraryValidTimetable(): fc.Arbitrary<Timetable> {
 }
 ```
 
-## Performance Testing
-
-```typescript
-import { benchmark } from './test-utils';
-
-describe('Performance Tests', () => {
-  it('should evaluate constraints quickly', () => {
-    const largeState = createLargeState(10000);
-    
-    const result = benchmark(() => {
-      for (let i = 0; i < 1000; i++) {
-        noOverlapConstraint.evaluate(largeState);
-      }
-    });
-    
-    // Should evaluate 1000 times in less than 1 second
-    expect(result.durationMs).toBeLessThan(1000);
-    expect(result.iterations).toBe(1000);
-  });
-
-  it('should generate moves efficiently', () => {
-    const state = createLargeState(1000);
-    
-    const result = benchmark(() => {
-      for (let i = 0; i < 10000; i++) {
-        swapRoomsMove.generate(state, 100);
-      }
-    });
-    
-    expect(result.durationMs).toBeLessThan(1000);
-  });
-
-  it('should solve small problems quickly', async () => {
-    const startTime = Date.now();
-    
-    const solver = new SimulatedAnnealing(
-      createSmallProblem(),
-      constraints,
-      moves,
-      {
-        initialTemperature: 100,
-        minTemperature: 0.1,
-        coolingRate: 0.99,
-        maxIterations: 5000,
-        hardConstraintWeight: 1000,
-        cloneState: deepClone,
-        logging: { enabled: false }
-      }
-    );
-    
-    await solver.solve();
-    const duration = Date.now() - startTime;
-    
-    expect(duration).toBeLessThan(5000); // 5 seconds
-  });
-
-  it('should scale linearly with iterations', async () => {
-    const iterations = [1000, 2000, 4000, 8000];
-    const durations: number[] = [];
-    
-    for (const iter of iterations) {
-      const startTime = Date.now();
-      
-      const solver = new SimulatedAnnealing(
-        initialState,
-        constraints,
-        moves,
-        { ...testConfig, maxIterations: iter, logging: { enabled: false } }
-      );
-      
-      await solver.solve();
-      durations.push(Date.now() - startTime);
-    }
-    
-    // Check that time roughly doubles when iterations double
-    for (let i = 1; i < durations.length; i++) {
-      const ratio = durations[i] / durations[i - 1];
-      expect(ratio).toBeGreaterThan(1.5); // Allow some variance
-      expect(ratio).toBeLessThan(2.5);
-    }
-  });
-
-  it('should not leak memory over many iterations', async () => {
-    const initialMemory = process.memoryUsage().heapUsed;
-    
-    const solver = new SimulatedAnnealing(
-      createLargeState(1000),
-      constraints,
-      moves,
-      {
-        ...testConfig,
-        maxIterations: 100000,
-        logging: { enabled: false }
-      }
-    );
-    
-    await solver.solve();
-    
-    // Force garbage collection if available
-    if (global.gc) {
-      global.gc();
-    }
-    
-    const finalMemory = process.memoryUsage().heapUsed;
-    const memoryGrowth = (finalMemory - initialMemory) / 1024 / 1024; // MB
-    
-    // Memory growth should be reasonable (less than 100MB)
-    expect(memoryGrowth).toBeLessThan(100);
-  });
-});
-```
-
 ## Contract Testing
 
 ```typescript
@@ -942,62 +829,6 @@ describe('Contract Tests', () => {
 });
 ```
 
-## Benchmark Testing
-
-```typescript
-describe('Benchmark Suite', () => {
-  const benchmarkConfigs = [
-    { name: 'small', size: 10, iterations: 5000 },
-    { name: 'medium', size: 100, iterations: 10000 },
-    { name: 'large', size: 1000, iterations: 20000 }
-  ];
-
-  for (const { name, size, iterations } of benchmarkConfigs) {
-    describe(`${name} problem (${size} items)`, () => {
-      it(`should solve in reasonable time`, async () => {
-        const state = createProblemOfSize(size);
-        const startTime = performance.now();
-        
-        const solver = new SimulatedAnnealing(
-          state,
-          constraints,
-          moves,
-          {
-            initialTemperature: 100,
-            minTemperature: 0.1,
-            coolingRate: 0.995,
-            maxIterations: iterations,
-            hardConstraintWeight: 1000,
-            cloneState: deepClone,
-            logging: { enabled: false }
-          }
-        );
-        
-        const solution = await solver.solve();
-        const duration = performance.now() - startTime;
-        
-        console.log(`  ${name}: ${duration.toFixed(2)}ms, ` +
-                    `fitness: ${solution.fitness.toFixed(2)}, ` +
-                    `violations: ${solution.hardViolations}`);
-        
-        // Record baseline for regression detection
-        expect(duration).toBeLessThan(getBaseline(name) * 1.2);
-      });
-    });
-  }
-});
-
-function getBaseline(size: string): number {
-  // These would be loaded from a baseline file
-  const baselines: Record<string, number> = {
-    small: 100,
-    medium: 1000,
-    large: 10000
-  };
-  return baselines[size] || Infinity;
-}
-```
-
 ## Test Utilities
 
 ```typescript
@@ -1015,19 +846,6 @@ export function deepEqual(a: unknown, b: unknown): boolean {
  */
 export function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
-}
-
-/**
- * Simple benchmark utility
- */
-export function benchmark(fn: () => void): { 
-  durationMs: number; 
-  iterations: number 
-} {
-  const startTime = Date.now();
-  fn();
-  const duration = Date.now() - startTime;
-  return { durationMs: duration, iterations: 1 };
 }
 
 /**
@@ -1151,9 +969,6 @@ npm test -- constraints.test.ts
 # Run with coverage
 npm test -- --coverage
 
-# Run benchmarks only
-npm test -- --testNamePattern="Benchmark"
-
 # Run with performance profiling
 node --prof node_modules/.bin/vitest run
 
@@ -1189,9 +1004,6 @@ jobs:
         
       - name: Run unit tests
         run: npm test
-        
-      - name: Run benchmarks
-        run: npm test -- --testNamePattern="Benchmark"
         
       - name: Generate coverage report
         run: npm test -- --coverage

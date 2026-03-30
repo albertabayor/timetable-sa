@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/Node.js-18%2B-brightgreen?style=flat-square)
 [![npm version](https://img.shields.io/npm/v/timetable-sa.svg?style=flat-square)](https://www.npmjs.com/package/timetable-sa)
-![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+[![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](./LICENSE)
 
 `timetable-sa` is a generic TypeScript optimization library for
 constraint-driven problems. It gives you a production-oriented Simulated
@@ -15,7 +15,7 @@ timetabling, assignment, packing, allocation, and other state-space search
 problems where you want to keep domain logic in your own code while reusing a
 robust search engine.
 
-**Learn more in the [documentation hub](https://github.com/albertabayor/timetable-sa-docs).**
+**Learn more in the [documentation hub](https://timetable-sa.vercel.app/).**
 
 ## Why `timetable-sa`
 
@@ -123,11 +123,11 @@ satisfaction scores in `[0, 1]`.
 
 ## Documentation
 
-All package documentation now lives in the dedicated docs repository:
+All package documentation now lives on the dedicated docs site:
 
-- [timetable-sa-docs](https://github.com/albertabayor/timetable-sa-docs)
+- [timetable-sa docs](https://timetable-sa.vercel.app/)
 
-Use that repository as the source of truth for:
+Use that site as the source of truth for:
 
 - getting started and quickstart guides,
 - configuration and advanced algorithm behavior,
@@ -165,4 +165,4 @@ validate and evolve the solver implementation.
 
 ## License
 
-MIT
+[MIT](./LICENSE)

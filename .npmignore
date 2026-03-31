@@ -10,6 +10,7 @@ coverage/
 .nyc_output/
 .cache/
 .opencode/
+artifacts/
 
 # Local configuration and tooling
 .vscode/

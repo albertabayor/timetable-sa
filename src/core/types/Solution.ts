@@ -62,6 +62,56 @@ export interface Solution<TState> {
    * Statistics about move operators used during optimization
    */
   operatorStats: OperatorStats;
+
+  /**
+   * Optional solver diagnostics for benchmarking and investigation.
+   *
+   * This field is additive and intended for telemetry/analysis use cases.
+   */
+  diagnostics?: SolverDiagnostics;
+}
+
+export interface SolverDiagnostics {
+  phaseTimings: PhaseTimingDiagnostics;
+  feasibility: FeasibilityDiagnostics;
+  intensification: IntensificationDiagnostics;
+}
+
+export interface PhaseTimingDiagnostics {
+  phase1Ms: number;
+  phase15Ms: number;
+  phase2Ms: number;
+  totalRuntimeMs: number;
+}
+
+export interface FeasibilityDiagnostics {
+  initialHardViolations: number;
+  bestHardViolationsAfterPhase1: number;
+  bestHardViolationsAfterPhase15: number;
+  bestHardViolationsFinal: number;
+  timeToFirstFeasibleMs: number | null;
+  iterationToFirstFeasible: number | null;
+}
+
+export interface IntensificationDiagnostics {
+  triggered: boolean;
+  attemptsRun: number;
+  iterationsRun: number;
+  phase15BudgetLimitIterations: number;
+  phase15BudgetUsedIterations: number;
+  acceptedMoves: number;
+  hardImprovingAcceptedMoves: number;
+  equalHardAcceptedMoves: number;
+  hardWorseningAcceptedMoves: number;
+  phase15TabuSkips: number;
+  localReheats: number;
+  bestUpdates: number;
+  phase15EndedByBudget: boolean;
+  phase15EndedByEarlyStop: boolean;
+  phase15StartHard: number | null;
+  phase15WorstCurrentHard: number | null;
+  phase15EndCurrentHard: number | null;
+  phase15BestHardDelta: number | null;
 }
 
 /**

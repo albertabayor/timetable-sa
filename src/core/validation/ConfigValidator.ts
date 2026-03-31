@@ -15,6 +15,14 @@ function assertOptionalFiniteNumber(value: number | undefined, fieldName: string
   assertFiniteNumber(value, fieldName);
 }
 
+function assertOptionalProbability(value: number | undefined, fieldName: string): void {
+  if (value === undefined) return;
+  assertFiniteNumber(value, fieldName);
+  if (value < 0 || value > 1) {
+    throw new SAConfigError(`${fieldName} must be between 0 and 1 if provided, got ${value}`);
+  }
+}
+
 export function validateSolverInputs<TState>(
   initialState: TState,
   constraints: Constraint<TState>[],
@@ -134,6 +142,67 @@ export function validateSolverInputs<TState>(
     throw new SAConfigError(`intensificationStagnationLimit must be positive if provided, got ${config.intensificationStagnationLimit}`);
   }
 
+  if (
+    config.intensificationStartTemperatureMode !== undefined &&
+    config.intensificationStartTemperatureMode !== 'phase1-end' &&
+    config.intensificationStartTemperatureMode !== 'initial-reset'
+  ) {
+    throw new SAConfigError(
+      `intensificationStartTemperatureMode must be 'phase1-end' or 'initial-reset' if provided, got ${String(config.intensificationStartTemperatureMode)}`
+    );
+  }
+
+  assertOptionalFiniteNumber(config.intensificationStartTempMultiplier, 'intensificationStartTempMultiplier');
+  if (config.intensificationStartTempMultiplier !== undefined && config.intensificationStartTempMultiplier <= 0) {
+    throw new SAConfigError(`intensificationStartTempMultiplier must be positive if provided, got ${config.intensificationStartTempMultiplier}`);
+  }
+
+  assertOptionalFiniteNumber(config.intensificationStartTempCapRatio, 'intensificationStartTempCapRatio');
+  if (config.intensificationStartTempCapRatio !== undefined && config.intensificationStartTempCapRatio <= 0) {
+    throw new SAConfigError(`intensificationStartTempCapRatio must be positive if provided, got ${config.intensificationStartTempCapRatio}`);
+  }
+
+  if (config.intensificationTargetedOperatorNames !== undefined) {
+    if (!Array.isArray(config.intensificationTargetedOperatorNames)) {
+      throw new SAConfigError('intensificationTargetedOperatorNames must be an array of strings if provided');
+    }
+    for (const operatorName of config.intensificationTargetedOperatorNames) {
+      if (typeof operatorName !== 'string' || operatorName.trim().length === 0) {
+        throw new SAConfigError('intensificationTargetedOperatorNames must contain only non-empty strings');
+      }
+    }
+  }
+
+  assertOptionalProbability(config.intensificationTargetedSelectionRate, 'intensificationTargetedSelectionRate');
+
+  assertOptionalFiniteNumber(
+    config.intensificationEarlyStopNoBestImproveIterations,
+    'intensificationEarlyStopNoBestImproveIterations'
+  );
+  if (
+    config.intensificationEarlyStopNoBestImproveIterations !== undefined &&
+    (!Number.isInteger(config.intensificationEarlyStopNoBestImproveIterations) ||
+      config.intensificationEarlyStopNoBestImproveIterations <= 0)
+  ) {
+    throw new SAConfigError(
+      `intensificationEarlyStopNoBestImproveIterations must be positive if provided, got ${config.intensificationEarlyStopNoBestImproveIterations}`
+    );
+  }
+
+  assertOptionalFiniteNumber(
+    config.intensificationBudgetFractionOfMaxIterations,
+    'intensificationBudgetFractionOfMaxIterations'
+  );
+  if (
+    config.intensificationBudgetFractionOfMaxIterations !== undefined &&
+    (config.intensificationBudgetFractionOfMaxIterations <= 0 ||
+      config.intensificationBudgetFractionOfMaxIterations > 1)
+  ) {
+    throw new SAConfigError(
+      `intensificationBudgetFractionOfMaxIterations must be > 0 and <= 1 if provided, got ${config.intensificationBudgetFractionOfMaxIterations}`
+    );
+  }
+
   if (config.logging?.logInterval !== undefined) {
     assertFiniteNumber(config.logging.logInterval, 'logging.logInterval');
     if (!Number.isInteger(config.logging.logInterval) || config.logging.logInterval <= 0) {
@@ -155,6 +224,17 @@ export function mergeConfigWithDefaults<TState>(config: SAConfig<TState>): Resol
     intensificationIterations: config.intensificationIterations ?? 2000,
     maxIntensificationAttempts: config.maxIntensificationAttempts ?? 3,
     intensificationStagnationLimit: config.intensificationStagnationLimit ?? 300,
+    intensificationStartTemperatureMode: config.intensificationStartTemperatureMode ?? 'phase1-end',
+    intensificationStartTempMultiplier: config.intensificationStartTempMultiplier ?? 1.0,
+    intensificationStartTempCapRatio: config.intensificationStartTempCapRatio ?? 1.0,
+    intensificationUseTabu: config.intensificationUseTabu ?? true,
+    intensificationTargetedOperatorNames:
+      config.intensificationTargetedOperatorNames?.map((name) => name.trim()) ?? [],
+    intensificationTargetedSelectionRate: config.intensificationTargetedSelectionRate ?? 0.7,
+    intensificationEarlyStopNoBestImproveIterations:
+      config.intensificationEarlyStopNoBestImproveIterations ?? 800,
+    intensificationBudgetFractionOfMaxIterations:
+      config.intensificationBudgetFractionOfMaxIterations ?? 0.25,
     ...(config.getStateSignature && { getStateSignature: config.getStateSignature }),
     onProgressMode: config.onProgressMode ?? 'await',
     logging: {

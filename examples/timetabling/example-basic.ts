@@ -109,7 +109,18 @@ const moveGenerators: MoveGenerator<TimetableState>[] = [
   new SwapClasses(), // Low success rate but provides critical search diversity
 ];
 
-console.log(`   Targeted operators: 7 (FixFridayPrayerConflict, FixFridayLecturerConflict, FixExclusiveRoom, etc.)`);
+const TARGETED_REPAIR_OPERATORS = [
+  "Fix Friday Prayer Conflict",
+  "Fix Friday Lecturer Conflict",
+  "Swap Friday with Non-Friday",
+  "Fix Lecturer Conflict",
+  "Fix Room Conflict",
+  "Fix Max Daily Periods",
+  "Fix Room Capacity",
+  "Fix Exclusive Room",
+];
+
+console.log(`   Targeted operators: 8 (FixFridayPrayerConflict, FixFridayLecturerConflict, FixExclusiveRoom, etc.)`);
 console.log(`   General operators: 4 (including high-success ChangeTimeSlotAndRoom)`);
 console.log(`   Total operators: ${moveGenerators.length}`);
 
@@ -117,7 +128,7 @@ console.log(`   Total operators: ${moveGenerators.length}`);
 console.log("\n⚙️  Configuring Simulated Annealing...");
 
 const config: SAConfig<TimetableState> = {
-  initialTemperature: 10000000000, // Higher for better exploration at start
+  initialTemperature: 100000, // Practical baseline for stable acceptance behavior
   minTemperature: 0.0000001,
   coolingRate: 0.9995, // Slower cooling for thorough search
   maxIterations: 1_000_000, // Increased for better convergence (15-30 min runtime)
@@ -144,18 +155,28 @@ const config: SAConfig<TimetableState> = {
   aspirationEnabled: true, // Allow overriding tabu if better solution found
 
   // ============================================
-  // NEW: Intensification Configuration
+  // Phase 1.5 tuned configuration (from stage-2 benchmark)
   // ============================================
-  enableIntensification: true, // Enable Phase 1.5 for stubborn hard violations
-  intensificationIterations: 2000, // Iterations per intensification attempt
-  maxIntensificationAttempts: 3, // Max restart attempts
+  enableIntensification: true,
+  intensificationIterations: 2000,
+  maxIntensificationAttempts: 3,
+  intensificationStagnationLimit: 300,
+  intensificationStartTemperatureMode: "phase1-end",
+  intensificationStartTempMultiplier: 1.0,
+  intensificationStartTempCapRatio: 1.0,
+  intensificationUseTabu: true,
+  intensificationTargetedOperatorNames: TARGETED_REPAIR_OPERATORS,
+  intensificationTargetedSelectionRate: 0.7,
+  intensificationEarlyStopNoBestImproveIterations: 800,
+  intensificationBudgetFractionOfMaxIterations: 0.25,
+
   operatorSelectionMode: "hybrid",
   // Logging
   logging: {
     enabled: true,
     level: "info",
     logInterval: 500,
-    output: "file",
+    output: "both",
     filePath: logFilePath,
   },
   onProgress: (iteration: number, cost: number, temperature: number, state: TimetableState | null, stats: ProgressStats) => {},

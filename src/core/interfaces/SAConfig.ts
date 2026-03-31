@@ -333,6 +333,81 @@ export interface SAConfig<TState> {
   intensificationStagnationLimit?: number;
 
   /**
+   * Start temperature mode for each intensification attempt.
+   *
+   * - 'phase1-end': derive from Phase 1 terminal temperature (default)
+   * - 'initial-reset': reset to initialTemperature (legacy behavior)
+   *
+   * @default 'phase1-end'
+   */
+  intensificationStartTemperatureMode?: 'phase1-end' | 'initial-reset';
+
+  /**
+   * Multiplier applied to Phase 1 end temperature when
+   * intensificationStartTemperatureMode is 'phase1-end'.
+   *
+   * @default 1.0
+   */
+  intensificationStartTempMultiplier?: number;
+
+  /**
+   * Upper cap ratio against initialTemperature for intensification start temp.
+   *
+   * startTemp <= initialTemperature * intensificationStartTempCapRatio
+   *
+   * @default 1.0
+   */
+  intensificationStartTempCapRatio?: number;
+
+  /**
+   * Whether tabu gating is applied during Phase 1.5.
+   *
+   * This flag only has effect when tabuSearchEnabled is true.
+   *
+   * @default true
+   */
+  intensificationUseTabu?: boolean;
+
+  /**
+   * Explicit list of move generator names considered "targeted" in Phase 1.5.
+   *
+   * Matching is case-insensitive exact name match.
+   * If empty/omitted, Phase 1.5 selects from all applicable generators.
+   *
+   * @default []
+   */
+  intensificationTargetedOperatorNames?: string[];
+
+  /**
+   * Probability of selecting targeted operators when targeted set is available.
+   *
+   * Must be between 0 and 1.
+   *
+   * @default 0.7
+   */
+  intensificationTargetedSelectionRate?: number;
+
+  /**
+   * Per-attempt early stop threshold for Phase 1.5 when there is no
+   * improvement to global best hard-violation objective.
+   *
+   * @default 800
+   */
+  intensificationEarlyStopNoBestImproveIterations?: number;
+
+  /**
+   * Global Phase 1.5 budget cap as fraction of maxIterations.
+   *
+   * Total intensification iterations across all attempts are capped at:
+   * floor(maxIterations * intensificationBudgetFractionOfMaxIterations).
+   *
+   * Must be > 0 and <= 1.
+   *
+   * @default 0.25
+   */
+  intensificationBudgetFractionOfMaxIterations?: number;
+
+  /**
    * Custom function to generate a unique signature for a state.
    *
    * Used by Tabu Search to track visited states. If not provided,

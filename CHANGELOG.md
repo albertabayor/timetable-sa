@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-03-31
+
+This release expands the public observability and Phase 1.5 tuning surface of
+`timetable-sa` while keeping the core solver entry points unchanged.
+
+### Added
+
+- New `SAConfig` fields for Phase 1.5 tuning:
+  - `intensificationStartTemperatureMode`
+  - `intensificationStartTempMultiplier`
+  - `intensificationStartTempCapRatio`
+  - `intensificationUseTabu`
+  - `intensificationTargetedOperatorNames`
+  - `intensificationTargetedSelectionRate`
+  - `intensificationEarlyStopNoBestImproveIterations`
+  - `intensificationBudgetFractionOfMaxIterations`
+- New solution-level diagnostics payload:
+  - `SolverDiagnostics`
+  - `PhaseTimingDiagnostics`
+  - `FeasibilityDiagnostics`
+  - `IntensificationDiagnostics`
+- New `SimulatedAnnealing#getDiagnostics()` snapshot method.
+- New docs-site coverage for diagnostics, migration guidance, and updated
+  Phase 1.5 behavior.
+
+### Changed
+
+- Phase 1.5 now defaults to deriving its start temperature from the Phase 1
+  terminal temperature via `intensificationStartTemperatureMode: 'phase1-end'`.
+- Phase 1.5 can apply optional tabu gating, explicit targeted operator
+  selection, per-attempt early stop, and a global iteration budget cap.
+- `solve()` now returns `solution.diagnostics` as an additive telemetry field.
+
+### Notes
+
+- If you need legacy Phase 1.5 restart behavior, set
+  `intensificationStartTemperatureMode: 'initial-reset'`.
+
 ## [3.0.0] - 2026-03-30
 
 This release hardens the public runtime contract of `timetable-sa` and
@@ -190,4 +228,5 @@ const solution = await solver.solve();
 [2.3.0]: https://github.com/albertabayor/timetable-sa/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/albertabayor/timetable-sa/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/albertabayor/timetable-sa/releases/tag/v2.1.1
+[3.1.0]: https://github.com/albertabayor/timetable-sa/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/albertabayor/timetable-sa/compare/v2.4.0...v3.0.0

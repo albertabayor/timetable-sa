@@ -279,6 +279,81 @@ describe('SimulatedAnnealing Core Engine', () => {
       ).toThrow(/must be >= 0/);
     });
 
+    it('should reject invalid intensification budget fraction config', async () => {
+      const state = createTestState();
+      const constraints = [new NoWorkerConflict()];
+      const moves = [new ChangeTimeSlot()];
+
+      expect(
+        () =>
+          new SimulatedAnnealing(state, constraints, moves, {
+            ...createTestConfig(),
+            intensificationBudgetFractionOfMaxIterations: 0,
+          })
+      ).toThrow(/intensificationBudgetFractionOfMaxIterations/);
+
+      expect(
+        () =>
+          new SimulatedAnnealing(state, constraints, moves, {
+            ...createTestConfig(),
+            intensificationBudgetFractionOfMaxIterations: 1.2,
+          })
+      ).toThrow(/intensificationBudgetFractionOfMaxIterations/);
+    });
+
+    it('should reject invalid intensification targeted selection rate config', async () => {
+      const state = createTestState();
+      const constraints = [new NoWorkerConflict()];
+      const moves = [new ChangeTimeSlot()];
+
+      expect(
+        () =>
+          new SimulatedAnnealing(state, constraints, moves, {
+            ...createTestConfig(),
+            intensificationTargetedSelectionRate: -0.1,
+          })
+      ).toThrow(/intensificationTargetedSelectionRate/);
+
+      expect(
+        () =>
+          new SimulatedAnnealing(state, constraints, moves, {
+            ...createTestConfig(),
+            intensificationTargetedSelectionRate: 1.1,
+          })
+      ).toThrow(/intensificationTargetedSelectionRate/);
+    });
+
+    it('should resolve intensification start temperature by selected mode', async () => {
+      const state = createTestState();
+      const constraints = [new NoWorkerConflict()];
+      const moves = [new ChangeTimeSlot()];
+
+      const phase1EndSolver = new SimulatedAnnealing(
+        state,
+        constraints,
+        moves,
+        createTestConfig({
+          initialTemperature: 100,
+          intensificationStartTemperatureMode: 'phase1-end',
+          intensificationStartTempMultiplier: 2,
+          intensificationStartTempCapRatio: 0.5,
+        })
+      );
+
+      const legacySolver = new SimulatedAnnealing(
+        state,
+        constraints,
+        moves,
+        createTestConfig({
+          initialTemperature: 100,
+          intensificationStartTemperatureMode: 'initial-reset',
+        })
+      );
+
+      expect((phase1EndSolver as any).resolveIntensificationStartTemperature(20)).toBeCloseTo(40, 6);
+      expect((legacySolver as any).resolveIntensificationStartTemperature(20)).toBeCloseTo(100, 6);
+    });
+
     it('should return immutable stats snapshot', async () => {
       const state = createTestState(true);
       const constraints = [new NoWorkerConflict()];
@@ -728,6 +803,7 @@ describe('SimulatedAnnealing Core Engine', () => {
       expect(solution.finalTemperature).toBeDefined();
       expect(solution.violations).toBeDefined();
       expect(solution.operatorStats).toBeDefined();
+      expect(solution.diagnostics).toBeDefined();
     });
 
     it('should include violation details', async () => {
@@ -761,6 +837,96 @@ describe('SimulatedAnnealing Core Engine', () => {
 
       // Initial state should remain unchanged
       expect(state).toEqual(initialStateCopy);
+    });
+
+    it('should expose non-negative phase timing diagnostics', async () => {
+      const state = createTestState(true);
+      const constraints = [new NoWorkerConflict()];
+      const moves = [new ChangeTimeSlot(), new ChangeWorker()];
+      const config = createTestConfig({ maxIterations: 100, enableIntensification: false });
+
+      const solver = new SimulatedAnnealing(state, constraints, moves, config);
+      const solution = await solver.solve();
+
+      expect(solution.diagnostics).toBeDefined();
+      expect(solution.diagnostics?.phaseTimings.phase1Ms).toBeGreaterThanOrEqual(0);
+      expect(solution.diagnostics?.phaseTimings.phase15Ms).toBeGreaterThanOrEqual(0);
+      expect(solution.diagnostics?.phaseTimings.phase2Ms).toBeGreaterThanOrEqual(0);
+      expect(solution.diagnostics?.phaseTimings.totalRuntimeMs).toBeGreaterThanOrEqual(0);
+    });
+
+    it('should keep intensification diagnostics empty when intensification is disabled', async () => {
+      const state = createTestState(true);
+      const constraints = [new NoWorkerConflict()];
+      const moves = [new ChangeTimeSlot()];
+      const config = createTestConfig({ maxIterations: 100, enableIntensification: false });
+
+      const solver = new SimulatedAnnealing(state, constraints, moves, config);
+      const solution = await solver.solve();
+
+      expect(solution.diagnostics?.intensification.triggered).toBe(false);
+      expect(solution.diagnostics?.intensification.attemptsRun).toBe(0);
+      expect(solution.diagnostics?.intensification.iterationsRun).toBe(0);
+      expect(solution.diagnostics?.intensification.phase15BudgetLimitIterations).toBe(0);
+      expect(solution.diagnostics?.intensification.phase15BudgetUsedIterations).toBe(0);
+      expect(solution.diagnostics?.intensification.phase15TabuSkips).toBe(0);
+      expect(solution.diagnostics?.intensification.phase15EndedByBudget).toBe(false);
+      expect(solution.diagnostics?.intensification.phase15EndedByEarlyStop).toBe(false);
+      expect(solution.diagnostics?.intensification.phase15StartHard).toBeNull();
+      expect(solution.diagnostics?.intensification.phase15EndCurrentHard).toBeNull();
+      expect(solution.diagnostics?.intensification.phase15BestHardDelta).toBeNull();
+    });
+
+    it('should populate intensification diagnostics when phase15 runs', async () => {
+      const state = createTestState(true);
+      const constraints = [new AlwaysFail()];
+      const moves = [new ChangeTimeSlot()];
+      const config = createTestConfig({
+        maxIterations: 200,
+        enableIntensification: true,
+        intensificationIterations: 20,
+        maxIntensificationAttempts: 2,
+      });
+
+      const solver = new SimulatedAnnealing(state, constraints, moves, config);
+      const solution = await solver.solve();
+
+      expect(solution.diagnostics?.intensification.triggered).toBe(true);
+      expect(solution.diagnostics?.intensification.attemptsRun).toBeGreaterThan(0);
+      expect(solution.diagnostics?.intensification.iterationsRun).toBeGreaterThan(0);
+      expect(solution.diagnostics?.intensification.phase15BudgetLimitIterations).toBeGreaterThan(0);
+      expect(solution.diagnostics?.intensification.phase15BudgetUsedIterations).toBeGreaterThan(0);
+      expect(solution.diagnostics?.intensification.phase15BudgetUsedIterations).toBeLessThanOrEqual(
+        solution.diagnostics?.intensification.phase15BudgetLimitIterations ?? 0
+      );
+      expect(solution.diagnostics?.intensification.phase15StartHard).toBeGreaterThan(0);
+      expect(solution.diagnostics?.intensification.phase15EndCurrentHard).not.toBeNull();
+      expect(solution.diagnostics?.feasibility.bestHardViolationsAfterPhase1).toBeGreaterThan(0);
+      expect(solution.diagnostics?.feasibility.bestHardViolationsAfterPhase15).toBeGreaterThan(0);
+    });
+
+    it('should enforce phase15 budget cap and trigger early-stop when no best-hard improvement', async () => {
+      const state = createTestState(true);
+      const constraints = [new AlwaysFail()];
+      const moves = [new ChangeTimeSlot()];
+      const config = createTestConfig({
+        maxIterations: 100,
+        enableIntensification: true,
+        intensificationIterations: 100,
+        maxIntensificationAttempts: 5,
+        intensificationBudgetFractionOfMaxIterations: 0.1,
+        intensificationEarlyStopNoBestImproveIterations: 5,
+        intensificationTargetedOperatorNames: ['Change Time Slot'],
+      });
+
+      const solver = new SimulatedAnnealing(state, constraints, moves, config);
+      const solution = await solver.solve();
+      const intensification = solution.diagnostics?.intensification;
+
+      expect(intensification?.triggered).toBe(true);
+      expect(intensification?.phase15BudgetLimitIterations).toBe(10);
+      expect(intensification?.phase15BudgetUsedIterations).toBeLessThanOrEqual(10);
+      expect(intensification?.phase15EndedByEarlyStop).toBe(true);
     });
   });
 

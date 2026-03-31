@@ -1,6 +1,6 @@
 {
   "name": "timetable-sa",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Generic, unopinionated Simulated Annealing library for constraint satisfaction problems. Solve timetabling, scheduling, resource allocation, and any optimization problem with custom constraints.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,6 +26,7 @@
     "test:verbose": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "prepublishOnly": "npm run clean && npm run build",
     "example:timetabling": "bun examples/timetabling/example-basic.ts",
+    "example:timetabling:non-greedy": "bun examples/timetabling/example-non-greedy.ts",
     "build:binary": "bun scripts/build-binary.ts",
     "build:binary:all": "bun scripts/build-binary.ts --all",
     "build:binary:linux": "bun scripts/build-binary.ts --target=bun-linux-x64",

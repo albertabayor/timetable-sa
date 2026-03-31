@@ -26,6 +26,14 @@ export interface ResolvedSAConfig<TState> extends SAConfig<TState> {
   intensificationIterations: number;
   maxIntensificationAttempts: number;
   intensificationStagnationLimit: number;
+  intensificationStartTemperatureMode: 'phase1-end' | 'initial-reset';
+  intensificationStartTempMultiplier: number;
+  intensificationStartTempCapRatio: number;
+  intensificationUseTabu: boolean;
+  intensificationTargetedOperatorNames: string[];
+  intensificationTargetedSelectionRate: number;
+  intensificationEarlyStopNoBestImproveIterations: number;
+  intensificationBudgetFractionOfMaxIterations: number;
   getStateSignature?: (state: TState) => string;
   onProgressMode: 'await' | 'fire-and-forget';
   logging: Required<NonNullable<SAConfig<TState>['logging']>>;

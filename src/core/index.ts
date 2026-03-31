@@ -17,6 +17,13 @@ export type { MoveGenerator } from './interfaces/MoveGenerator.js';
 export type { SAConfig, LoggingConfig } from './interfaces/SAConfig.js';
 
 // Types
-export type { Solution, OperatorStats } from './types/Solution.js';
+export type {
+  Solution,
+  OperatorStats,
+  SolverDiagnostics,
+  PhaseTimingDiagnostics,
+  FeasibilityDiagnostics,
+  IntensificationDiagnostics,
+} from './types/Solution.js';
 export type { Violation } from './types/Violation.js';
 export type { ProgressStats, OnProgressCallback } from './types/ProgressStats.js';

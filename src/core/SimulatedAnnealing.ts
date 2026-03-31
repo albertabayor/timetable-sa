@@ -1,7 +1,7 @@
 import type { Constraint } from './interfaces/Constraint.js';
 import type { MoveGenerator } from './interfaces/MoveGenerator.js';
 import type { SAConfig } from './interfaces/SAConfig.js';
-import type { Solution, OperatorStats } from './types/Solution.js';
+import type { Solution, OperatorStats, SolverDiagnostics } from './types/Solution.js';
 import type { Violation } from './types/Violation.js';
 import { acceptanceProbabilityPhase1, acceptanceProbabilityPhase2, safeExp } from './policies/AcceptancePolicy.js';
 import { OperatorSelectionPolicy } from './policies/OperatorSelectionPolicy.js';
@@ -37,6 +37,42 @@ export class SimulatedAnnealing<TState> {
   private readonly tabuList = new Map<string, number>();
   private tabuMemory: TabuMemory;
   private isSolving = false;
+  private diagnostics: SolverDiagnostics = {
+    phaseTimings: {
+      phase1Ms: 0,
+      phase15Ms: 0,
+      phase2Ms: 0,
+      totalRuntimeMs: 0,
+    },
+    feasibility: {
+      initialHardViolations: 0,
+      bestHardViolationsAfterPhase1: 0,
+      bestHardViolationsAfterPhase15: 0,
+      bestHardViolationsFinal: 0,
+      timeToFirstFeasibleMs: null,
+      iterationToFirstFeasible: null,
+    },
+    intensification: {
+      triggered: false,
+      attemptsRun: 0,
+      iterationsRun: 0,
+      phase15BudgetLimitIterations: 0,
+      phase15BudgetUsedIterations: 0,
+      acceptedMoves: 0,
+      hardImprovingAcceptedMoves: 0,
+      equalHardAcceptedMoves: 0,
+      hardWorseningAcceptedMoves: 0,
+      phase15TabuSkips: 0,
+      localReheats: 0,
+      bestUpdates: 0,
+      phase15EndedByBudget: false,
+      phase15EndedByEarlyStop: false,
+      phase15StartHard: null,
+      phase15WorstCurrentHard: null,
+      phase15EndCurrentHard: null,
+      phase15BestHardDelta: null,
+    },
+  };
 
   constructor(
     initialState: TState,
@@ -95,6 +131,7 @@ export class SimulatedAnnealing<TState> {
     this.resetRuntimeState();
 
     try {
+      const solveStartTime = performance.now();
       this.logger.log('info', 'Starting optimization...');
       this.logger.log('info', 'Phase 1: Eliminating hard constraint violations');
       this.setPhase('phase1');
@@ -118,6 +155,11 @@ export class SimulatedAnnealing<TState> {
         fitness: currentFitness.toFixed(2),
         hardViolations: currentHardViolations,
       });
+
+      this.diagnostics.feasibility.initialHardViolations = currentHardViolations;
+      if (currentHardViolations === 0) {
+        this.recordFirstFeasible(0, solveStartTime);
+      }
 
       const initialViolations = this.getViolations(currentState);
       const initialSoftViolations = initialViolations.filter((v) => v.constraintType === 'soft').length;
@@ -156,6 +198,7 @@ export class SimulatedAnnealing<TState> {
       );
       this.logger.log('info', 'Initial violations breakdown by constraint', violationsByConstraint);
 
+      const phase1StartTime = performance.now();
       const phase1Result = await this.runPhase1(
         currentState,
         bestState,
@@ -166,8 +209,10 @@ export class SimulatedAnnealing<TState> {
         temperature,
         iteration,
         iterationsWithoutImprovement,
-        reheats
+        reheats,
+        solveStartTime
       );
+      this.diagnostics.phaseTimings.phase1Ms = performance.now() - phase1StartTime;
 
       currentState = phase1Result.currentState;
       bestState = phase1Result.bestState;
@@ -179,24 +224,31 @@ export class SimulatedAnnealing<TState> {
       iteration = phase1Result.iteration;
       iterationsWithoutImprovement = phase1Result.iterationsWithoutImprovement;
       reheats = phase1Result.reheats;
+      this.diagnostics.feasibility.bestHardViolationsAfterPhase1 = bestHardViolations;
 
       this.logger.log('info', `Phase 1 complete: Hard violations = ${bestHardViolations}`);
 
       if (bestHardViolations > 0 && this.config.enableIntensification) {
         this.setPhase('phase15');
+        const phase15StartTime = performance.now();
         const intensificationResult = await this.runIntensification(
           bestState,
           bestFitness,
           bestHardViolations,
-          iteration
+          temperature,
+          iteration,
+          solveStartTime
         );
+        this.diagnostics.phaseTimings.phase15Ms = performance.now() - phase15StartTime;
 
         bestState = intensificationResult.bestState;
         bestFitness = intensificationResult.bestFitness;
         bestHardViolations = intensificationResult.bestHardViolations;
         iteration = intensificationResult.iteration;
       }
+      this.diagnostics.feasibility.bestHardViolationsAfterPhase15 = bestHardViolations;
 
+      const phase2StartTime = performance.now();
       const phase2Result = await this.runPhase2(
         bestState,
         bestFitness,
@@ -204,8 +256,12 @@ export class SimulatedAnnealing<TState> {
         temperature,
         iteration,
         iterationsWithoutImprovement,
-        reheats
+        reheats,
+        solveStartTime
       );
+      this.diagnostics.phaseTimings.phase2Ms = performance.now() - phase2StartTime;
+      this.diagnostics.phaseTimings.totalRuntimeMs = performance.now() - solveStartTime;
+      this.diagnostics.feasibility.bestHardViolationsFinal = phase2Result.bestHardViolations;
 
       return this.createSolution(
         phase2Result.bestState,
@@ -230,7 +286,8 @@ export class SimulatedAnnealing<TState> {
     temperature: number,
     iteration: number,
     iterationsWithoutImprovement: number,
-    reheats: number
+    reheats: number,
+    solveStartTime: number
   ): Promise<{
     currentState: TState;
     bestState: TState;
@@ -301,6 +358,9 @@ export class SimulatedAnnealing<TState> {
           bestState = this.config.cloneState(currentState);
           bestFitness = newFitness;
           bestHardViolations = newHardViolations;
+          if (bestHardViolations === 0) {
+            this.recordFirstFeasible(iteration, solveStartTime);
+          }
           iterationsWithoutImprovement = 0;
           this.progressReporter.updateMoveStats(true, true, iteration);
 
@@ -405,7 +465,9 @@ export class SimulatedAnnealing<TState> {
     bestState: TState,
     bestFitness: number,
     bestHardViolations: number,
-    iteration: number
+    phase1EndTemperature: number,
+    iteration: number,
+    solveStartTime: number
   ): Promise<{
     bestState: TState;
     bestFitness: number;
@@ -413,110 +475,203 @@ export class SimulatedAnnealing<TState> {
     iteration: number;
   }> {
     this.logger.log('info', 'Phase 1.5: Intensification - targeting remaining hard violations');
+    this.diagnostics.intensification.triggered = true;
+    this.diagnostics.intensification.phase15StartHard = bestHardViolations;
+    this.diagnostics.intensification.phase15WorstCurrentHard = bestHardViolations;
 
+    const targetedNameSet = new Set(
+      this.config.intensificationTargetedOperatorNames.map((name) => name.toLowerCase())
+    );
+    const phase15BudgetLimit = Math.max(
+      1,
+      Math.floor(this.config.maxIterations * this.config.intensificationBudgetFractionOfMaxIterations)
+    );
+
+    this.diagnostics.intensification.phase15BudgetLimitIterations = phase15BudgetLimit;
+
+    let remainingBudget = phase15BudgetLimit;
     let currentState = this.config.cloneState(bestState);
     let currentFitness = bestFitness;
     let currentHardViolations = bestHardViolations;
     let intensificationAttempt = 0;
 
-    while (bestHardViolations > 0 && intensificationAttempt < this.config.maxIntensificationAttempts) {
+    while (
+      bestHardViolations > 0 &&
+      intensificationAttempt < this.config.maxIntensificationAttempts &&
+      remainingBudget > 0
+    ) {
       intensificationAttempt++;
+      this.diagnostics.intensification.attemptsRun = intensificationAttempt;
       this.logger.log(
         'info',
         `[Intensification] Attempt ${intensificationAttempt}/${this.config.maxIntensificationAttempts}`
       );
 
-      let intensificationTemp = this.config.initialTemperature;
+      let intensificationTemp = this.resolveIntensificationStartTemperature(phase1EndTemperature);
       let intensificationIterations = 0;
       let stagnationCounter = 0;
+      let noBestImproveCounter = 0;
+      let attemptEndedByEarlyStop = false;
 
       currentState = this.config.cloneState(bestState);
       currentFitness = bestFitness;
       currentHardViolations = bestHardViolations;
 
-      while (intensificationIterations < this.config.intensificationIterations && bestHardViolations > 0) {
+      const attemptIterationBudget = Math.min(this.config.intensificationIterations, remainingBudget);
+
+      while (
+        intensificationIterations < attemptIterationBudget &&
+        bestHardViolations > 0 &&
+        remainingBudget > 0
+      ) {
         const allGenerators = this.moveGenerators.filter((gen) => gen.canApply(currentState));
-        const targetedGenerators = allGenerators.filter((gen) => {
-          const name = gen.name.toLowerCase();
-          return name.includes('fix') || name.includes('swap') || name.includes('change');
-        });
+        if (allGenerators.length === 0) break;
 
-        const generators = targetedGenerators.length > 0 && Math.random() < 0.7 ? targetedGenerators : allGenerators;
-
-        if (generators.length === 0) break;
+        const targetedGenerators =
+          targetedNameSet.size === 0
+            ? []
+            : allGenerators.filter((gen) => targetedNameSet.has(gen.name.toLowerCase()));
+        const generators =
+          targetedGenerators.length > 0 && Math.random() < this.config.intensificationTargetedSelectionRate
+            ? targetedGenerators
+            : allGenerators;
 
         const selectedGenerator = generators[Math.floor(Math.random() * generators.length)]!;
         const clonedState = this.config.cloneState(currentState);
         const newState = selectedGenerator.generate(clonedState, intensificationTemp);
-        if (!newState) {
-          intensificationIterations++;
-          continue;
-        }
 
-        this.selectionPolicy.updateOnlineStats(this.operatorStats, selectedGenerator.name, { attempted: true });
+        if (newState) {
+          this.selectionPolicy.updateOnlineStats(this.operatorStats, selectedGenerator.name, { attempted: true });
 
-        const { fitness: newFitness, hardViolations: newHardViolations } = this.calculateFitnessAndViolations(newState);
+          const { fitness: newFitness, hardViolations: newHardViolations } =
+            this.calculateFitnessAndViolations(newState);
+          this.diagnostics.intensification.phase15WorstCurrentHard = Math.max(
+            this.diagnostics.intensification.phase15WorstCurrentHard ?? newHardViolations,
+            newHardViolations
+          );
 
-        let accept = false;
-        if (newHardViolations < currentHardViolations) {
-          accept = true;
-          stagnationCounter = 0;
-        } else if (newHardViolations === currentHardViolations) {
-          if (newFitness < currentFitness) {
-            accept = true;
-            stagnationCounter = 0;
-          } else {
-            const acceptProb = safeExp((currentFitness - newFitness) / intensificationTemp);
-            accept = Math.random() < acceptProb;
+          const shouldSkipWithTabu =
+            this.config.intensificationUseTabu &&
+            this.config.tabuSearchEnabled &&
+            this.shouldSkipTabu(this.getStateSignature(newState), iteration, newFitness, bestFitness);
+
+          if (shouldSkipWithTabu) {
+            this.diagnostics.intensification.phase15TabuSkips++;
+            this.progressReporter.addTabuHit();
             stagnationCounter++;
+            noBestImproveCounter++;
+          } else {
+            let accept = false;
+            let acceptanceCategory: 'hard-improving' | 'equal-hard' | 'hard-worsening' | null = null;
+            if (newHardViolations < currentHardViolations) {
+              accept = true;
+              acceptanceCategory = 'hard-improving';
+              stagnationCounter = 0;
+            } else if (newHardViolations === currentHardViolations) {
+              if (newFitness < currentFitness) {
+                accept = true;
+                acceptanceCategory = 'equal-hard';
+                stagnationCounter = 0;
+              } else {
+                const acceptProb = safeExp((currentFitness - newFitness) / intensificationTemp);
+                accept = Math.random() < acceptProb;
+                if (accept) {
+                  acceptanceCategory = 'equal-hard';
+                }
+                stagnationCounter++;
+              }
+            } else {
+              const worsenProb = safeExp(-1 / (intensificationTemp / 10000));
+              if (Math.random() < worsenProb * 0.02) {
+                accept = true;
+                acceptanceCategory = 'hard-worsening';
+                this.logger.log('debug', '[Intensification] Accepting worsening move to escape local minimum');
+              }
+              stagnationCounter++;
+            }
+
+            if (accept) {
+              this.diagnostics.intensification.acceptedMoves++;
+              if (acceptanceCategory === 'hard-improving') {
+                this.diagnostics.intensification.hardImprovingAcceptedMoves++;
+              } else if (acceptanceCategory === 'equal-hard') {
+                this.diagnostics.intensification.equalHardAcceptedMoves++;
+              } else if (acceptanceCategory === 'hard-worsening') {
+                this.diagnostics.intensification.hardWorseningAcceptedMoves++;
+              }
+              this.selectionPolicy.updateOnlineStats(this.operatorStats, selectedGenerator.name, {
+                accepted: true,
+                improved: newFitness < currentFitness,
+              });
+
+              if (this.config.intensificationUseTabu && this.config.tabuSearchEnabled) {
+                const currentSignature = this.getStateSignature(currentState);
+                this.addToTabuList(currentSignature, iteration);
+              }
+
+              currentState = newState;
+              currentFitness = newFitness;
+              currentHardViolations = newHardViolations;
+
+              const isBestImprovement =
+                newHardViolations < bestHardViolations ||
+                (newHardViolations === bestHardViolations && newFitness < bestFitness);
+
+              if (isBestImprovement) {
+                bestState = this.config.cloneState(currentState);
+                bestFitness = newFitness;
+                bestHardViolations = newHardViolations;
+                this.diagnostics.intensification.bestUpdates++;
+                noBestImproveCounter = 0;
+                if (bestHardViolations === 0) {
+                  this.recordFirstFeasible(iteration, solveStartTime);
+                }
+                this.logger.log(
+                  'debug',
+                  `[Intensification] New best: Hard violations = ${bestHardViolations}, Fitness = ${bestFitness.toFixed(2)}`
+                );
+              } else {
+                noBestImproveCounter++;
+              }
+            } else {
+              noBestImproveCounter++;
+            }
           }
         } else {
-          const worsenProb = safeExp(-1 / (intensificationTemp / 10000));
-          if (Math.random() < worsenProb * 0.02) {
-            accept = true;
-            this.logger.log('debug', '[Intensification] Accepting worsening move to escape local minimum');
-          }
           stagnationCounter++;
-        }
-
-        if (accept) {
-          this.selectionPolicy.updateOnlineStats(this.operatorStats, selectedGenerator.name, {
-            accepted: true,
-            improved: newFitness < currentFitness,
-          });
-
-          currentState = newState;
-          currentFitness = newFitness;
-          currentHardViolations = newHardViolations;
-
-          if (
-            newHardViolations < bestHardViolations ||
-            (newHardViolations === bestHardViolations && newFitness < bestFitness)
-          ) {
-            bestState = this.config.cloneState(currentState);
-            bestFitness = newFitness;
-            bestHardViolations = newHardViolations;
-            this.logger.log(
-              'debug',
-              `[Intensification] New best: Hard violations = ${bestHardViolations}, Fitness = ${bestFitness.toFixed(2)}`
-            );
-          }
+          noBestImproveCounter++;
         }
 
         if (stagnationCounter >= this.config.intensificationStagnationLimit) {
-          intensificationTemp = this.config.initialTemperature * 0.5;
+          intensificationTemp = Math.max(this.config.minTemperature, intensificationTemp * 0.5);
           stagnationCounter = 0;
+          this.diagnostics.intensification.localReheats++;
           this.logger.log('debug', '[Intensification] Stagnation detected, reheating');
         }
 
-        intensificationTemp *= 0.999;
+        intensificationTemp = Math.max(this.config.minTemperature, intensificationTemp * 0.999);
         intensificationIterations++;
+        this.diagnostics.intensification.iterationsRun++;
         iteration++;
+        remainingBudget--;
+
+        if (
+          noBestImproveCounter >=
+          this.config.intensificationEarlyStopNoBestImproveIterations
+        ) {
+          attemptEndedByEarlyStop = true;
+          this.diagnostics.intensification.phase15EndedByEarlyStop = true;
+          this.logger.log(
+            'info',
+            `[Intensification] Early-stop attempt ${intensificationAttempt}: no best-hard improvement for ${noBestImproveCounter} iterations`
+          );
+          break;
+        }
 
         if (intensificationIterations % 500 === 0) {
           this.logger.log(
             'info',
-            `[Intensification] Iter ${intensificationIterations}: Hard violations = ${currentHardViolations}, Best = ${bestHardViolations}`
+            `[Intensification] Iter ${intensificationIterations}: Hard violations = ${currentHardViolations}, Best = ${bestHardViolations}, Remaining budget = ${remainingBudget}`
           );
         }
       }
@@ -528,6 +683,16 @@ export class SimulatedAnnealing<TState> {
         );
         break;
       }
+
+      if (attemptEndedByEarlyStop) {
+        continue;
+      }
+    }
+
+    this.diagnostics.intensification.phase15BudgetUsedIterations =
+      phase15BudgetLimit - remainingBudget;
+    if (remainingBudget <= 0 && bestHardViolations > 0) {
+      this.diagnostics.intensification.phase15EndedByBudget = true;
     }
 
     if (bestHardViolations > 0) {
@@ -536,6 +701,11 @@ export class SimulatedAnnealing<TState> {
         `[Intensification] Could not eliminate all hard violations. Remaining: ${bestHardViolations}`
       );
     }
+
+    this.diagnostics.intensification.phase15EndCurrentHard = currentHardViolations;
+    const phase15StartHard = this.diagnostics.intensification.phase15StartHard;
+    this.diagnostics.intensification.phase15BestHardDelta =
+      phase15StartHard === null ? null : bestHardViolations - phase15StartHard;
 
     return {
       bestState,
@@ -552,7 +722,8 @@ export class SimulatedAnnealing<TState> {
     temperature: number,
     iteration: number,
     iterationsWithoutImprovement: number,
-    reheats: number
+    reheats: number,
+    solveStartTime: number
   ): Promise<{
     bestState: TState;
     bestFitness: number;
@@ -612,6 +783,9 @@ export class SimulatedAnnealing<TState> {
 
         if (newHardViolations < bestHardViolations) {
           bestHardViolations = newHardViolations;
+          if (bestHardViolations === 0) {
+            this.recordFirstFeasible(iteration, solveStartTime);
+          }
           this.logger.log('debug', `[Phase 2] Hard violations reduced to ${bestHardViolations}`);
         }
 
@@ -712,6 +886,19 @@ export class SimulatedAnnealing<TState> {
     };
   }
 
+  private resolveIntensificationStartTemperature(phase1EndTemperature: number): number {
+    if (this.config.intensificationStartTemperatureMode === 'initial-reset') {
+      return this.config.initialTemperature;
+    }
+
+    const scaled = phase1EndTemperature * this.config.intensificationStartTempMultiplier;
+    const capped = Math.min(
+      scaled,
+      this.config.initialTemperature * this.config.intensificationStartTempCapRatio
+    );
+    return Math.max(this.config.minTemperature, capped);
+  }
+
   private createSolution(
     bestState: TState,
     bestFitness: number,
@@ -746,7 +933,17 @@ export class SimulatedAnnealing<TState> {
       finalTemperature,
       violations,
       operatorStats: this.getStats(),
+      diagnostics: this.getDiagnostics(),
     };
+  }
+
+  private recordFirstFeasible(iteration: number, solveStartTime: number): void {
+    if (this.diagnostics.feasibility.timeToFirstFeasibleMs !== null) {
+      return;
+    }
+
+    this.diagnostics.feasibility.timeToFirstFeasibleMs = performance.now() - solveStartTime;
+    this.diagnostics.feasibility.iterationToFirstFeasible = iteration;
   }
 
   private calculateFitnessAndViolations(state: TState): { fitness: number; hardViolations: number } {
@@ -1001,6 +1198,42 @@ export class SimulatedAnnealing<TState> {
       violatedConstraintNames: new Set<string>(),
     };
     this.hardBreakdownLogCache.clear();
+    this.diagnostics = {
+      phaseTimings: {
+        phase1Ms: 0,
+        phase15Ms: 0,
+        phase2Ms: 0,
+        totalRuntimeMs: 0,
+      },
+      feasibility: {
+        initialHardViolations: 0,
+        bestHardViolationsAfterPhase1: 0,
+        bestHardViolationsAfterPhase15: 0,
+        bestHardViolationsFinal: 0,
+        timeToFirstFeasibleMs: null,
+        iterationToFirstFeasible: null,
+      },
+      intensification: {
+        triggered: false,
+        attemptsRun: 0,
+        iterationsRun: 0,
+        phase15BudgetLimitIterations: 0,
+        phase15BudgetUsedIterations: 0,
+        acceptedMoves: 0,
+        hardImprovingAcceptedMoves: 0,
+        equalHardAcceptedMoves: 0,
+        hardWorseningAcceptedMoves: 0,
+        phase15TabuSkips: 0,
+        localReheats: 0,
+        bestUpdates: 0,
+        phase15EndedByBudget: false,
+        phase15EndedByEarlyStop: false,
+        phase15StartHard: null,
+        phase15WorstCurrentHard: null,
+        phase15EndCurrentHard: null,
+        phase15BestHardDelta: null,
+      },
+    };
 
     for (const operatorName in this.operatorStats) {
       this.operatorStats[operatorName] = {
@@ -1018,5 +1251,13 @@ export class SimulatedAnnealing<TState> {
       snapshot[operatorName] = { ...this.operatorStats[operatorName]! };
     }
     return snapshot;
+  }
+
+  getDiagnostics(): SolverDiagnostics {
+    return {
+      phaseTimings: { ...this.diagnostics.phaseTimings },
+      feasibility: { ...this.diagnostics.feasibility },
+      intensification: { ...this.diagnostics.intensification },
+    };
   }
 }

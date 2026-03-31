@@ -1,6 +1,6 @@
 {
   "name": "timetable-sa",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Generic, unopinionated Simulated Annealing library for constraint satisfaction problems. Solve timetabling, scheduling, resource allocation, and any optimization problem with custom constraints.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

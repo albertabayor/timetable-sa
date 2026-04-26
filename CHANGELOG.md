@@ -259,10 +259,3 @@ const solution = await solver.solve();
 - Intensification mode for stubborn violations
 - Adaptive operator selection (hybrid and roulette-wheel modes)
 
-[3.2.0]: https://github.com/albertabayor/timetable-sa/compare/v3.1.0...v3.2.0
-[3.1.0]: https://github.com/albertabayor/timetable-sa/compare/v3.0.0...v3.1.0
-[3.0.0]: https://github.com/albertabayor/timetable-sa/compare/v2.4.0...v3.0.0
-[2.4.0]: https://github.com/albertabayor/timetable-sa/compare/v2.3.0...v2.4.0
-[2.3.0]: https://github.com/albertabayor/timetable-sa/compare/v2.2.0...v2.3.0
-[2.2.0]: https://github.com/albertabayor/timetable-sa/compare/v2.1.1...v2.2.0
-[2.1.1]: https://github.com/albertabayor/timetable-sa/releases/tag/v2.1.1

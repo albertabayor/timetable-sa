@@ -131,7 +131,7 @@ const config: SAConfig<TimetableState> = {
   initialTemperature: 100000, // Practical baseline for stable acceptance behavior
   minTemperature: 0.0000001,
   coolingRate: 0.9995, // Slower cooling for thorough search
-  maxIterations: 1_000_000, // Increased for better convergence (15-30 min runtime)
+  maxIterations: 20_000, // Increased for better convergence (15-30 min runtime)
   hardConstraintWeight: 100000, // Very high penalty for hard violations
 
   // State cloning function - optimized for performance
@@ -157,7 +157,7 @@ const config: SAConfig<TimetableState> = {
   // ============================================
   // Phase 1.5 tuned configuration (from stage-2 benchmark)
   // ============================================
-  enableIntensification: true,
+  enableIntensification: false,
   intensificationIterations: 2000,
   maxIntensificationAttempts: 3,
   intensificationStagnationLimit: 300,

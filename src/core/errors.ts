@@ -28,3 +28,10 @@ export class SolveConcurrencyError extends SAError {
     this.name = 'SolveConcurrencyError';
   }
 }
+
+export class SolveCancelledError extends SAError {
+  constructor(message = 'Simulated annealing solve cancelled') {
+    super('SA_SOLVE_CANCELLED', message);
+    this.name = 'SolveCancelledError';
+  }
+}

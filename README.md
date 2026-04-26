@@ -121,6 +121,47 @@ fitness(state) = hardConstraintWeight * hardPenalty(state) + softPenalty(state)
 where hard and soft penalties are derived from normalized constraint
 satisfaction scores in `[0, 1]`.
 
+## Cancellation
+
+Use `cancelSignal` when you need to stop a long-running `solve()` call. The
+field accepts an `AbortController.signal` or any object with an `aborted`
+boolean property. If the signal is already aborted before the run starts, or if
+it becomes aborted while the solver is running, `solve()` rejects with
+`SolveCancelledError` and does not create a final `Solution`.
+
+Errors thrown from `onProgress` are still caught and logged for backward
+compatibility, so throwing from `onProgress` is not a cancellation mechanism. If
+you use `onProgressMode: 'fire-and-forget'`, callbacks that already started may
+still finish after cancellation, so guard external writes with the same signal.
+
+```ts
+import { SimulatedAnnealing, SolveCancelledError } from 'timetable-sa';
+
+const controller = new AbortController();
+
+const solver = new SimulatedAnnealing(initialState, constraints, moves, {
+  ...config,
+  cancelSignal: controller.signal,
+  onProgress: async () => {
+    if (controller.signal.aborted) return;
+    await saveProgress();
+  },
+});
+
+setTimeout(() => controller.abort(), 500);
+
+try {
+  const solution = await solver.solve();
+  console.log(solution.fitness);
+} catch (error) {
+  if (error instanceof SolveCancelledError) {
+    // Treat as a user-requested cancellation.
+  } else {
+    throw error;
+  }
+}
+```
+
 ## Documentation
 
 All package documentation now lives on the dedicated docs site:
@@ -139,8 +180,9 @@ The package exports a compact but expressive API surface.
 
 - `SimulatedAnnealing`
 - `SAError`, `SAConfigError`, `ConstraintValidationError`,
-  `SolveConcurrencyError`
-- `Constraint`, `MoveGenerator`, `SAConfig`, `LoggingConfig`
+  `SolveConcurrencyError`, `SolveCancelledError`
+- `Constraint`, `MoveGenerator`, `SAConfig`, `LoggingConfig`,
+  `CancellationSignal`
 - `Solution`, `Violation`, `OperatorStats`, `ProgressStats`,
   `OnProgressCallback`
 

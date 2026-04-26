@@ -69,12 +69,14 @@ export {
   SAConfigError,
   ConstraintValidationError,
   SolveConcurrencyError,
+  SolveCancelledError,
 } from './core/index.js';
 export type {
   Constraint,
   MoveGenerator,
   SAConfig,
   LoggingConfig,
+  CancellationSignal,
   Solution,
   OperatorStats,
   SolverDiagnostics,

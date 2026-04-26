@@ -102,6 +102,15 @@ export function validateSolverInputs<TState>(
     throw new SAConfigError('cloneState must be a function');
   }
 
+  if (
+    config.cancelSignal !== undefined &&
+    (typeof config.cancelSignal !== 'object' ||
+      config.cancelSignal === null ||
+      typeof config.cancelSignal.aborted !== 'boolean')
+  ) {
+    throw new SAConfigError('cancelSignal must have an aborted boolean property if provided');
+  }
+
   assertOptionalFiniteNumber(config.reheatingThreshold, 'reheatingThreshold');
   if (config.reheatingThreshold !== undefined && (!Number.isInteger(config.reheatingThreshold) || config.reheatingThreshold <= 0)) {
     throw new SAConfigError(`reheatingThreshold must be positive if provided, got ${config.reheatingThreshold}`);

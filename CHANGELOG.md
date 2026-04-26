@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-04-26
+
+This release adds first-class cancellation support for long-running solver
+runs while preserving existing progress callback error behavior.
+
+### Added
+
+- New `SAConfig.cancelSignal` field for cooperative cancellation using any
+  signal-like object with an `aborted` boolean property.
+- New exported `CancellationSignal` type.
+- New exported `SolveCancelledError` error class with code
+  `SA_SOLVE_CANCELLED`.
+
+### Changed
+
+- `solve()` now checks cancellation before and during each optimization phase,
+  after awaited progress callbacks, and before final solution creation.
+- Cancellation now exits through a typed error while still resetting the
+  solver's internal `isSolving` guard.
+
+### Fixed
+
+- Fixed the unsupported cancellation pattern where consumers threw from
+  `onProgress` and the solver continued running because callback errors are
+  intentionally caught and logged.
+- Prevented cancelled runs from creating a final `Solution`.
+
+### Notes
+
+- Errors thrown by `onProgress` remain logged and swallowed for backward
+  compatibility.
+- In `onProgressMode: 'fire-and-forget'`, callbacks that were already started
+  may still finish, so consumers must guard external writes with their own
+  cancellation signal.
+
 ## [3.1.0] - 2026-03-31
 
 This release expands the public observability and Phase 1.5 tuning surface of
@@ -224,9 +259,10 @@ const solution = await solver.solve();
 - Intensification mode for stubborn violations
 - Adaptive operator selection (hybrid and roulette-wheel modes)
 
+[3.2.0]: https://github.com/albertabayor/timetable-sa/compare/v3.1.0...v3.2.0
+[3.1.0]: https://github.com/albertabayor/timetable-sa/compare/v3.0.0...v3.1.0
+[3.0.0]: https://github.com/albertabayor/timetable-sa/compare/v2.4.0...v3.0.0
 [2.4.0]: https://github.com/albertabayor/timetable-sa/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/albertabayor/timetable-sa/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/albertabayor/timetable-sa/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/albertabayor/timetable-sa/releases/tag/v2.1.1
-[3.1.0]: https://github.com/albertabayor/timetable-sa/compare/v3.0.0...v3.1.0
-[3.0.0]: https://github.com/albertabayor/timetable-sa/compare/v2.4.0...v3.0.0

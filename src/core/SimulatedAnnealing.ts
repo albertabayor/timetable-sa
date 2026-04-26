@@ -12,7 +12,7 @@ import { ProgressReporter } from './telemetry/ProgressReporter.js';
 import type { ResolvedSAConfig } from './engine/EngineTypes.js';
 import { evaluateConstraintScore } from './validation/ConstraintValidator.js';
 import { mergeConfigWithDefaults, validateSolverInputs } from './validation/ConfigValidator.js';
-import { SolveConcurrencyError } from './errors.js';
+import { SolveCancelledError, SolveConcurrencyError } from './errors.js';
 
 export class SimulatedAnnealing<TState> {
   private readonly initialState: TState;
@@ -120,6 +120,12 @@ export class SimulatedAnnealing<TState> {
     });
   }
 
+  private throwIfCancelled(): void {
+    if (this.config.cancelSignal?.aborted) {
+      throw new SolveCancelledError();
+    }
+  }
+
   async solve(): Promise<Solution<TState>> {
     if (this.isSolving) {
       throw new SolveConcurrencyError(
@@ -128,13 +134,17 @@ export class SimulatedAnnealing<TState> {
     }
 
     this.isSolving = true;
-    this.resetRuntimeState();
 
     try {
+      this.throwIfCancelled();
+      this.resetRuntimeState();
+      this.throwIfCancelled();
+
       const solveStartTime = performance.now();
       this.logger.log('info', 'Starting optimization...');
       this.logger.log('info', 'Phase 1: Eliminating hard constraint violations');
       this.setPhase('phase1');
+      this.throwIfCancelled();
 
       let currentState = this.config.cloneState(this.initialState);
       let bestState = this.config.cloneState(currentState);
@@ -172,6 +182,7 @@ export class SimulatedAnnealing<TState> {
       });
 
       if (this.config.onProgress) {
+        this.throwIfCancelled();
         await this.progressReporter.triggerProgressCallback(
           0,
           currentFitness,
@@ -186,6 +197,7 @@ export class SimulatedAnnealing<TState> {
           this.config.onProgressMode,
           (error) => this.logger.log('warn', 'onProgress callback error:', error)
         );
+        this.throwIfCancelled();
       }
 
       const violationsByConstraint = initialViolations.reduce(
@@ -199,6 +211,7 @@ export class SimulatedAnnealing<TState> {
       this.logger.log('info', 'Initial violations breakdown by constraint', violationsByConstraint);
 
       const phase1StartTime = performance.now();
+      this.throwIfCancelled();
       const phase1Result = await this.runPhase1(
         currentState,
         bestState,
@@ -212,6 +225,7 @@ export class SimulatedAnnealing<TState> {
         reheats,
         solveStartTime
       );
+      this.throwIfCancelled();
       this.diagnostics.phaseTimings.phase1Ms = performance.now() - phase1StartTime;
 
       currentState = phase1Result.currentState;
@@ -231,6 +245,7 @@ export class SimulatedAnnealing<TState> {
       if (bestHardViolations > 0 && this.config.enableIntensification) {
         this.setPhase('phase15');
         const phase15StartTime = performance.now();
+        this.throwIfCancelled();
         const intensificationResult = await this.runIntensification(
           bestState,
           bestFitness,
@@ -239,6 +254,7 @@ export class SimulatedAnnealing<TState> {
           iteration,
           solveStartTime
         );
+        this.throwIfCancelled();
         this.diagnostics.phaseTimings.phase15Ms = performance.now() - phase15StartTime;
 
         bestState = intensificationResult.bestState;
@@ -249,6 +265,7 @@ export class SimulatedAnnealing<TState> {
       this.diagnostics.feasibility.bestHardViolationsAfterPhase15 = bestHardViolations;
 
       const phase2StartTime = performance.now();
+      this.throwIfCancelled();
       const phase2Result = await this.runPhase2(
         bestState,
         bestFitness,
@@ -259,10 +276,12 @@ export class SimulatedAnnealing<TState> {
         reheats,
         solveStartTime
       );
+      this.throwIfCancelled();
       this.diagnostics.phaseTimings.phase2Ms = performance.now() - phase2StartTime;
       this.diagnostics.phaseTimings.totalRuntimeMs = performance.now() - solveStartTime;
       this.diagnostics.feasibility.bestHardViolationsFinal = phase2Result.bestHardViolations;
 
+      this.throwIfCancelled();
       return this.createSolution(
         phase2Result.bestState,
         phase2Result.bestFitness,
@@ -302,12 +321,14 @@ export class SimulatedAnnealing<TState> {
   }> {
     const phase1MaxIterations = Math.floor(this.config.maxIterations * 0.6);
     let phase1Iteration = 0;
+    this.throwIfCancelled();
 
     while (
       temperature > this.config.initialTemperature / 10 &&
       phase1Iteration < phase1MaxIterations &&
       bestHardViolations > 0
     ) {
+      this.throwIfCancelled();
       const { newState, operatorName } = this.generateNeighbor(currentState, temperature, true, iteration);
       if (!newState) break;
 
@@ -320,6 +341,7 @@ export class SimulatedAnnealing<TState> {
           temperature *= this.config.coolingRate;
           phase1Iteration++;
           iteration++;
+          this.throwIfCancelled();
           continue;
         }
       }
@@ -396,6 +418,7 @@ export class SimulatedAnnealing<TState> {
 
         if (this.progressReporter.shouldTriggerProgress(iteration, this.config.onProgress, this.config.logging.logInterval, true)) {
           const softV = this.getViolations(bestState).filter((v) => v.constraintType === 'soft').length;
+          this.throwIfCancelled();
           await this.progressReporter.triggerProgressCallback(
             iteration,
             currentFitness,
@@ -410,6 +433,7 @@ export class SimulatedAnnealing<TState> {
             this.config.onProgressMode,
             (error) => this.logger.log('warn', 'onProgress callback error:', error)
           );
+          this.throwIfCancelled();
         }
       }
 
@@ -429,6 +453,7 @@ export class SimulatedAnnealing<TState> {
 
         if (this.progressReporter.shouldTriggerProgress(iteration, this.config.onProgress, this.config.logging.logInterval)) {
           const softV = this.getViolations(bestState).filter((v) => v.constraintType === 'soft').length;
+          this.throwIfCancelled();
           await this.progressReporter.triggerProgressCallback(
             iteration,
             currentFitness,
@@ -443,6 +468,7 @@ export class SimulatedAnnealing<TState> {
             this.config.onProgressMode,
             (error) => this.logger.log('warn', 'onProgress callback error:', error)
           );
+          this.throwIfCancelled();
         }
       }
     }
@@ -474,6 +500,7 @@ export class SimulatedAnnealing<TState> {
     bestHardViolations: number;
     iteration: number;
   }> {
+    this.throwIfCancelled();
     this.logger.log('info', 'Phase 1.5: Intensification - targeting remaining hard violations');
     this.diagnostics.intensification.triggered = true;
     this.diagnostics.intensification.phase15StartHard = bestHardViolations;
@@ -500,6 +527,7 @@ export class SimulatedAnnealing<TState> {
       intensificationAttempt < this.config.maxIntensificationAttempts &&
       remainingBudget > 0
     ) {
+      this.throwIfCancelled();
       intensificationAttempt++;
       this.diagnostics.intensification.attemptsRun = intensificationAttempt;
       this.logger.log(
@@ -516,6 +544,7 @@ export class SimulatedAnnealing<TState> {
       currentState = this.config.cloneState(bestState);
       currentFitness = bestFitness;
       currentHardViolations = bestHardViolations;
+      this.throwIfCancelled();
 
       const attemptIterationBudget = Math.min(this.config.intensificationIterations, remainingBudget);
 
@@ -524,6 +553,7 @@ export class SimulatedAnnealing<TState> {
         bestHardViolations > 0 &&
         remainingBudget > 0
       ) {
+        this.throwIfCancelled();
         const allGenerators = this.moveGenerators.filter((gen) => gen.canApply(currentState));
         if (allGenerators.length === 0) break;
 
@@ -539,6 +569,7 @@ export class SimulatedAnnealing<TState> {
         const selectedGenerator = generators[Math.floor(Math.random() * generators.length)]!;
         const clonedState = this.config.cloneState(currentState);
         const newState = selectedGenerator.generate(clonedState, intensificationTemp);
+        this.throwIfCancelled();
 
         if (newState) {
           this.selectionPolicy.updateOnlineStats(this.operatorStats, selectedGenerator.name, { attempted: true });
@@ -654,6 +685,7 @@ export class SimulatedAnnealing<TState> {
         this.diagnostics.intensification.iterationsRun++;
         iteration++;
         remainingBudget--;
+        this.throwIfCancelled();
 
         if (
           noBestImproveCounter >=
@@ -665,6 +697,7 @@ export class SimulatedAnnealing<TState> {
             'info',
             `[Intensification] Early-stop attempt ${intensificationAttempt}: no best-hard improvement for ${noBestImproveCounter} iterations`
           );
+          this.throwIfCancelled();
           break;
         }
 
@@ -681,10 +714,12 @@ export class SimulatedAnnealing<TState> {
           'info',
           `[Intensification] SUCCESS! All hard violations eliminated in attempt ${intensificationAttempt}`
         );
+        this.throwIfCancelled();
         break;
       }
 
       if (attemptEndedByEarlyStop) {
+        this.throwIfCancelled();
         continue;
       }
     }
@@ -734,12 +769,14 @@ export class SimulatedAnnealing<TState> {
   }> {
     this.logger.log('info', 'Phase 2: Optimizing soft constraints');
     this.setPhase('phase2');
+    this.throwIfCancelled();
 
     let currentState = this.config.cloneState(bestState);
     let currentFitness = bestFitness;
     iterationsWithoutImprovement = 0;
 
     while (temperature > this.config.minTemperature && iteration < this.config.maxIterations) {
+      this.throwIfCancelled();
       const { newState, operatorName } = this.generateNeighbor(currentState, temperature, false, iteration);
       if (!newState) break;
 
@@ -751,6 +788,7 @@ export class SimulatedAnnealing<TState> {
           this.progressReporter.addTabuHit();
           temperature *= this.config.coolingRate;
           iteration++;
+          this.throwIfCancelled();
           continue;
         }
       }
@@ -826,6 +864,7 @@ export class SimulatedAnnealing<TState> {
 
         if (this.progressReporter.shouldTriggerProgress(iteration, this.config.onProgress, this.config.logging.logInterval, true)) {
           const softV = this.getViolations(bestState).filter((v) => v.constraintType === 'soft').length;
+          this.throwIfCancelled();
           await this.progressReporter.triggerProgressCallback(
             iteration,
             currentFitness,
@@ -840,6 +879,7 @@ export class SimulatedAnnealing<TState> {
             this.config.onProgressMode,
             (error) => this.logger.log('warn', 'onProgress callback error:', error)
           );
+          this.throwIfCancelled();
         }
       }
 
@@ -858,6 +898,7 @@ export class SimulatedAnnealing<TState> {
 
         if (this.progressReporter.shouldTriggerProgress(iteration, this.config.onProgress, this.config.logging.logInterval)) {
           const softV = this.getViolations(bestState).filter((v) => v.constraintType === 'soft').length;
+          this.throwIfCancelled();
           await this.progressReporter.triggerProgressCallback(
             iteration,
             currentFitness,
@@ -872,6 +913,7 @@ export class SimulatedAnnealing<TState> {
             this.config.onProgressMode,
             (error) => this.logger.log('warn', 'onProgress callback error:', error)
           );
+          this.throwIfCancelled();
         }
       }
     }

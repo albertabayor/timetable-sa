@@ -1,6 +1,16 @@
 import type { OnProgressCallback } from '../types/ProgressStats.js';
 
 /**
+ * Minimal signal shape used for cooperative solver cancellation.
+ *
+ * This intentionally does not reference the DOM `AbortSignal` type so the
+ * package declarations remain usable in Node-only TypeScript projects.
+ */
+export interface CancellationSignal {
+  readonly aborted: boolean;
+}
+
+/**
  * Configuration for the Simulated Annealing algorithm.
  *
  * The algorithm uses a multi-phase approach:
@@ -514,6 +524,22 @@ export interface SAConfig<TState> {
    * @default 'await'
    */
   onProgressMode?: 'await' | 'fire-and-forget';
+
+  /**
+   * Optional cooperative cancellation signal.
+   *
+   * Pass an `AbortController.signal` or any object with an `aborted` boolean
+   * property. When the signal is aborted, `solve()` rejects with
+   * `SolveCancelledError` at the next cancellation check and does not create a
+   * final solution.
+   *
+   * Errors thrown from `onProgress` are still caught and logged for backward
+   * compatibility. Use `cancelSignal` instead of throwing from `onProgress` to
+   * stop the solver.
+   *
+   * @default undefined
+   */
+  cancelSignal?: CancellationSignal;
 }
 
 /**

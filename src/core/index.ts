@@ -9,12 +9,18 @@
 
 // Main solver
 export { SimulatedAnnealing } from './SimulatedAnnealing.js';
-export { SAError, SAConfigError, ConstraintValidationError, SolveConcurrencyError } from './errors.js';
+export {
+  SAError,
+  SAConfigError,
+  ConstraintValidationError,
+  SolveConcurrencyError,
+  SolveCancelledError,
+} from './errors.js';
 
 // Interfaces
 export type { Constraint } from './interfaces/Constraint.js';
 export type { MoveGenerator } from './interfaces/MoveGenerator.js';
-export type { SAConfig, LoggingConfig } from './interfaces/SAConfig.js';
+export type { SAConfig, LoggingConfig, CancellationSignal } from './interfaces/SAConfig.js';
 
 // Types
 export type {

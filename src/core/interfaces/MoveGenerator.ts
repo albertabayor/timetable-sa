@@ -19,13 +19,13 @@
  *   }
  *
  *   generate(state: TimetableState, temperature: number): TimetableState {
- *     const newState = cloneState(state);
- *     const randomIndex = Math.floor(Math.random() * newState.schedule.length);
- *     const randomSlot = newState.availableTimeSlots[
- *       Math.floor(Math.random() * newState.availableTimeSlots.length)
+ *     // State is already cloned by the SA engine, modify it directly
+ *     const randomIndex = Math.floor(Math.random() * state.schedule.length);
+ *     const randomSlot = state.availableTimeSlots[
+ *       Math.floor(Math.random() * state.availableTimeSlots.length)
  *     ];
- *     newState.schedule[randomIndex].timeSlot = randomSlot;
- *     return newState;
+ *     state.schedule[randomIndex].timeSlot = randomSlot;
+ *     return state;
  *   }
  * }
  * ```

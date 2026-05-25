@@ -4,7 +4,7 @@ import type { OnProgressCallback } from '../types/ProgressStats.js';
  * Minimal signal shape used for cooperative solver cancellation.
  *
  * This intentionally does not reference the DOM `AbortSignal` type so the
- * package declarations remain usable in Node-only TypeScript projects.
+ * package declarations remain usable in Node/Bun TypeScript projects.
  */
 export interface CancellationSignal {
   readonly aborted: boolean;

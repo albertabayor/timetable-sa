@@ -237,13 +237,10 @@ export function mergeConfigWithDefaults<TState>(config: SAConfig<TState>): Resol
     intensificationStartTempMultiplier: config.intensificationStartTempMultiplier ?? 1.0,
     intensificationStartTempCapRatio: config.intensificationStartTempCapRatio ?? 1.0,
     intensificationUseTabu: config.intensificationUseTabu ?? true,
-    intensificationTargetedOperatorNames:
-      config.intensificationTargetedOperatorNames?.map((name) => name.trim()) ?? [],
+    intensificationTargetedOperatorNames: config.intensificationTargetedOperatorNames?.map((name) => name.trim()) ?? [],
     intensificationTargetedSelectionRate: config.intensificationTargetedSelectionRate ?? 0.7,
-    intensificationEarlyStopNoBestImproveIterations:
-      config.intensificationEarlyStopNoBestImproveIterations ?? 800,
-    intensificationBudgetFractionOfMaxIterations:
-      config.intensificationBudgetFractionOfMaxIterations ?? 0.25,
+    intensificationEarlyStopNoBestImproveIterations: config.intensificationEarlyStopNoBestImproveIterations ?? 800,
+    intensificationBudgetFractionOfMaxIterations: config.intensificationBudgetFractionOfMaxIterations ?? 0.25,
     ...(config.getStateSignature && { getStateSignature: config.getStateSignature }),
     onProgressMode: config.onProgressMode ?? 'await',
     logging: {

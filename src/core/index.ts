@@ -1,5 +1,5 @@
 /**
- * Core Simulated Annealing Library
+ * Core Simulated Annealing Library A.K.A "Timetable SA"
  *
  * A generic, unopinionated constraint-satisfaction solver using Simulated Annealing
  * with advanced features including Tabu Search and Intensification.

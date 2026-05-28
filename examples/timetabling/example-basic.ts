@@ -149,7 +149,7 @@ const config: SAConfig<TimetableState> = {
   // ============================================
   // NEW: Tabu Search Configuration
   // ============================================
-  tabuSearchEnabled: true, // Enable to prevent cycling
+  tabuSearchEnabled: false, // Enable to prevent cycling
   tabuTenure: 200, // How long a state stays tabu
   maxTabuListSize: 1000, // Memory limit for tabu list
   aspirationEnabled: true, // Allow overriding tabu if better solution found

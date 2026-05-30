@@ -17,6 +17,8 @@ import { calculateEndTime, isValidFridayStartTime, canUseExclusiveRoom, isRoomAv
 
 export class SwapFridayWithNonFriday implements MoveGenerator<TimetableState> {
   name = 'Swap Friday with Non-Friday';
+  targetConstraintTypes = ['hard'] as const;
+  targetConstraintKeys = ['friday_time_restriction', 'no_friday_pray_conflict'];
 
   // Friday prayer time window: 11:40 - 13:10
   private readonly PRAYER_START = 11 * 60 + 40;

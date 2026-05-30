@@ -17,6 +17,8 @@ import { getValidTimeSlotAndRoomCombinationsWithPriority, canUseExclusiveRoom } 
 
 export class FixRoomCapacity implements MoveGenerator<TimetableState> {
   name = 'Fix Room Capacity';
+  targetConstraintTypes = ['hard'] as const;
+  targetConstraintKeys = ['room_capacity'];
 
   canApply(state: TimetableState): boolean {
     return this.findViolatingClasses(state).length > 0;

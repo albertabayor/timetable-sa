@@ -16,6 +16,12 @@ import {
 
 export class FixFridayLecturerConflict implements MoveGenerator<TimetableState> {
   name = 'Fix Friday Lecturer Conflict';
+  targetConstraintTypes = ['hard'] as const;
+  targetConstraintKeys = [
+    'friday_time_restriction',
+    'no_friday_pray_conflict',
+    'no_lecturer_conflict',
+  ];
 
   private readonly PRAYER_START = 11 * 60 + 40;
   private readonly PRAYER_END = 13 * 60 + 10;

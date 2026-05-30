@@ -16,6 +16,8 @@ import { getValidTimeSlotAndRoomCombinationsWithPriority, calculateEndTime, isVa
 
 export class FixFridayPrayerConflict implements MoveGenerator<TimetableState> {
   name = 'Fix Friday Prayer Conflict';
+  targetConstraintTypes = ['hard'] as const;
+  targetConstraintKeys = ['friday_time_restriction', 'no_friday_pray_conflict'];
 
   // Friday prayer time window: 11:40 - 13:10
   private readonly PRAYER_START = 11 * 60 + 40;

@@ -153,6 +153,48 @@ class NoOpMove implements MoveGenerator<TaskAssignmentState> {
   }
 }
 
+class KeyedWorkerConflict extends NoWorkerConflict {
+  key = 'worker_conflict';
+}
+
+class TypeOnlyHardFixMove implements MoveGenerator<TaskAssignmentState> {
+  name = 'Type Only Hard Fix';
+  targetConstraintTypes = ['hard'] as const;
+
+  canApply(): boolean {
+    return true;
+  }
+
+  generate(state: TaskAssignmentState): TaskAssignmentState {
+    return state;
+  }
+}
+
+class KeySpecificHardFixMove implements MoveGenerator<TaskAssignmentState> {
+  name = 'Key Specific Hard Fix';
+  targetConstraintKeys = ['worker_conflict'] as const;
+
+  canApply(): boolean {
+    return true;
+  }
+
+  generate(state: TaskAssignmentState): TaskAssignmentState {
+    return state;
+  }
+}
+
+class ExplicitNamedMove implements MoveGenerator<TaskAssignmentState> {
+  name = 'Explicit Named Move';
+
+  canApply(): boolean {
+    return true;
+  }
+
+  generate(state: TaskAssignmentState): TaskAssignmentState {
+    return state;
+  }
+}
+
 // ========================================
 // Helper Functions
 // ========================================
@@ -277,6 +319,61 @@ describe('SimulatedAnnealing Core Engine', () => {
       expect(() =>
         new SimulatedAnnealing(state, constraints, [new ChangeTimeSlot()], createTestConfig())
       ).toThrow(/must be >= 0/);
+    });
+
+    it('should reject invalid constraint and move targeting metadata', async () => {
+      const state = createTestState();
+
+      expect(
+        () =>
+          new SimulatedAnnealing(
+            state,
+            [
+              {
+                name: 'Bad Key',
+                key: '   ',
+                type: 'hard',
+                evaluate: () => 1,
+              },
+            ],
+            [new ChangeTimeSlot()],
+            createTestConfig()
+          )
+      ).toThrow(/key for constraint/);
+
+      expect(
+        () =>
+          new SimulatedAnnealing(
+            state,
+            [new NoWorkerConflict()],
+            [
+              {
+                name: 'Bad Move Type',
+                targetConstraintTypes: ['broken' as 'hard'],
+                canApply: () => true,
+                generate: (inputState: TaskAssignmentState) => inputState,
+              },
+            ],
+            createTestConfig()
+          )
+      ).toThrow(/targetConstraintTypes/);
+
+      expect(
+        () =>
+          new SimulatedAnnealing(
+            state,
+            [new NoWorkerConflict()],
+            [
+              {
+                name: 'Bad Move Key',
+                targetConstraintKeys: [''],
+                canApply: () => true,
+                generate: (inputState: TaskAssignmentState) => inputState,
+              },
+            ],
+            createTestConfig()
+          )
+      ).toThrow(/targetConstraintKeys/);
     });
 
     it('should reject invalid intensification budget fraction config', async () => {
@@ -464,6 +561,93 @@ describe('SimulatedAnnealing Core Engine', () => {
       const runningSolve = solver.solve();
       await expect(solver.solve()).rejects.toThrow(/already running/);
       await runningSolve;
+    });
+  });
+
+  describe('Targeted operator resolution', () => {
+    it('should prefer key-matched hard-fix operators over type-only fallback', () => {
+      const state = createTestState(true);
+      const constraints = [new KeyedWorkerConflict()];
+      const moves = [
+        new ChangeTimeSlot(),
+        new TypeOnlyHardFixMove(),
+        new KeySpecificHardFixMove(),
+      ];
+      const solver = new SimulatedAnnealing(state, constraints, moves, createTestConfig());
+
+      const targeted = (solver as any).resolveTargetedGenerators(moves, state, 0);
+
+      expect(targeted.map((move: MoveGenerator<TaskAssignmentState>) => move.name)).toEqual([
+        'Key Specific Hard Fix',
+      ]);
+    });
+
+    it('should fall back to type-based hard-fix operators when no violated hard key matches', () => {
+      const state = createTestState(true);
+      const constraints = [new NoWorkerConflict()];
+      const moves = [
+        new ChangeTimeSlot(),
+        new TypeOnlyHardFixMove(),
+        new KeySpecificHardFixMove(),
+      ];
+      const solver = new SimulatedAnnealing(state, constraints, moves, createTestConfig());
+
+      const targeted = (solver as any).resolveTargetedGenerators(moves, state, 0);
+
+      expect(targeted.map((move: MoveGenerator<TaskAssignmentState>) => move.name)).toEqual([
+        'Type Only Hard Fix',
+      ]);
+    });
+
+    it('should return no targeted operators when there are no active hard violations', () => {
+      const state = createTestState(false);
+      const constraints = [new KeyedWorkerConflict()];
+      const moves = [new TypeOnlyHardFixMove(), new KeySpecificHardFixMove()];
+      const solver = new SimulatedAnnealing(state, constraints, moves, createTestConfig());
+
+      const targeted = (solver as any).resolveTargetedGenerators(moves, state, 0);
+
+      expect(targeted).toEqual([]);
+    });
+
+    it('should honor explicit targeted operator names before metadata matches', () => {
+      const state = createTestState(true);
+      const constraints = [new KeyedWorkerConflict()];
+      const moves = [
+        new TypeOnlyHardFixMove(),
+        new KeySpecificHardFixMove(),
+        new ExplicitNamedMove(),
+      ];
+      const solver = new SimulatedAnnealing(state, constraints, moves, createTestConfig());
+
+      const targeted = (solver as any).resolveTargetedGenerators(
+        moves,
+        state,
+        0,
+        new Set(['explicit named move'])
+      );
+
+      expect(targeted.map((move: MoveGenerator<TaskAssignmentState>) => move.name)).toEqual([
+        'Explicit Named Move',
+      ]);
+    });
+
+    it('should fall back to metadata when explicit targeted names do not match applicable operators', () => {
+      const state = createTestState(true);
+      const constraints = [new KeyedWorkerConflict()];
+      const moves = [new TypeOnlyHardFixMove(), new KeySpecificHardFixMove()];
+      const solver = new SimulatedAnnealing(state, constraints, moves, createTestConfig());
+
+      const targeted = (solver as any).resolveTargetedGenerators(
+        moves,
+        state,
+        0,
+        new Set(['missing move'])
+      );
+
+      expect(targeted.map((move: MoveGenerator<TaskAssignmentState>) => move.name)).toEqual([
+        'Key Specific Hard Fix',
+      ]);
     });
   });
 

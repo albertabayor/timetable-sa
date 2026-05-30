@@ -23,6 +23,13 @@ function assertOptionalProbability(value: number | undefined, fieldName: string)
   }
 }
 
+function assertOptionalNonEmptyString(value: string | undefined, fieldName: string): void {
+  if (value === undefined) return;
+  if (typeof value !== 'string' || value.trim().length === 0) {
+    throw new SAConfigError(`${fieldName} must be a non-empty string if provided`);
+  }
+}
+
 export function validateSolverInputs<TState>(
   initialState: TState,
   constraints: Constraint<TState>[],
@@ -47,6 +54,7 @@ export function validateSolverInputs<TState>(
     if (typeof constraint.evaluate !== 'function') {
       throw new SAConfigError(`Constraint "${constraint.name}" must have an evaluate function`);
     }
+    assertOptionalNonEmptyString(constraint.key, `key for constraint "${constraint.name}"`);
     if (constraint.type === 'soft' && constraint.weight !== undefined) {
       assertFiniteNumber(constraint.weight, `weight for soft constraint "${constraint.name}"`);
       if (constraint.weight < 0) {
@@ -70,6 +78,34 @@ export function validateSolverInputs<TState>(
     }
     if (typeof generator.canApply !== 'function') {
       throw new SAConfigError(`Move generator "${generator.name}" must have a canApply function`);
+    }
+    if (generator.targetConstraintTypes !== undefined) {
+      if (!Array.isArray(generator.targetConstraintTypes)) {
+        throw new SAConfigError(
+          `targetConstraintTypes for move generator "${generator.name}" must be an array if provided`
+        );
+      }
+      for (const constraintType of generator.targetConstraintTypes) {
+        if (constraintType !== 'hard' && constraintType !== 'soft') {
+          throw new SAConfigError(
+            `targetConstraintTypes for move generator "${generator.name}" must contain only "hard" or "soft"`
+          );
+        }
+      }
+    }
+    if (generator.targetConstraintKeys !== undefined) {
+      if (!Array.isArray(generator.targetConstraintKeys)) {
+        throw new SAConfigError(
+          `targetConstraintKeys for move generator "${generator.name}" must be an array if provided`
+        );
+      }
+      for (const constraintKey of generator.targetConstraintKeys) {
+        if (typeof constraintKey !== 'string' || constraintKey.trim().length === 0) {
+          throw new SAConfigError(
+            `targetConstraintKeys for move generator "${generator.name}" must contain only non-empty strings`
+          );
+        }
+      }
     }
   }
 

@@ -169,6 +169,32 @@ describe('solver cancellation', () => {
     expect(move.calls).toBeLessThan(500);
   });
 
+  it('exits Phase 1.5 when progress aborts the signal', async () => {
+    const signal = createSignal();
+    const move = new IncrementMove();
+    const solver = new SimulatedAnnealing(
+      { value: 0 },
+      [new AlwaysViolatedHard()],
+      [move],
+      createConfig(signal, {
+        enableIntensification: true,
+        maxIterations: 200,
+        intensificationIterations: 50,
+        maxIntensificationAttempts: 1,
+        onProgress: (iteration, _cost, _temperature, _state, stats) => {
+          if (stats.phase === 'phase15' && iteration >= 1) {
+            signal.aborted = true;
+          }
+        },
+      })
+    );
+
+    await expect(solver.solve()).rejects.toBeInstanceOf(SolveCancelledError);
+    expect(solver.getDiagnostics().intensification.triggered).toBe(true);
+    expect(move.calls).toBeGreaterThan(0);
+    expect(move.calls).toBeLessThan(200);
+  });
+
   it('exits Phase 2 during soft optimization when progress aborts the signal', async () => {
     const signal = createSignal();
     const move = new IncrementMove();

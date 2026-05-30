@@ -16,6 +16,8 @@ import {
 
 export class FixExclusiveRoom implements MoveGenerator<TimetableState> {
   name = 'Fix Exclusive Room';
+  targetConstraintTypes = ['hard'] as const;
+  targetConstraintKeys = ['exclusive_room'];
 
   private findViolatingClasses(state: TimetableState): ScheduleEntry[] {
     return state.schedule.filter(

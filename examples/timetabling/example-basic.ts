@@ -157,20 +157,20 @@ const config: SAConfig<TimetableState> = {
   // ============================================
   // Phase 1.5 tuned configuration (from stage-2 benchmark)
   // ============================================
-  enableIntensification: false,
+  enableIntensification: true,
   intensificationIterations: 2000,
   maxIntensificationAttempts: 3,
   intensificationStagnationLimit: 300,
-  intensificationStartTemperatureMode: "phase1-end",
+  intensificationStartTemperatureMode: "initial-reset",
   intensificationStartTempMultiplier: 1.0,
   intensificationStartTempCapRatio: 1.0,
   intensificationUseTabu: true,
   intensificationTargetedOperatorNames: TARGETED_REPAIR_OPERATORS,
   intensificationTargetedSelectionRate: 0.7,
-  intensificationEarlyStopNoBestImproveIterations: 800,
+  intensificationEarlyStopNoBestImproveIterations: 2000,
   intensificationBudgetFractionOfMaxIterations: 0.25,
 
-  operatorSelectionMode: "hybrid",
+  operatorSelectionMode: "roulette-wheel",
   // Logging
   logging: {
     enabled: true,

@@ -37,6 +37,17 @@ export interface Constraint<TState> {
   name: string;
 
   /**
+   * Optional stable identifier for programmatic matching.
+   *
+   * Use this when move generators need to declare that they specifically target
+   * this constraint. Unlike `name`, this key is intended to remain stable even
+   * if the display label changes.
+   *
+   * @example "no_room_conflict", "room_capacity"
+   */
+  key?: string;
+
+  /**
    * Constraint type determines how violations are penalized
    *
    * - `'hard'`: Must be satisfied. Violations receive heavy penalty (hardConstraintWeight)

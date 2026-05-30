@@ -7,6 +7,7 @@ import type { TimetableState, ScheduleEntry } from '../../types/index.js';
 
 export class MaxDailyPeriods implements Constraint<TimetableState> {
   name = 'Max Daily Periods';
+  key = 'max_daily_periods';
   type = 'hard' as const;
 
   evaluate(state: TimetableState): number {

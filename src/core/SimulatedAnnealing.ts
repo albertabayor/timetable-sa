@@ -26,10 +26,14 @@ export class SimulatedAnnealing<TState> {
   private readonly selectionPolicy = new OperatorSelectionPolicy<TState>();
   private hardConstraintHintCache: {
     iteration: number;
-    violatedConstraintNames: Set<string>;
+    stateRef: TState | null;
+    hasHardViolations: boolean;
+    violatedConstraintKeys: Set<string>;
   } = {
     iteration: -1,
-    violatedConstraintNames: new Set<string>(),
+    stateRef: null,
+    hasHardViolations: false,
+    violatedConstraintKeys: new Set<string>(),
   };
   private hardBreakdownLogCache = new Map<string, string>();
 
@@ -252,6 +256,7 @@ export class SimulatedAnnealing<TState> {
           bestHardViolations,
           temperature,
           iteration,
+          reheats,
           solveStartTime
         );
         this.throwIfCancelled();
@@ -285,7 +290,6 @@ export class SimulatedAnnealing<TState> {
       return this.createSolution(
         phase2Result.bestState,
         phase2Result.bestFitness,
-        phase2Result.bestHardViolations,
         phase2Result.temperature,
         phase2Result.iteration,
         phase2Result.reheats
@@ -493,6 +497,7 @@ export class SimulatedAnnealing<TState> {
     bestHardViolations: number,
     phase1EndTemperature: number,
     iteration: number,
+    reheats: number,
     solveStartTime: number
   ): Promise<{
     bestState: TState;
@@ -506,7 +511,9 @@ export class SimulatedAnnealing<TState> {
     this.diagnostics.intensification.phase15StartHard = bestHardViolations;
     this.diagnostics.intensification.phase15WorstCurrentHard = bestHardViolations;
 
-    const targetedNameSet = new Set(this.config.intensificationTargetedOperatorNames.map((name) => name.toLowerCase()));
+    const targetedNameSet = new Set(
+      this.config.intensificationTargetedOperatorNames.map((name) => this.normalizeText(name))
+    );
     const phase15BudgetLimit = Math.max(1, Math.floor(this.config.maxIterations * this.config.intensificationBudgetFractionOfMaxIterations));
 
     this.diagnostics.intensification.phase15BudgetLimitIterations = phase15BudgetLimit;
@@ -519,6 +526,7 @@ export class SimulatedAnnealing<TState> {
     let currentFitness = bestFitness;
     let currentHardViolations = bestHardViolations;
     let intensificationAttempt = 0;
+    let phase15ProgressTriggered = false;
 
     while (bestHardViolations > 0 && intensificationAttempt < this.config.maxIntensificationAttempts && remainingBudget > 0) {
       this.throwIfCancelled();
@@ -544,8 +552,17 @@ export class SimulatedAnnealing<TState> {
         const allGenerators = this.moveGenerators.filter((gen) => gen.canApply(currentState));
         if (allGenerators.length === 0) break;
 
-        const targetedGenerators = targetedNameSet.size === 0 ? [] : allGenerators.filter((gen) => targetedNameSet.has(gen.name.toLowerCase()));
-        const generators = targetedGenerators.length > 0 && Math.random() < this.config.intensificationTargetedSelectionRate ? targetedGenerators : allGenerators;
+        const targetedGenerators = this.resolveTargetedGenerators(
+          allGenerators,
+          currentState,
+          iteration,
+          targetedNameSet
+        );
+        const generators =
+          targetedGenerators.length > 0 &&
+          Math.random() < this.config.intensificationTargetedSelectionRate
+            ? targetedGenerators
+            : allGenerators;
 
         const selectedGenerator = generators[Math.floor(Math.random() * generators.length)]!;
         const clonedState = this.config.cloneState(currentState);
@@ -563,6 +580,7 @@ export class SimulatedAnnealing<TState> {
           if (shouldSkipWithTabu) {
             this.diagnostics.intensification.phase15TabuSkips++;
             this.progressReporter.addTabuHit();
+            this.progressReporter.updateMoveStats(false, false);
             stagnationCounter++;
             noBestImproveCounter++;
           } else {
@@ -635,6 +653,7 @@ export class SimulatedAnnealing<TState> {
               const isBestImprovement = newHardViolations < bestHardViolations || (newHardViolations === bestHardViolations && newFitness < bestFitness);
 
               if (isBestImprovement) {
+                this.progressReporter.updateMoveStats(true, true, iteration);
                 bestState = this.config.cloneState(currentState);
                 bestFitness = newFitness;
                 bestHardViolations = newHardViolations;
@@ -645,13 +664,16 @@ export class SimulatedAnnealing<TState> {
                 }
                 this.logger.log("debug", `[Intensification] New best: Hard violations = ${bestHardViolations}, Fitness = ${bestFitness.toFixed(2)}`);
               } else {
+                this.progressReporter.updateMoveStats(true, false);
                 noBestImproveCounter++;
               }
             } else {
+              this.progressReporter.updateMoveStats(false, false);
               noBestImproveCounter++;
             }
           }
         } else {
+          this.progressReporter.updateMoveStats(false, false);
           stagnationCounter++;
           noBestImproveCounter++;
         }
@@ -670,16 +692,52 @@ export class SimulatedAnnealing<TState> {
         remainingBudget--;
         this.throwIfCancelled();
 
+        const shouldForceProgress = !phase15ProgressTriggered;
+        const shouldTriggerProgress = this.progressReporter.shouldTriggerProgress(
+          iteration,
+          this.config.onProgress,
+          this.config.logging.logInterval,
+          shouldForceProgress
+        );
+
+        if (
+          iteration % this.config.logging.logInterval === 0 ||
+          shouldTriggerProgress
+        ) {
+          this.logger.log(
+            "info",
+            `[Intensification] Iteration ${iteration}: Temp = ${intensificationTemp.toFixed(2)}, Current = ${currentFitness.toFixed(2)}, Best = ${bestFitness.toFixed(2)}, Hard = ${currentHardViolations}, Remaining budget = ${remainingBudget}`
+          );
+          this.logHardViolationBreakdown('[Intensification] Hard violation breakdown', currentState, 'phase15-iteration');
+
+          if (shouldTriggerProgress) {
+            const softV = this.getViolations(bestState).filter((v) => v.constraintType === 'soft').length;
+            this.throwIfCancelled();
+            await this.progressReporter.triggerProgressCallback(
+              iteration,
+              currentFitness,
+              bestFitness,
+              intensificationTemp,
+              bestHardViolations,
+              softV,
+              reheats,
+              this.config.maxIterations,
+              this.tabuMemory.size,
+              this.config.onProgress,
+              this.config.onProgressMode,
+              (error) => this.logger.log('warn', 'onProgress callback error:', error)
+            );
+            phase15ProgressTriggered = true;
+            this.throwIfCancelled();
+          }
+        }
+
         if (noBestImproveCounter >= this.config.intensificationEarlyStopNoBestImproveIterations) {
           attemptEndedByEarlyStop = true;
           this.diagnostics.intensification.phase15EndedByEarlyStop = true;
           this.logger.log("info", `[Intensification] Early-stop attempt ${intensificationAttempt}: no best-hard improvement for ${noBestImproveCounter} iterations`);
           this.throwIfCancelled();
           break;
-        }
-
-        if (intensificationIterations % 500 === 0) {
-          this.logger.log("info", `[Intensification] Iter ${intensificationIterations}: Hard violations = ${currentHardViolations}, Best = ${bestHardViolations}, Remaining budget = ${remainingBudget}`);
         }
       }
 
@@ -910,7 +968,6 @@ export class SimulatedAnnealing<TState> {
   private createSolution(
     bestState: TState,
     bestFitness: number,
-    bestHardViolations: number,
     finalTemperature: number,
     iteration: number,
     reheats: number
@@ -940,6 +997,7 @@ export class SimulatedAnnealing<TState> {
       reheats,
       finalTemperature,
       violations,
+      // defensive copy to prevent external mutation of internal stats
       operatorStats: this.getStats(),
       diagnostics: this.getDiagnostics(),
     };
@@ -999,28 +1057,7 @@ export class SimulatedAnnealing<TState> {
 
     let generatorsToSelectFrom = applicableGenerators;
     if (prioritizeHardFixes) {
-      const fallbackTargeted = applicableGenerators.filter((gen) => {
-        const name = gen.name.toLowerCase();
-        return name.includes('fix') || name.includes('swap friday');
-      });
-
-      const violatedConstraintNames = this.getViolatedHardConstraintNames(state, iteration);
-      const preferredTargeted = fallbackTargeted.filter((gen) => {
-        const name = gen.name.toLowerCase();
-
-        for (const constraintName of violatedConstraintNames) {
-          if (constraintName.includes('exclusive room') && name.includes('exclusive')) return true;
-          if (constraintName.includes('lecturer conflict') && name.includes('lecturer')) return true;
-          if (constraintName.includes('room conflict') && name.includes('room conflict')) return true;
-          if (constraintName.includes('room capacity') && name.includes('capacity')) return true;
-          if (constraintName.includes('max daily periods') && name.includes('max daily')) return true;
-          if (constraintName.includes('friday') && (name.includes('friday') || name.includes('prayer'))) return true;
-        }
-
-        return false;
-      });
-
-      const targeted = preferredTargeted.length > 0 ? preferredTargeted : fallbackTargeted;
+      const targeted = this.resolveTargetedGenerators(applicableGenerators, state, iteration);
 
       if (targeted.length > 0 && Math.random() < 0.7) {
         generatorsToSelectFrom = targeted;
@@ -1038,29 +1075,90 @@ export class SimulatedAnnealing<TState> {
     return { newState, operatorName: selectedGenerator.name };
   }
 
-  private getViolatedHardConstraintNames(state: TState, iteration: number): Set<string> {
-    const refreshInterval = 50;
-    if (
-      this.hardConstraintHintCache.iteration >= 0 &&
-      iteration - this.hardConstraintHintCache.iteration < refreshInterval
-    ) {
-      return this.hardConstraintHintCache.violatedConstraintNames;
+  private resolveTargetedGenerators(
+    applicableGenerators: MoveGenerator<TState>[],
+    state: TState,
+    iteration: number,
+    explicitTargetNames?: Set<string>
+  ): MoveGenerator<TState>[] {
+    const hardHints = this.getViolatedHardConstraintHints(state, iteration);
+    if (!hardHints.hasHardViolations) {
+      return [];
     }
 
-    const violated = new Set<string>();
+    // for 1.5 intensification, we allow users to specify explicit operator names to target, which takes precedence over the automatic constraint-key matching
+    if (explicitTargetNames && explicitTargetNames.size > 0) {
+      const explicitMatches = applicableGenerators.filter((generator) =>
+        explicitTargetNames.has(this.normalizeText(generator.name))
+      );
+      if (explicitMatches.length > 0) {
+        return explicitMatches;
+      }
+    }
+
+    const keyMatched = applicableGenerators.filter((generator) =>
+      (generator.targetConstraintKeys ?? []).some((key) =>
+        hardHints.violatedConstraintKeys.has(this.normalizeText(key))
+      )
+    );
+
+    if (keyMatched.length > 0) {
+      return keyMatched;
+    }
+
+    return applicableGenerators.filter((generator) =>
+      (generator.targetConstraintTypes ?? []).includes('hard')
+    );
+  }
+
+  private getViolatedHardConstraintHints(
+    state: TState,
+    iteration: number
+  ): { hasHardViolations: boolean; violatedConstraintKeys: Set<string> } {
+    /**
+     * Why i do not full deep compare the state for caching:
+     * the reason is that, it could be very expensive so instead i'll go the cheap way
+     */
+    if (this.hardConstraintHintCache.stateRef === state) {
+      return {
+        hasHardViolations: this.hardConstraintHintCache.hasHardViolations,
+        violatedConstraintKeys: this.hardConstraintHintCache.violatedConstraintKeys,
+      };
+    }
+
+    let hasHardViolations = false;
+    const violatedConstraintKeys = new Set<string>();
     for (const constraint of this.hardConstraints) {
       const score = evaluateConstraintScore(constraint, state);
       if (score < 1) {
-        violated.add(constraint.name.toLowerCase());
+        hasHardViolations = true;
+        const normalizedKey = this.normalizeConstraintKey(constraint);
+        if (normalizedKey) {
+          violatedConstraintKeys.add(normalizedKey);
+        }
       }
     }
 
     this.hardConstraintHintCache = {
       iteration,
-      violatedConstraintNames: violated,
+      stateRef: state,
+      hasHardViolations,
+      violatedConstraintKeys,
     };
 
-    return violated;
+    return { hasHardViolations, violatedConstraintKeys };
+  }
+
+  private normalizeConstraintKey(constraint: Constraint<TState>): string | null {
+    if (!constraint.key) {
+      return null;
+    }
+
+    return this.normalizeText(constraint.key);
+  }
+
+  private normalizeText(value: string): string {
+    return value.trim().toLowerCase();
   }
 
   private getStateSignature(state: TState): string {
@@ -1119,7 +1217,6 @@ export class SimulatedAnnealing<TState> {
     this.logger.log('info', message, normalizedBreakdown);
   }
 
-  // Backward-compatibility for existing tests and internal extension points
   private shouldSkipTabu(
     signature: string,
     currentIteration: number,
@@ -1203,7 +1300,9 @@ export class SimulatedAnnealing<TState> {
     this.progressReporter.reset();
     this.hardConstraintHintCache = {
       iteration: -1,
-      violatedConstraintNames: new Set<string>(),
+      stateRef: null,
+      hasHardViolations: false,
+      violatedConstraintKeys: new Set<string>(),
     };
     this.hardBreakdownLogCache.clear();
     this.diagnostics = {

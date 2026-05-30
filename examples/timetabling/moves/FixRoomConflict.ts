@@ -20,6 +20,8 @@ import {
 
 export class FixRoomConflict implements MoveGenerator<TimetableState> {
   name = 'Fix Room Conflict';
+  targetConstraintTypes = ['hard'] as const;
+  targetConstraintKeys = ['no_room_conflict'];
 
   /**
    * Check if two schedule entries have time overlap

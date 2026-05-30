@@ -7,6 +7,7 @@ import type { TimetableState } from '../../types/index.js';
 
 export class RoomCapacity implements Constraint<TimetableState> {
   name = 'Room Capacity';
+  key = 'room_capacity';
   type = 'hard' as const;
 
   evaluate(state: TimetableState): number {

@@ -21,6 +21,8 @@ import {
 
 export class FixLecturerConflict implements MoveGenerator<TimetableState> {
   name = 'Fix Lecturer Conflict';
+  targetConstraintTypes = ['hard'] as const;
+  targetConstraintKeys = ['no_lecturer_conflict'];
 
   /**
    * Find all lecturer conflicts in the schedule using O(N log N) algorithm

@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.1] - 2026-05-29
+
+This patch release adds stable metadata for matching hard constraints to repair
+operators and improves Phase 1.5 progress reporting behavior.
+
+### Added
+
+- New optional `Constraint.key` field for stable programmatic constraint
+  matching.
+- New optional `MoveGenerator.targetConstraintTypes` metadata for broad hard or
+  soft repair intent.
+- New optional `MoveGenerator.targetConstraintKeys` metadata for precise repair
+  operators that target specific constraint keys.
+
+### Changed
+
+- Phase 1 and Phase 1.5 can now prioritize targeted repair operators through
+  constraint-key metadata before falling back to broad hard-repair metadata.
+- Timetabling examples now declare stable hard-constraint keys and matching
+  repair-operator targeting metadata.
+
+### Fixed
+
+- Phase 1.5 now updates move statistics and progress callbacks more consistently
+  during intensification iterations.
+
 ## [3.2.0] - 2026-04-26
 
 This release adds first-class cancellation support for long-running solver

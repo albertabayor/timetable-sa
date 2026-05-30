@@ -9,6 +9,7 @@ import { canUseExclusiveRoom } from '../../utils/index.js';
 
 export class ExclusiveRoom implements Constraint<TimetableState> {
   name = 'Exclusive Room';
+  key = 'exclusive_room';
   type = 'hard' as const;
 
   evaluate(state: TimetableState): number {

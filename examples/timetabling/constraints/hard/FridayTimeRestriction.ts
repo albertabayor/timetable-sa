@@ -9,6 +9,7 @@ import { isValidFridayStartTime } from '../../utils/index.js';
 
 export class FridayTimeRestriction implements Constraint<TimetableState> {
   name = 'Friday Time Restriction';
+  key = 'friday_time_restriction';
   type = 'hard' as const;
 
   evaluate(state: TimetableState): number {

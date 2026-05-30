@@ -9,6 +9,7 @@ import { TimetableState } from "../../types";
  */
 export class NoFridayPrayConflict implements Constraint<TimetableState> {
   name = 'No Friday Pray Conflict';
+  key = 'no_friday_pray_conflict';
   type = 'hard' as const;
 
   // Friday prayer time window: 11:40 - 13:10

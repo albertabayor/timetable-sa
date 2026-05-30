@@ -223,6 +223,12 @@ console.log(`Schedule size: ${solution.state.schedule.length}`);
 - **ChangeRoom**: Randomly change a class's room
 - **SwapClasses**: Swap time slots and/or rooms between two classes
 
+Targeted repair operators can also declare metadata so the solver can
+prioritize them when specific hard constraints are violated. In this example,
+hard constraints expose stable `key` values such as `no_room_conflict`, and
+repair operators expose `targetConstraintKeys` or `targetConstraintTypes` to
+match those violations without relying on naming conventions.
+
 ## Customization
 
 To adapt this example for your institution:

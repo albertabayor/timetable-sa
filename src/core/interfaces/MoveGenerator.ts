@@ -39,6 +39,27 @@ export interface MoveGenerator<TState> {
   name: string;
 
   /**
+   * Optional broad targeting metadata for this move operator.
+   *
+   * Use this when the operator is designed to help with a class of constraints,
+   * for example hard-repair operators during feasibility search.
+   *
+   * @example ['hard']
+   */
+  targetConstraintTypes?: ReadonlyArray<'hard' | 'soft'>;
+
+  /**
+   * Optional precise targeting metadata for this move operator.
+   *
+   * Use stable constraint keys, not display names. When provided, the solver can
+   * prioritize this operator when one of the listed constraints is currently
+   * violated.
+   *
+   * @example ['no_room_conflict', 'room_capacity']
+   */
+  targetConstraintKeys?: ReadonlyArray<string>;
+
+  /**
    * Generate a new neighbor state from the current state.
    *
    * The SA engine already clones the state before passing it to this method,

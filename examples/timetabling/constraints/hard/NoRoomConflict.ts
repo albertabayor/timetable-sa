@@ -16,6 +16,7 @@ import {
 
 export class NoRoomConflict implements Constraint<TimetableState> {
   name = 'No Room Conflict';
+  key = 'no_room_conflict';
   type = 'hard' as const;
 
   evaluate(state: TimetableState): number {

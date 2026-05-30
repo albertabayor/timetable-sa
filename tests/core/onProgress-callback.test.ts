@@ -157,6 +157,68 @@ function createTestConfig(overrides?: Partial<SAConfig<TaskAssignmentState>> & {
   };
 }
 
+interface Phase15CounterState {
+  value: number;
+}
+
+class AlwaysViolatedPhase15Hard implements Constraint<Phase15CounterState> {
+  name = 'Always Violated Phase15 Hard';
+  type = 'hard' as const;
+
+  evaluate(): number {
+    return 0;
+  }
+
+  getViolations(): string[] {
+    return ['Always violated'];
+  }
+}
+
+class PreferHigherPhase15Value implements Constraint<Phase15CounterState> {
+  name = 'Prefer Higher Phase15 Value';
+  type = 'soft' as const;
+  weight = 1;
+
+  evaluate(state: Phase15CounterState): number {
+    return Math.max(0, Math.min(1, state.value / 100));
+  }
+}
+
+class IncrementPhase15Value implements MoveGenerator<Phase15CounterState> {
+  name = 'Increment Phase15 Value';
+
+  canApply(): boolean {
+    return true;
+  }
+
+  generate(state: Phase15CounterState): Phase15CounterState {
+    return { value: state.value + 1 };
+  }
+}
+
+function createPhase15Config(
+  overrides?: Partial<SAConfig<Phase15CounterState>>
+): SAConfig<Phase15CounterState> {
+  return {
+    initialTemperature: 100,
+    minTemperature: 0.01,
+    coolingRate: 0.5,
+    maxIterations: 20,
+    hardConstraintWeight: 1000,
+    cloneState: (state) => ({ ...state }),
+    enableIntensification: true,
+    intensificationIterations: 4,
+    maxIntensificationAttempts: 1,
+    intensificationBudgetFractionOfMaxIterations: 0.5,
+    logging: {
+      enabled: false,
+      level: 'error',
+      logInterval: 1,
+    },
+    ...overrides,
+  };
+}
+
 // ========================================
 // Test Suite
 // ========================================
@@ -698,6 +760,81 @@ describe('onProgress Callback Feature', () => {
       expect(phaseCalls).toContain('phase1');
       // Phase 2 is entered after phase 1 completes (which might happen before intensification)
       // The test just verifies intensification doesn't break progress tracking
+    });
+
+    it('should emit phase15 progress callbacks when intensification runs', async () => {
+      const phase15Calls: ProgressStats[] = [];
+
+      const solver = new SimulatedAnnealing(
+        { value: 0 },
+        [new AlwaysViolatedPhase15Hard(), new PreferHigherPhase15Value()],
+        [new IncrementPhase15Value()],
+        createPhase15Config({
+          onProgress: (_iteration, _cost, _temp, _state, stats) => {
+            if (stats.phase === 'phase15') {
+              phase15Calls.push(stats);
+            }
+          },
+        })
+      );
+
+      const solution = await solver.solve();
+
+      expect(solution.diagnostics?.intensification.triggered).toBe(true);
+      expect(phase15Calls.length).toBeGreaterThan(0);
+    });
+
+    it('should continue phase15 move counters and bestCostIteration updates', async () => {
+      const phase15Calls: ProgressStats[] = [];
+
+      const solver = new SimulatedAnnealing(
+        { value: 0 },
+        [new AlwaysViolatedPhase15Hard(), new PreferHigherPhase15Value()],
+        [new IncrementPhase15Value()],
+        createPhase15Config({
+          onProgress: (_iteration, _cost, _temp, _state, stats) => {
+            if (stats.phase === 'phase15') {
+              phase15Calls.push(stats);
+            }
+          },
+        })
+      );
+
+      await solver.solve();
+
+      expect(phase15Calls.length).toBeGreaterThan(1);
+
+      for (let i = 1; i < phase15Calls.length; i++) {
+        const currentTotal = phase15Calls[i].acceptedMoves + phase15Calls[i].rejectedMoves;
+        const previousTotal = phase15Calls[i - 1].acceptedMoves + phase15Calls[i - 1].rejectedMoves;
+        expect(currentTotal).toBeGreaterThan(previousTotal);
+      }
+
+      phase15Calls.forEach((stats) => {
+        expect(stats.bestCostIteration).toBe(stats.iteration - 1);
+      });
+    });
+
+    it('should not duplicate phase15 callbacks for the same iteration', async () => {
+      const phase15Iterations: number[] = [];
+
+      const solver = new SimulatedAnnealing(
+        { value: 0 },
+        [new AlwaysViolatedPhase15Hard(), new PreferHigherPhase15Value()],
+        [new IncrementPhase15Value()],
+        createPhase15Config({
+          onProgress: (_iteration, _cost, _temp, _state, stats) => {
+            if (stats.phase === 'phase15') {
+              phase15Iterations.push(stats.iteration);
+            }
+          },
+        })
+      );
+
+      await solver.solve();
+
+      expect(phase15Iterations.length).toBeGreaterThan(0);
+      expect(new Set(phase15Iterations).size).toBe(phase15Iterations.length);
     });
   });
 

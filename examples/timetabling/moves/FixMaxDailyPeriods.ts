@@ -12,6 +12,8 @@ import { getValidTimeSlotAndRoomCombinationsWithPriority, calculateEndTime } fro
 
 export class FixMaxDailyPeriods implements MoveGenerator<TimetableState> {
   name = 'Fix Max Daily Periods';
+  targetConstraintTypes = ['hard'] as const;
+  targetConstraintKeys = ['max_daily_periods'];
 
   canApply(state: TimetableState): boolean {
     // Check if any lecturer exceeds max daily periods
